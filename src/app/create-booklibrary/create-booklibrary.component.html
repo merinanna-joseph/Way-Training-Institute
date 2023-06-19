@@ -1,0 +1,222 @@
+
+<app-toast [message]="toast.message"></app-toast>
+<div class="panel-header panel-header-sm">
+  <h4 style="color: white;margin-top: -40px;margin-left: 30px;">
+    {{auth.currentUser.firstName | titlecase}} {{auth.currentUser.lastName | titlecase}} <span *ngIf="auth.isAdmin"> - Admin</span>
+  </h4>
+</div>
+<div class="main-content">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-header">
+          <div class="row">
+            <div class="col-md-8"  style="padding-top: 16px;">
+                <h4 class="card-title">Create Course</h4>
+            </div>
+            <div class="col-md-4">
+              <button type="button"  style="background-color:#112048;" class="btn btn-round blue-ink" (click)="displaybookLibrary()" >Back</button>
+
+            </div>
+          </div>
+        </div>
+        <div class="card-body" >
+          <div >
+            <form [formGroup]="addCourseForm">
+                <div class="row">
+                  <div class="col-md-6 pr-5 pl-5">
+                    <div class="form-group">
+                      <label>Course Name</label>
+                     
+
+                      <select [ngClass]="{ 'is-invalid': submitted && f.coursename.errors }"
+                      placeholder="Enter Course Name" formControlName="coursename"
+                      (change)="onCourseSelection($event)"
+                      class="form-control">
+                       <option value="" selected="true">--Select Course--</option>
+                       <option  *ngFor="let x of allCoursenames" value="{{x._id}}"
+                       >
+                       <p class="fa fa-times" >{{x.coursename}}</p>
+
+
+                      </option>
+
+
+                      </select>
+
+                      <div *ngIf="submitted && f.coursename.errors" class="invalid-feedback">
+                        <div *ngIf="f.coursename.errors.required">Course Name is required</div>
+                      </div>
+                    </div>
+
+                  </div>
+
+                 
+
+                </div>
+                <div class="row">
+                   
+                    <div class="col-md-6 pr-5 pl-5" *ngIf="showBranch">
+                        
+                      <div class="form-group">
+
+                        <select class="form-control"
+                        placeholder="Enter Branch" formControlName="branch" (change)="onBranchSelection($event)">
+                      
+                         <option value="" selected="true">--Select Branch--</option>
+                         <option *ngFor="let x of branchList" value="{{x._id}}">{{x.branch}}</option>
+                        </select>
+
+                      </div>
+                    </div>
+                    <div class="col-md-6 pr-5 pl-5">
+                      <div class="form-group">
+                          <div class="row">
+                              <div class="col-md-6">
+                                <label>Board or University</label>
+                              </div>
+                               <!-- <div class="col-md-6">
+                                 <a style="color: blue;cursor: pointer;"
+                                 data-toggle="modal" data-target="#exampleModal">+ Add Board Or University</a>
+                              </div> -->
+                          </div>
+                          <select class="form-control"
+                          aria-label="Default select example"
+                          [ngClass]="{ 'is-invalid': submitted && f.board.errors }"
+                          formControlName="board">
+                           <option value="" selected="true">--Select Board--</option>
+                           <option *ngFor="let x of allUniversities" value="{{x._id}}">{{x.boardoruniveristy}}</option>
+                         </select>
+                         <div *ngIf="submitted && f.board.errors" class="invalid-feedback">
+                          <div *ngIf="f.board.errors.required">Board is required</div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                <div class="row">
+
+                    <div class="col-md-4 pr-1 pl-5">
+                      <div class="form-group">
+                        <label>Course Type</label><br>
+                        <div class="row  pt-2">
+
+                          <div class="col-md-12 pr-1">
+                            <div class="form-group">
+                              <input type="radio" [ngClass]="{ 'is-invalid': submitted && f.courseType.errors }"
+                               value="Regular" formControlName="courseType"> Regular
+                               <input type="radio"  [ngClass]="{ 'is-invalid': submitted && f.courseType.errors }"
+                               value="Distance" formControlName="courseType"> Distance
+                               <div *ngIf="submitted && f.courseType.errors" class="invalid-feedback">
+                                <div *ngIf="f.courseType.errors.required">Course Type is required</div>
+                              </div>
+                              </div>
+
+                          </div>
+
+                        </div>
+                        </div>
+                    </div>
+                     <div class="col-md-4  ">
+                      <div class="form-group">
+                        <label>Course Duration</label>
+                        <input type="text" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.numberofyears.errors }"
+                        placeholder="Enter course duration" formControlName="numberofyears" >
+                        <div *ngIf="submitted && f.numberofyears.errors" class="invalid-feedback">
+                          <div *ngIf="f.numberofyears.errors.required">Course duration is required</div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-4 pr-5 pl-5">
+                      <div class="form-group">
+                        <label>Semester Per Year</label>
+                        <input type="text" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.semperyear.errors }"
+                        placeholder="Enter sem per years" formControlName="semperyear" >
+                        <div *ngIf="submitted && f.semperyear.errors" class="invalid-feedback">
+                          <div *ngIf="f.semperyear.errors.required">Sem. per years is required</div>
+                        </div>
+                      </div>
+                    </div>
+                    <!-- <div class="col-md-4 pr-5 pl-5">
+                      <div class="form-group">
+                        <label>Ending Year</label>
+                        <input type="month" [(ngModel)]="course.endYear"  class="form-control" [ngClass]="{ 'is-invalid': submitted && f.endYear.errors }"
+                        placeholder="Enter End Year" formControlName="endYear">
+                         <div *ngIf="submitted && f.endYear.errors" class="invalid-feedback">
+                          <div *ngIf="f.endYear.errors.required">End Year is required</div>
+                        </div>
+                      </div>
+                    </div>  -->
+                </div>
+                <!-- <div class="row">
+                
+                  <div class="col-md-4 pr-1 pl-5">
+                    <div class="form-group">
+                        <label>Centre Name</label>
+                        <select class="form-control"
+                        class="form-control" formControlName="centers"
+                        (change)="onCentersSelection($event.target)"
+                        [ngClass]="{ 'is-invalid': submitted && f.centers.errors }">
+                         <option value='' selected="true">--Select Centre--</option>
+                         <option *ngFor="let x of centers" value="{{x.center}}">{{x.center}}</option>
+                        </select>
+                        <div *ngIf="submitted && f.centers.errors" class="invalid-feedback">
+                          <div *ngIf="f.centers.errors.required">Select Centre</div>
+                        </div>
+    
+    
+                     </div>
+                </div>
+    
+                  
+    
+    
+                </div> -->
+             <div class="col text-center">
+                  <button type="button" class="btn btn-danger btn-round" style="background-color:#112048;" (click)="onCourseSave()" >Submit</button>
+                  <!-- <button type="button"  class="btn btn-danger btn-round"  style="background-color:#112048;" >Cancel</button> -->
+
+              </div>
+            </form>
+        </div>
+        </div>
+
+
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+
+
+<!-- Delete closed admission form -->
+<!-- <div class="modal fade" id="deleteSubmittedAdmissionform" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title " id="exampleModalLabel" >Delete Submitted Admission Form</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <img src="../../assets/danger.png" class="successimage">
+        </div>
+        <div class="row">
+          <p class="contentstyle" > Are you sure you want to delete form?
+          </p>
+
+        </div>
+
+
+      </div>
+      <div style="text-align: center;">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal"  id="submittedadmissionDeleteModalCloseBtn">Cancel</button>
+        <button type="button" class="btn" style="background:#112048;"  (click)="onAdmissionDelete()" >Delete</button>
+
+      </div>
+    </div>
+  </div>
+</div> -->

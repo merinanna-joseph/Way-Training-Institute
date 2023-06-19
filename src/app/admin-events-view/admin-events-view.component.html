@@ -1,0 +1,170 @@
+<app-toast [message]="toast.message"></app-toast>
+<div class="panel-header panel-header-sm">
+</div>
+<div class="main-content">
+  <div class="row">
+   
+    <div class="col-md-10" >
+      <div class="card card-user">
+        <!-- <div class="image">
+          <img src="../assets/img/bg5.jpg" alt="...">
+        </div> -->
+        <div class="card-body pl-3" >
+          <div class="author">
+          
+           
+           <h1 class="description" style="margin-top: 110px;">
+            {{callEvents.subject}}
+           </h1>
+          </div>
+          <div class="row">
+            <div class="col-md-3">
+              <div style="font-size:20px;">Time</div>
+            </div>
+            <div class="col-md-2">
+              <div style="font-size:20px;"> :</div>
+            </div>
+            <div class="col-md-7">
+              <div style="font-size:20px;">{{callEvents.date | date : 'MMM d, y, hh:mm a'}}</div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-3">
+              <div style="font-size:20px;">Status</div>
+            </div>
+            <div class="col-md-2">
+              <div style="font-size:20px;"> : </div>
+            </div>
+            <div class="col-md-7">
+              <div style="font-size:20px;width: 200px;">
+                  <select class="form-control" [value]="callEvents.status"
+                  (change)="getEventStatusChange($event.target)">
+                      <option [value]="eventStatus.open">Open</option>
+                      <option [value]="eventStatus.closed">Closed</option>
+                  </select> 
+                
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-3">
+              <div style="font-size:20px;"*ngIf = "callEvents.userId">User</div>
+            </div>
+            <div class="col-md-2">
+              <div style="font-size:20px;"> : </div>
+            </div>
+            <div class="col-md-7">
+              <div style="font-size:20px;"*ngIf = "callEvents.userId">{{callEvents.userId.email}} </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-3">
+              <div style="font-size:20px;" *ngIf = "callEvents.remarks">Remarks</div>
+            </div>
+            <div class="col-md-2">
+              <div style="font-size:20px;"> : </div>
+            </div>
+            <div class="col-md-7">
+              <div style="font-size:20px;" *ngIf = "callEvents.remarks">{{callEvents.remarks}}</div>
+            </div>
+          </div>
+       
+        </div>
+        <hr>
+        <div class="row pl-3">
+          <div class="col-md-3">
+            <div style="font-size:20px;" *ngIf = "callEvents.leadId">Lead Name</div>
+          </div>
+          <div class="col-md-2">
+            <div style="font-size:20px;"> : </div>
+          </div>
+          <div class="col-md-7">
+            <div style="font-size:20px;" *ngIf = "callEvents.leadId"><a (click)="onClickLead(callEvents)">{{callEvents.leadId.firstName}} {{callEvents.leadId.lastName}}</a></div>
+          </div>
+        </div>
+        <div class="row pl-3">
+          <div class="col-md-3">
+            <div style="font-size:20px;" *ngIf = "callEvents.leadId">Email</div>
+          </div>
+          <div class="col-md-2">
+            <div style="font-size:20px;"> : </div>
+          </div>
+          <div class="col-md-7">
+            <div style="font-size:20px;" *ngIf = "callEvents.leadId">{{callEvents.leadId.email}}</div>
+          </div>
+        </div>
+        <div class="row pl-3">
+          <div class="col-md-3">
+            <div style="font-size:20px;" *ngIf = "callEvents.leadId">Mobile</div>
+          </div>
+          <div class="col-md-2">
+            <div style="font-size:20px;"> : </div>
+          </div>
+          <div class="col-md-7">
+            <div style="font-size:20px;" *ngIf = "callEvents.leadId">{{callEvents.leadId.mobile}}</div>
+          </div>
+        </div>
+     
+      
+        <hr class="pb-5">
+      
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 
+<div class="modal fade" id="eventStatusModalCloseBtn" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel" >Change Event Status</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="addStatusForm" #changeStatusDetails="ngForm">
+          <div class="row">
+              <div class="col-md-12 pr-1" >
+              <div class="form-group">
+                  <label>Select Status</label>
+                  <select class="form-control" (change)="getEventStatusChange($event.target)"
+                  aria-label="Default select example" [value]="callEvents.status">
+                   
+                    <option [value]="eventStatus.open">{{eventStatus.open}}</option>
+                    <option [value]="eventStatus.contacted">{{eventStatus.contacted}}</option>
+                    <option [value]="eventStatus.notcontacted">{{eventStatus.notcontacted}}</option>
+                   
+                  </select>
+                
+
+                </div>
+              </div>
+              <div class="col-md-12"  >
+                <div class="form-group">
+                    <label>Remarks</label>
+                    <textarea rows="4" cols="80" class="form-control"
+                    [ngClass]="{ 'is-invalid': changeLeadStatus && changeStatus.remarks.errors }"
+                     formControlName="remarks"
+                     placeholder="Enter Remarks" (change)="OnremarkChange($event.target)"></textarea>
+                     <div *ngIf="changeLeadStatus && changeStatus.remarks.errors" class="invalid-feedback">
+                      <div *ngIf="changeStatus.remarks.errors.required">Remarks  required</div>
+                    </div>
+
+                </div>
+                </div>
+
+          </div>
+
+
+      </form>
+
+      </div>
+      <div style="text-align: center;">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal"  id="eventStatusModalCloseBtn">Close</button>
+        <button type="button" class="btn btn-primary" (click)="OnStatusStaffChange()" >Save</button>
+      </div>
+    </div>
+  </div>
+</div> -->

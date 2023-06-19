@@ -1,0 +1,51 @@
+a:hover {
+    color: blue !important;
+    border-bottom: 1px solid blue;
+    cursor: pointer;
+}
+sup{
+  font-size: 140%;
+  top: -0.5em;
+}
+#requestbadge{
+  border-radius: 50px;
+  background: black;
+}
+button{
+  cursor: pointer;
+}
+#filter{
+  width: 173px !important;
+}
+#filter1{
+  width: 173px !important;
+}
+#filter2{
+  width: 173px !important;
+}
+.blink_me {
+    animation: blinker 0.5s linear infinite;
+    font-weight: bold;  }
+  @keyframes blinker {
+    50% {
+      opacity: 0.1;
+    }
+  }
+  .text-center{
+    text-align: center;
+  }
+  .btn-neutral
+  {
+ padding-left: 1px;
+
+  }
+  i{
+    cursor: pointer;
+}
+button[disabled]:hover {
+  cursor:no-drop;
+}
+#badgepriority{
+  border-radius: 50%;
+  width: 38px;
+}

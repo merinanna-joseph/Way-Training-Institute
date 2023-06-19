@@ -1,0 +1,177 @@
+
+<app-toast [message]="toast.message"></app-toast>
+<div class="panel-header panel-header-sm">
+  <h4 style="color: white;margin-top: -40px;margin-left: 30px;">
+    {{auth.currentUser.firstName | titlecase}} {{auth.currentUser.lastName | titlecase}} <span *ngIf="auth.isAdmin"> - Admin</span>
+  </h4>
+</div>
+<div class="main-content">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-header">
+          <div class="row">
+            <div class="col-md-8"  style="padding-top: 16px;">
+                <h4 class="card-title">Book Library</h4>
+            </div>
+            <div class="col-md-4">
+              <button type="button"  style="background-color:#112048;" class="btn btn-round blue-ink"*ngIf="auth.isAdmin" (click)="createbookLibrary()" >Add Course</button>
+
+            </div>
+          </div>
+        </div>
+        <div class="card-body" >
+          <div >
+             <table class="table">
+              <thead class=" text-primary">
+               
+                <th width="6%" class="text-left blue-link-heading">
+                  Sn. No.
+                </th>
+                  <th width="6%"  class="text-left blue-link-heading">
+                   Course name
+                  </th>
+                  <th width="14%" class="text-left blue-link-heading ">
+                    Branch
+                 </th>
+                  <th width="10%" class="text-left blue-link-heading">
+                    University
+                  </th>
+                  <th width="10%" class="text-left blue-link-heading">
+                    Course Type 
+                  </th>
+
+                  <th width="20%" class="text-left blue-link-heading">
+                    Course Duration
+                  </th>
+                  <th width="20%" class="text-left blue-link-heading">
+                    Sem per year
+                  </th>
+                  <th width="20%" class="text-left blue-link-heading">Action</th>
+
+              </thead>
+               <tr  *ngFor="let book of allBookLibrary;let i = index;" style="font-size: 12px;">
+                <td width="2%" class="text-left">
+                  {{i+1}}
+
+
+
+              </td>
+                <td  width="10%" class="text-left">
+                  <p style="cursor: pointer;" data-toggle="tooltip"
+                  data-placement="top"
+                  title="{{book.coursenameId}}">
+                  {{book.coursenameId.coursename}}
+                  </p>
+                  </td>
+                <td width="10%" class="text-left" >
+                  <p style="cursor: pointer;" data-toggle="tooltip"
+                  data-placement="top"
+                  title="{{book.coursebranchId}}"*ngIf="book.coursebranchId">
+                  {{book.coursebranchId.branch}}
+                  </p>
+                  <p style="cursor: pointer;" data-toggle="tooltip"
+                  data-placement="top"
+                  title="{{book.coursebranchId}}" *ngIf="!book.coursebranchId">
+                  ---
+                  </p>
+                </td>
+              
+               <td  width="10%" class="text-left">
+                <p style="cursor: pointer;" data-toggle="tooltip"
+                data-placement="top"
+                title="{{book.boardOrUniversity}}">
+                {{book.boardOrUniversity.boardoruniveristy}}
+                </p>
+
+               </td>
+               <td  width="10%" class="text-left">
+                 <p data-toggle="tooltip"style="cursor: pointer;"
+                 data-placement="top"
+                 title="{{book.courseType}}">
+                  {{book.courseType}}
+                 </p>
+
+               </td>
+
+               <td  width="20%" class="text-left">
+                <p style="cursor: pointer;" data-toggle="tooltip"
+                data-placement="top"
+                title="{{book.numberofyears}}">
+                    {{book.numberofyears}}                
+                </p>
+
+               </td>
+               <td  width="20%" class="text-left">
+                <p style="cursor: pointer;" data-toggle="tooltip" *ngIf="book.semperyear"
+                data-placement="top"
+                title="{{book.numberofyears}}">
+                    {{book.semperyear}}                
+                </p>
+                <p style="cursor: pointer;" data-toggle="tooltip" *ngIf="!book.semperyear"
+                >
+                       No sem            
+                </p>
+               </td>
+               <td  width="20%" class="text-left">
+                <button type="button" class="btn btn-neutral blue-link-heading" 
+                  data-toggle="tooltip" data-placement="top" title="Click to view" style="padding: 5px;"
+                  (click)="onBookClick(book)" >
+                    <i class="fa fa-eye" style="font-size: 13px;"></i>
+              </button>
+                <!-- <button type="button" class="btn btn-neutral blue-link-heading" style="cursor: no-drop;"
+                  data-toggle="tooltip" data-placement="top" title="Click to view"
+                  (click)="onBookClick(book)">
+                 <i class="fa fa-eye" aria-hidden="true" 
+                 style="font-size: medium;color:transparent;cursor: no-drop;"></i>
+                </button> -->
+                <!-- <button style="background-color:#112048;" class="btn btn-round blue-ink" 
+                (click)="onBookClick(book)">add sub</button> -->
+
+               </td>
+
+               </tr>
+         </table> 
+          </div>
+        </div>
+
+
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+
+
+<!-- Delete closed admission form -->
+<!-- <div class="modal fade" id="deleteSubmittedAdmissionform" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title " id="exampleModalLabel" >Delete Submitted Admission Form</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <img src="../../assets/danger.png" class="successimage">
+        </div>
+        <div class="row">
+          <p class="contentstyle" > Are you sure you want to delete form?
+          </p>
+
+        </div>
+
+
+      </div>
+      <div style="text-align: center;">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal"  id="submittedadmissionDeleteModalCloseBtn">Cancel</button>
+        <button type="button" class="btn" style="background:#112048;"  (click)="onAdmissionDelete()" >Delete</button>
+
+      </div>
+    </div>
+  </div>
+</div> -->

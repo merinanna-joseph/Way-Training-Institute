@@ -1,0 +1,125 @@
+<app-toast [message]="toast.message"></app-toast>
+<div class="panel-header panel-header-sm">
+  <h4 style="color: white;margin-top: -40px;margin-left: 30px;">
+    <!-- {{auth.currentUser.firstName | titlecase}} {{auth.currentUser.lastName | titlecase}} <span *ngIf="auth.isAdmin"> - Admin</span> -->
+  </h4>
+</div>
+<div class="main-content">
+  <div class="row">
+    <div class="col-md-6">
+      <div class="card">
+        <div class="card-header">
+          <div class="row">
+            <div class="col-md-6"  style="padding-top: 16px;">
+                <h4 class="card-title">Course Names</h4>
+            </div>
+            <!-- <div class="col-md-4">
+              <button type="button"  style="background-color:#112048;" class="btn btn-round blue-ink" (click)="createAdmissionform()" >Add Admission Form</button>
+
+            </div> -->
+          </div>
+        </div>
+        <div class="card-body" >
+          <div >
+            <table class="table">
+              <thead class=" text-primary">
+
+                <th width="20%" class="text-left blue-link-heading">
+                  Course Name
+                </th>
+                  <th width="6%"  class="text-left blue-link-heading">
+                  Action
+                  </th>
+
+              </thead>
+               <tr  *ngFor="let course of allCoursenames;let idx = index;let even=even"
+               [style.background-color]="rowClicked==idx? 'rgb(232,232,232)' : (even ? 'white' : 'white')"
+               (click)="changeTableRowColor(idx)">
+
+               <td width="6%" class="text-left blue-link-heading"
+                (click)="onCourseSelection(course._id)">
+                <span > {{course.coursename}}</span>
+
+               </td>
+               <td>
+                <!-- <button type="button" class="btn btn-neutral blue-link-heading fa fa-trash"
+                 style="cursor: no-drop;color: red;"
+                data-toggle="tooltip" data-placement="top" title="delete course name"
+                (click)="deleteCourse(course._id)"
+               > -->
+               <i  (click)="deleteCourse(course._id)"
+               class="fa fa-trash" aria-hidden="true"
+               style="font-size: medium;cursor:pointer;color: red;"></i>
+            <!-- </button> -->
+
+               </td>
+
+
+               </tr>
+         </table>
+          </div>
+        </div>
+
+
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="card">
+        <div class="card-header">
+          <div class="row">
+            <div class="col-md-6"  style="padding-top: 16px;">
+                <h4 class="card-title">Branch Names</h4>
+            </div>
+            <!-- <div class="col-md-4">
+              <button type="button"  style="background-color:#112048;" class="btn btn-round blue-ink" (click)="createAdmissionform()" >Add Admission Form</button>
+
+            </div> -->
+          </div>
+        </div>
+        <div class="card-body" >
+          <div >
+            <table class="table">
+              <thead class=" text-primary">
+
+                <th width="20%" class="text-left blue-link-heading">
+                  Branch Name
+                </th>
+                  <th width="6%"  class="text-left blue-link-heading">
+                  Action
+                  </th>
+
+
+              </thead>
+               <tr  *ngFor="let branch of branchList;let i = index;let even=even"
+               [style.background-color]="rowofbranchClicked==i? 'rgb(232,232,232)' : (even ? 'white' : 'white')"
+               (click)="changebranchTableRowColor(i)">
+                <td width="2%" class="text-left"
+                >
+                  {{branch.branch}}
+                 </td>
+                 <td>
+                  <!-- <button type="button" class="btn btn-neutral blue-link-heading" style="cursor: no-drop;"
+                  data-toggle="tooltip" data-placement="top" title="delete branch name"
+                   (click)="deleteBranch(branch._id)"
+                 > -->
+                 <i (click)="deleteBranch(branch._id)"
+                 class="fa fa-trash" aria-hidden="true"
+                  style="font-size: medium;cursor:pointer;color: red;"></i>
+                <!-- </button> -->
+
+                 </td>
+
+
+               </tr>
+         </table>
+          </div>
+        </div>
+
+
+      </div>
+    </div>
+
+
+  </div>
+</div>
+

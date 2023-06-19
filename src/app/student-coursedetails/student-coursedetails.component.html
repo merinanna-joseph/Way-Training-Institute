@@ -1,0 +1,457 @@
+<app-toast [message]="toast.message"></app-toast>
+    <div class="panel-header panel-header-md">
+  <h4 style="color: white; margin-top: -40px; margin-left: 30px">
+    {{ auth.currentUser.firstName | titlecase }}
+    {{ auth.currentUser.lastName | titlecase }}
+    <span *ngIf="auth.isAdmin"> - Admin</span>
+    <span style="color: #112048;font-size: 15px;">({{ student.studentCourse[0].course_name }}
+      <span *ngIf="student.studentCourse[0].course_branch">-{{ student.studentCourse[0].course_branch | titlecase }} -
+      </span>
+    <span *ngIf="!student.studentCourse[0].course_branch">-</span>
+      {{ student.studentCourse[0].course_type | titlecase }})
+   </span>   
+  </h4>
+   <div class="row" style="color: white;">
+    <div class="col-lg-6 col-md-6 col-sm-6" style="margin-left: 30px;">
+      <span *ngIf="showSubjects">Subjects of &nbsp;</span>  
+     <a  class="previous round" *ngIf="showPrevious" (click)="previous()" style="cursor: pointer;">&#8249;</a>
+      {{course_year[selectedIndex]}}
+      <a  class="next round" *ngIf="showNext" (click)="next()" style="cursor: pointer;">&#8250;</a>
+    </div>
+    <br>
+    <h4  *ngIf="whenclicked && material_length > 0 && showMaterials"style="color: black;"> 
+      <span style="color: white;">{{subjectname}}'s </span>
+      Study materials ({{material_length}})
+    </h4>
+    <h4  *ngIf="whenclicked && material_length <= 0"style="color: black;"> 
+      <span style="color: white;">No Materials</span>
+    </h4>
+    <h4  *ngIf="showFiles && studymaterialfile_length > 0"style="color: black;"> 
+      <span style="color: white;">{{studymaterialname}}'s </span>
+      Files ({{studymaterialfile_length}})
+    </h4>
+    <h4  *ngIf="showFiles && studymaterialfile_length <= 0"style="color: black;"> 
+      <span style="color: white;">No Files </span>
+      
+    </h4>
+  </div> 
+</div>
+<div class="main-content">
+   <div class="row" *ngIf="showSubjects">
+    <div  *ngFor="let x of studentCoursesubjects" class="col-lg-4 col-md-6 col-sm-6">
+      <div class="card card-stats" >
+        <div class="card-header card-header-warning card-header-icon">
+          
+
+          <div class="row">
+
+            <div class="col-lg-12 col-md-12 col-sm-12">
+              <h3 class="card-title text-center" style="font-size:1.3em;">{{x.subject}}
+                              </h3>
+
+            </div>
+          </div>
+
+        <br>
+          <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12 text-center"    >
+              <button type="button"  class="btn btn-outline-success"style="padding:11px 18px;background-color:#112048;" (click)="getStudymaterials(x._id,x.subject)">
+                View Materials</button>
+                </div>
+            
+          </div>
+
+
+
+        </div>
+        <div class="card-footer">
+          <div class="stats">
+           </div>
+        </div>
+      </div>
+    </div>
+
+    
+  </div>
+<!-- <h1>Study materials</h1> -->
+
+  <!-- study materials -->
+  <div class="row" *ngIf="showMaterials">
+
+    <div  *ngFor="let y of studymaterialOf_singlesubject" class="col-lg-4 col-md-6 col-sm-6">
+      <div class="card card-stats" >
+        <div class="card-header card-header-warning card-header-icon">
+        
+
+          <div class="row">
+
+            <div class="col-lg-12 col-md-12 col-sm-12">
+            
+              <h3 class="card-title text-center" style="font-size:1.3em;">{{y.name}}
+                              </h3>
+
+            </div>
+          </div>
+
+          <br>
+          <span *ngIf="y.materials.length" style="color: red;">
+            last updated on {{y.materials[y.materials.length - 1].uploadDate | date:'medium'}}
+          </span>          
+          <br>
+          <div class="row">
+            <div class="col-lg-6 col-md-6 col-sm-6 text-left"   >
+              <button type="button"  class="btn btn-outline-success"style="padding:11px 18px;background-color:#112048;" (click)="getImageofstudymaterials(y.materials,y.name)">
+                View files</button>
+                
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-6 text-right">
+              <button type="button" class="btn btn-outline-success"style="padding:11px 25px;background-color:#112048;" (click)="onstudymaterialbackClick()"  >
+                Back</button>
+               </div>
+          </div>
+
+
+
+        </div>
+        <div class="card-footer">
+          <div class="stats">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    
+  </div> 
+
+  <!-- show files -->
+  <div class="row" *ngIf="showFiles">
+
+    <div  class="col-lg-12 col-md-12 col-sm-12">
+      <div class="card card-stats" >
+        <div class="card-header card-header-warning card-header-icon">
+         
+          <div class="row linehoverstyle" *ngFor="let k of pdfdocs_studymaterial" >
+           
+              <div class="col-lg-10 col-md-10 col-sm-10" >
+                <span style="font-size: 18px; text-align: left;cursor: pointer;" data-toggle="tooltip"
+                data-placement="top"
+                title="{{ k.name }}"
+                
+                aria-hidden="true"
+               
+                (click)="showPdf(k.path)"
+              >
+                  {{ k.name }}
+                </span>
+              </div>
+             <div class="col-lg-2 col-md-2 col-sm-2">
+              <i class="fa fa-download" aria-hidden="true" (click)="downloadsingleFile(k.path)" style="cursor: pointer;"></i>
+
+             </div>
+          </div>
+          <div class="row linehoverstyle" *ngFor="let m of imagedocs_studymaterial">
+            <div class="col-lg-10 col-md-10 col-sm-10" >
+              <span style="font-size: 18px; text-align: left;cursor: pointer;" data-toggle="tooltip"
+              data-placement="top"
+              title="{{ m.name }}"
+              
+              aria-hidden="true"
+             
+              (click)="showPdf(m.path)"
+            >
+                {{ m.name }}
+              </span>
+            </div>
+           <div class="col-lg-2 col-md-2 col-sm-2">
+            <i class="fa fa-download" aria-hidden="true" (click)="downloadsingleFile(m.path)" style="cursor: pointer;"></i>
+
+           </div>
+          </div>
+          <!-- <div class="row">
+            <div *ngFor="let k of pdfdocs_studymaterial" style="text-align: center">
+              <div style="padding: 15px" class="node">
+                <i
+                  data-toggle="tooltip"
+                  data-placement="top"
+                  title="{{ k.name }}"
+                  class="fa fa-file-pdf-o"
+                  aria-hidden="true"
+                  style="font-size: 60px; color: red"
+                  (click)="showPdf(k.path)"
+                ></i>
+                <br />
+                <p style="font-size: 8px; text-align: center">
+                  {{ k.name | slice: 0:9 }}
+                </p>
+              </div>
+            </div>
+  
+            <div *ngFor="let m of imagedocs_studymaterial">
+              <div style="padding: 15px" class="node">
+               
+                <img
+                  [src]="m.path"
+                  width="60px"
+                  height="50px"
+                  (click)="showPdf(m.path)"
+                  data-toggle="tooltip"
+                  data-placement="top"
+                  title="{{ m.name }}"
+                />
+                <br />
+                <p style="font-size: 10px; text-align: center">
+                  {{ m.name | slice: 0:9 }}
+                </p>
+              </div>
+            </div>
+  
+           </div> -->
+
+<br>
+          <div class="row">
+            <div class="col-lg-6 col-md-6 col-sm-6 text-left"  >
+              <button type="button"  class="btn btn-outline-success"style="padding:11px 18px;background-color:#112048;" (click)="downloadAllStudyMaterials()">
+                Download All</button>
+               </div>
+            <div class="col-lg-6 col-md-6 col-sm-6 text-right">
+              <button type="button" class="btn btn-outline-success"style="padding:11px 25px;background-color:#112048;" (click)="onfilesbackClick()"  >
+                Back</button>
+               </div>
+          </div>
+
+
+
+        </div>
+        <div class="card-footer">
+          <div class="stats">
+           </div>
+        </div>
+      </div>
+    </div>
+
+    
+  </div> 
+</div>
+
+
+
+<!-- <div class="main-content" >
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-header text-center">
+          
+      </div>
+        <div class="card-body">
+        
+
+        
+
+          
+        
+
+        
+
+
+        
+          <h6 class="title">
+            Course Details &nbsp;
+
+          </h6>
+          <div >
+         
+            <div class="row">
+              <div class="col-md-6 pr-1" *ngIf="student.studentCourse">
+                <div class="form-group">
+                  <label>Course Name - (Branch)</label>
+                  <br />
+                  {{ student.studentCourse[0].course_name }}
+                  <span *ngIf="student.studentCourse[0].course_branch"
+                    >-
+                    {{ student.studentCourse[0].course_branch | titlecase }} -
+                  </span>
+                  <span *ngIf="!student.studentCourse[0].course_branch">-</span>
+                  {{ student.studentCourse[0].course_type | titlecase }}
+                </div>
+              </div>
+
+              <div class="col-md-2 pr-1" *ngIf="student.studentCourse">
+                <div class="form-group">
+                  <label>Course Duration</label>
+                  <br />
+                  {{ student.studentCourse[0].course_duration_year }} Y
+                  {{ student.studentCourse[0].course_duration_month }} M <br />
+
+                </div>
+              </div>
+
+            
+            </div>
+            <div
+              class="row"
+              *ngIf="
+                student.studentCourse[0].course_name == 'NIOS 10th' ||
+                student.studentCourse[0].course_name == 'NIOS 12th'
+              "
+            >
+              <div class="col-md-12 pr-1">
+                <div class="form-group">
+                  <label>Subject List</label>
+                  <br />
+                  <span *ngFor="let x of student.subject_list">
+                    {{ x }},&nbsp;
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div class="row" >
+              
+
+
+              <div class="col-md-12 pr-1">
+                <div class="form-group">
+                  <table border="1">
+                    <tbody>
+                      <tr>
+                        <th style="font-size: 12px;color:#112048;">Year &nbsp;</th>
+                        <th style="font-size: 12px;color:#112048;">Subject &nbsp;</th>
+                       
+
+                      </tr>
+                     <tr  *ngFor="let fees of student.feeID.feeStructure; let i = index;">
+                        <td >
+                          {{student.feeID.feeStructure[i].year}}
+                        </td>
+                        
+                       <td *ngFor = "let sub of student.feeID.feeStructure[i].subjectList;let j = index;">
+                        <a (click)="getStudymaterials(student.feeID.feeStructure[i].subjectList[j].id,student.feeID.feeStructure[i].subjectList[j].name)"  style="cursor: pointer">
+                          {{student.feeID.feeStructure[i].subjectList[j].name}} 
+                        </a> &nbsp;
+                        
+                        &nbsp; 
+                       
+                       
+                     </td>
+
+                          </tr>
+                   </tbody>
+                  </table>
+                  <br>
+                 <span  *ngIf="whenclicked && material_length > 0"> <a style="color: blue">{{subjectname}}'s </a>Study materials ({{material_length}})</span>
+                  <table style=" border: none !important;" *ngIf="whenclicked && material_length > 0">
+                    
+                    <tbody  > 
+                      <tr>
+                        <th style="font-size: 12px;color:#112048;">Materials &nbsp;</th>
+                       
+
+                      </tr>
+                     <tr *ngFor = "let material of studymaterialOf_singlesubject;let k = index;">
+                        <td >
+                          <span (click)="getImageofstudymaterials(material.materials,material.name)"
+                          data-toggle="modal"
+                          data-target="#modalforstudymaterials"
+                          class="custom-file-upload">{{material.name}}</span>&nbsp;
+                          <a *ngIf="material.materials">({{material.materials.length}})</a>
+                          <br>
+                          <span *ngIf="material.materials.length">
+                            last updated on {{material.materials[material.materials.length - 1].uploadDate | date:'medium'}}
+                          </span>
+                         </td>
+                      
+
+                          </tr>
+                   </tbody>
+                  </table>
+
+                  </div>
+
+             </div>
+            </div>
+            
+
+          </div>
+
+
+         
+        </div>
+      </div>
+    </div>
+  </div>
+</div> -->
+
+
+
+<!-- modal for view studyMaterials -->
+<!-- <div
+  class="modal fade"
+  id="modalforstudymaterials"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Study materials</h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div *ngFor="let k of pdfdocs_studymaterial" style="text-align: center">
+            <div style="padding: 15px" class="node">
+              <i
+                data-toggle="tooltip"
+                data-placement="top"
+                title="{{ k.name }}"
+                class="fa fa-file-pdf-o"
+                aria-hidden="true"
+                style="font-size: 60px; color: red"
+                (click)="showPdf(k.path)"
+              ></i>
+              <br />
+              <p style="font-size: 8px; text-align: center">
+                {{ k.name | slice: 0:9 }}
+              </p>
+            </div>
+          </div>
+
+          <div *ngFor="let m of imagedocs_studymaterial">
+            <div style="padding: 15px" class="node">
+            
+              <img
+                [src]="m.path"
+                width="60px"
+                height="50px"
+                (click)="showPdf(m.path)"
+                data-toggle="tooltip"
+                data-placement="top"
+                title="{{ m.name }}"
+              />
+              <br />
+              <p style="font-size: 10px; text-align: center">
+                {{ m.name | slice: 0:9 }}
+              </p>
+            </div>
+          </div>
+        </div>
+       </div>
+
+      <div style="text-align: center">
+       
+        <button type="button" class="btn blue-ink" (click)="downloadAllStudyMaterials()">
+          Download All
+        </button>
+      </div>
+    </div>
+  </div>
+</div> -->
+

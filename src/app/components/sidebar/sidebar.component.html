@@ -1,0 +1,67 @@
+
+<div class="logo" *ngIf = "isLoggedIn">
+    <a href="https://www.timeseducationuae.com/" class="simple-text logo-mini">
+      <div class="logo-img">
+          <img src="./assets/img/Times_Logo.jpeg"/>
+      </div>
+    </a>
+    <a href="https://www.timeseducationuae.com/" class="simple-text logo-normal">
+        Times Education
+    </a>
+</div>
+<div class="sidebar-wrapper" *ngIf = "isLoggedIn">
+    <ul class="nav">
+        <li routerLinkActive="active" *ngFor="let menuItem of menuItems;let i=index;" class="{{menuItem.class}} nav-item">
+            <a [routerLink]="[menuItem.path]" *ngIf="!menuItem.children && menuItem.children.length <= 0">
+                <i class="now-ui-icons {{menuItem.icon}}"></i>
+                <p>{{menuItem.title}}</p>
+            </a>
+            <a data-toggle="collapse" class="nav-link" href="#i" *ngIf="menuItem.children && menuItem.children.length > 0">
+                <!-- <i class="material-icons">image</i> -->
+                <i class="now-ui-icons {{menuItem.icon}}"></i>
+                <p>{{menuItem.title}}<b class="caret"></b></p>
+                <!-- <p>Pages<b class="caret"></b></p> -->
+            </a>
+            <div class="collapse" id="i">
+                <ul class="nav" *ngFor="let childmenu of menuItem.children" class="{{menuItem.class}} nav-item">
+                <li routerlinkactive="active" class="nav-item" >
+                    <a class="nav-link" [routerLink]="[childmenu.path]">
+                        <!-- <span class="sidebar-mini">P</span> -->
+                        <i class="now-ui-icons {{childmenu.icon}}"></i>
+
+                        <span class="sidebar-normal">{{childmenu.title}}</span>
+                    </a>
+                </li>
+                <!-- <li routerlinkactive="active" class="nav-item">
+                    <a class="nav-link" [routerLink]="[childmenu.path]">
+                        <span class="sidebar-mini">TP</span>
+                        <i class="now-ui-icons {{menuItem.icon}}"></i>
+
+                        <span class="sidebar-normal">{{childmenu.title}}</span>
+                    </a>
+                </li> -->
+
+
+        <!----></ul></div>
+            <!-- <ng-container *ngIf="menuItem.children && menuItem.children.length > 0">
+
+                <ul class="nav">
+
+                   <li routerLinkActive="active" *ngFor="let childmenu of menuItem.children" class="{{menuItem.class}} nav-item">
+
+                     <a class="nav-link" [routerLink]="[childmenu.path]">
+
+                       <i class="material-icons">{{childmenu.icon}}</i>
+
+                       <p>{{childmenu.title}}</p>
+
+                      </a>
+
+                   </li>
+
+                </ul>
+
+            </ng-container> -->
+        </li>
+    </ul>
+</div>

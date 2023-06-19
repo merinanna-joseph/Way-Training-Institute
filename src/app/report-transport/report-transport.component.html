@@ -1,0 +1,92 @@
+<app-toast [message]="toast.message"></app-toast>
+<div class="panel-header panel-header-sm">
+    <h4 style="color: white;margin-top: -40px;margin-left: 30px;">
+      {{auth.currentUser.firstName | titlecase}} {{auth.currentUser.lastName | titlecase}} <span *ngIf="auth.isAdmin"> - Admin</span>
+    </h4>
+  </div>
+  <div class="main-content" >
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-header">
+            <div class="row">
+              <div class="col-md-8"  style="padding-top: 16px;">
+                <div class="row">
+                  <div class="col-md-4">
+                    <h4 class="card-title">Commutation Report</h4>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-4 text-right">
+                <button type="button" style="font-size: 18px;padding:6px 8px;background-color:#112048;"
+                   class="btn btn-round blue-ink
+                   " (click)="clickToExport()"><i class="now-ui-icons arrows-1_cloud-download-93" style="font-weight: bold;"></i></button>
+
+              </div>
+
+            </div>
+
+                    </div>
+          <div class="card-body" >
+
+            <div class="table">
+              <table class="table" >
+                <thead class=" text-primary" style="font-size: 14px;">
+                  <th  class="text-left blue-link-heading ">
+                    Reg. No.
+                  </th>
+                    <th  class="text-left blue-link-heading ">
+                      Name
+                   </th>
+                   <th class="text-left blue-link-heading">
+                       Collected On
+                   </th>
+                    <th class="text-left blue-link-heading">
+                        Remarks
+                    </th>
+
+
+                </thead>
+                <tr *ngFor="let  m of transports">
+                  <td>{{m.studentId.university_register_number}}</td>
+                  <td>{{m.studentId.firstName}} {{m.studentId.lastName}}</td>
+                  <td>{{m.collectedOn|date}}</td>
+                  <td>{{m.remarks}}</td>
+                </tr>
+
+           </table>
+
+
+            </div>
+          </div>
+
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+<!-- print excel table -->
+<table class="table" id="tblData" style="display:none;">
+  <thead class=" text-primary" style="font-size: 14px;" >
+    <th  class="text-left blue-link-heading ">
+      Reg. No.
+    </th>
+    <th  class="text-left blue-link-heading ">
+      Name
+   </th>
+   <th class="text-left blue-link-heading">
+       Collected On
+   </th>
+    <th class="text-left blue-link-heading">
+        Remarks
+    </th>
+
+</thead>
+   <tr  *ngFor="let m of transports;let i = index;" style="font-size: 12px;">
+    <td>{{m.studentId.university_register_number}}</td>
+    <td>{{m.studentId.firstName}} {{m.studentId.lastName}}</td>
+    <td>{{m.collectedOn|date}}</td>
+    <td>{{m.remarks}}</td>
+</tr>
+</table>

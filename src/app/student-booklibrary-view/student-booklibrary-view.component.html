@@ -1,0 +1,237 @@
+
+<!-- <app-toast [message]="toast.message"></app-toast> -->
+<div class="panel-header panel-header-sm">
+  <h4 style="color: white;margin-top: -40px;margin-left: 30px;">
+    <!-- {{auth.currentUser.firstName | titlecase}} {{auth.currentUser.lastName | titlecase}} <span *ngIf="auth.isAdmin"> - Admin</span> -->
+  </h4>
+</div>
+<div class="main-content">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-header">
+          <div class="row">
+            <div class="col-md-12"  style="padding-top: 16px;">
+                <h4 class="card-title">{{cName}}&nbsp; <span *ngIf="cBranch">{{cBranch}}</span>&nbsp;{{cType}}&nbsp;{{universityname | titlecase}} - Course subjects </h4>
+            </div>
+            <!-- <div class="col-md-4">
+              <button type="button"  style="background-color:#112048;" class="btn btn-round blue-ink" (click)="displaybookLibrary()" >Back</button>
+
+            </div> -->
+          </div>
+        </div>
+        <!-- year display -->
+        <div class="card-body" >
+            <div class="row">
+                
+                <div class="col-md-4"  *ngFor="let x of yearLength(yrlen);let i =index;" >
+                  <button type="button"  class="btn btn-danger"  (click)= "onYearClick(i+1)"style="background-color:#b2b8c7;color:#112048;height: 80px;"  data-toggle="tooltip"  data-placement="top" title="Click to view courses">
+                  Year {{i+1}}
+                </button>
+
+                </div>
+            </div>
+        </div>
+          <!-- Semester display -->
+          <div class="card-body"  *ngIf="showSemesters">
+            <div class="row">
+                
+                <div class="col-md-4" *ngFor="let x of semLength(semlen);let j =index;" >
+                  <button type="button"  class="btn btn-danger"  (click)= "onSemesterClick(j+1)"style="background-color:#b2b8c7;color:#112048;height: 80px;"  data-toggle="tooltip"  data-placement="top" title="Click to view courses">
+                  Sem {{j+1}} 
+                  <!-- {{selectYear}} -->
+                </button>
+  
+                </div>
+            </div>
+        </div>
+        <div class="card-body" *ngIf="showYearwiseTable" >
+            <h4>Year {{selectYear}} - Sem {{selectSemester}}'s Subject</h4>  
+           
+           
+                <br>
+                    <div >
+                      <!-- course subjects -->
+                      <div class="row" *ngIf="showSubjects">
+                        <div  *ngFor="let x of studentCoursesubjects" class="col-lg-4 col-md-6 col-sm-6">
+                          <div class="card card-stats" >
+                            <div class="card-header card-header-warning card-header-icon">
+                              
+                    
+                              <div class="row">
+                    
+                                <div class="col-lg-12 col-md-12 col-sm-12">
+                                  <h3 class="card-title text-center" style="font-size:1.3em;">{{x.subject}}
+                                                  </h3>
+                    
+                                </div>
+                              </div>
+                    
+                            <br>
+                              <div class="row">
+                                <div class="col-lg-12 col-md-12 col-sm-12 text-center"    >
+                                  <button type="button"  class="btn btn-outline-success"style="padding:11px 18px;background-color:#112048;" (click)="getStudymaterials(x._id,x.subject)">
+                                    View Materials</button>
+                                    </div>
+                                
+                              </div>
+                    
+                    
+                    
+                            </div>
+                            <div class="card-footer">
+                              <div class="stats">
+                               </div>
+                            </div>
+                          </div>
+                        </div>
+                    
+                        
+                      </div>
+                    <!-- <h1>Study materials</h1> -->
+                    
+                      <!-- study materials -->
+                       <div class="row" *ngIf="showMaterials">
+                    
+                        <div  *ngFor="let y of studymaterialOf_singlesubject" class="col-lg-4 col-md-6 col-sm-6">
+                          <div class="card card-stats" >
+                            <div class="card-header card-header-warning card-header-icon">
+                            
+                    
+                              <div class="row">
+                    
+                                <div class="col-lg-12 col-md-12 col-sm-12">
+                                
+                                  <h3 class="card-title text-center" style="font-size:1.3em;">{{y.name}}
+                                                  </h3>
+                    
+                                </div>
+                              </div>
+                    
+                              <br>
+                              <span *ngIf="y.materials.length" style="color: red;">
+                                last updated on {{y.materials[y.materials.length - 1].uploadDate | date:'medium'}}
+                              </span>          
+                              <br>
+                              <div class="row">
+                                <div class="col-lg-6 col-md-6 col-sm-6 text-left"   >
+                                  <button type="button"  class="btn btn-outline-success"style="padding:11px 18px;background-color:#112048;" (click)="getImageofstudymaterials(y.materials,y.name)">
+                                    View files</button>
+                                    
+                                </div>
+                                <div class="col-lg-6 col-md-6 col-sm-6 text-right">
+                                  <button type="button" class="btn btn-outline-success"style="padding:11px 25px;background-color:#112048;" (click)="onstudymaterialbackClick()"  >
+                                    Back</button>
+                                   </div>
+                              </div>
+                    
+                    
+                    
+                            </div>
+                            <div class="card-footer">
+                              <div class="stats">
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                    
+                        
+                      </div>  
+                    
+                      <!-- show files -->
+                     <div class="row" *ngIf="showFiles">
+                    
+                        <div  class="col-lg-12 col-md-12 col-sm-12">
+                          <div class="card card-stats" >
+                            <div class="card-header card-header-warning card-header-icon">
+                                <h4>Files ({{pdf_length}})</h4>
+                                <div class="row linehoverstyle" *ngFor="let k of pdfdocs_studymaterial" >
+                               
+                                  <div class="col-lg-10 col-md-10 col-sm-10" >
+                                    <span style="font-size: 18px; text-align: left;cursor: pointer;" data-toggle="tooltip"
+                                    data-placement="top"
+                                    title="{{ k.name }}"
+                                    
+                                    aria-hidden="true"
+                                   
+                                    (click)="showPdf(k.path)"
+                                  >
+                                      {{ k.name }}
+                                    </span>
+                                  </div>
+                                 <div class="col-lg-2 col-md-2 col-sm-2">
+                                  <i class="fa fa-download" aria-hidden="true" (click)="downloadsingleFile(k.path)" style="cursor: pointer;"></i>
+                    
+                                 </div>
+                              </div>
+                              <h4>Images ({{img_length}})</h4>
+                              <div class="row linehoverstyle" *ngFor="let m of imagedocs_studymaterial">
+                                <div class="col-lg-10 col-md-10 col-sm-10" >
+                                  <span style="font-size: 18px; text-align: left;cursor: pointer;" data-toggle="tooltip"
+                                  data-placement="top"
+                                  title="{{ m.name }}"
+                                  
+                                  aria-hidden="true"
+                                 
+                                  (click)="showPdf(m.path)"
+                                >
+                                    {{ m.name }}
+                                  </span>
+                                </div>
+                               <div class="col-lg-2 col-md-2 col-sm-2">
+                                <i class="fa fa-download" aria-hidden="true" (click)="downloadsingleFile(m.path)" style="cursor: pointer;"></i>
+                    
+                               </div>
+                              </div>
+                            
+                    <br>
+                              <div class="row">
+                                <div class="col-lg-6 col-md-6 col-sm-6 text-left"  >
+                                  <button type="button"  class="btn btn-outline-success"style="padding:11px 18px;background-color:#112048;" (click)="downloadAllStudyMaterials()">
+                                    Download All</button>
+                                   </div>
+                                <div class="col-lg-6 col-md-6 col-sm-6 text-right">
+                                  <button type="button" class="btn btn-outline-success"style="padding:11px 25px;background-color:#112048;" (click)="onfilesbackClick()"  >
+                                    Back</button>
+                                   </div>
+                              </div>
+                    
+                    
+                    
+                            </div>
+                            <div class="card-footer">
+                              <div class="stats">
+                               </div>
+                            </div>
+                          </div>
+                        </div>
+                    
+                        
+                      </div> 
+                    </div>
+            
+          </div>
+
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+
+
+
+
+  
+
+  
+  
+  
+
+  
+
+  
+  
+
+  

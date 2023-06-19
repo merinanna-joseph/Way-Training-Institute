@@ -1,0 +1,51 @@
+.colored-image {
+  background-image: linear-gradient(to right, #e6e9ddd2, #e6e9ddd2),
+  /* url("http://localhost:3000/assets/img/profile.png"); */
+  /* url("http://206.189.140.241:4200/assets/img/profile.png"); */
+  url("https://admintimes.com/assets/img/profile.png");
+
+  background-blend-mode: overlay;
+  background-size: contain;
+  width: 200px;
+  height: 200px;
+
+}
+
+.image-preview
+{
+  height:200px;
+}
+.collage {
+  cursor:pointer;
+  width:35mm;
+  height:35mm;
+  background: #fcf9f9;
+  float: right;
+  border: 1px solid #ccc;
+
+}
+input[type="file"]{
+  visibility: hidden;
+  }
+  /*  */
+#remarkstyle{
+  border: 1px solid #ced4da !important;
+  border-radius: 10px;
+
+}
+.custom-file-upload
+{
+      border: 1px solid #ccc;
+      display: inline-block;
+      padding: 3px 12px;
+      cursor: pointer;
+      border-radius: 10px;
+      width: 200px;
+      text-align: center;
+      background-color: white;
+      color:darkgray;
+      font-style: normal;
+      margin-left: 5px;
+      margin-top: 5px;
+
+}

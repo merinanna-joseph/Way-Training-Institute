@@ -1,0 +1,13 @@
+a:hover{
+ cursor: pointer;
+ color: blue !important;
+}
+.blue-ink
+{
+background: #112048;
+}
+.blue-link-heading
+{
+  color:#112048;
+
+}

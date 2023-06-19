@@ -1,0 +1,82 @@
+.btnDesign {
+    background-color: #614de2;;
+    border: none;
+    color: white;
+    padding: 8px 8px;
+    text-align: center;
+    font-size: 16px;
+    margin: 2px 2px;
+    opacity: 0.6;
+    transition: 0.3s;
+    cursor: pointer;
+    width: 160px;
+  }
+  
+  .btnDesign:hover {
+    opacity: 1;
+    border-color: transparent;
+    border: 0px;
+  }
+  h4{
+ 
+    font-family: "Poppins", sans-serif!important;
+    font-size: 18px!important;
+  }
+  label,::placeholder{
+    font-family: "Poppins", sans-serif!important;
+    font-size: 14px;
+  }
+  
+  .successimage{
+    width:100px;
+    height:100px;
+    text-align:center; 
+    margin-top: 40px;
+    margin-left: 210px;
+  }
+  .successmsg{
+   text-align:center;
+   font-weight: bold;
+   font-size:25px;
+  }
+  .modalfoot{
+    font-size:20px;
+    color:#614de2;
+    margin-left:220px;
+    margin-bottom:30px;
+  }
+  
+  ::ng-deep .mat-tab-label{
+    font-family: "Poppins", sans-serif!important;
+  }
+  ::ng-deep .mat-form-field{
+    font-family: "Poppins", sans-serif!important;
+    width:100%;
+    /* height:2px; */
+    padding-top: 5px;
+  }
+  .buttonstyle2{
+    margin-left: 30px;
+    padding-top: 10px;
+    /* padding-bottom: 20px; */
+  }
+  
+::ng-deep .tooltip-style{
+    background-color:white;
+    font-family: "Poppins", sans-serif!important;
+    color: black  !important;
+    border: none;
+    opacity: 1;  
+    box-shadow: 0px 6px 6px 0px #999; 
+    padding: 10px 15px;
+    min-width: 130px;
+    text-align: center;
+  }
+  .headstyle{
+    padding-left: 27px;
+    padding-top: 20px;
+    padding-bottom: 20px;
+  }
+  button[disabled]:hover {
+    cursor:no-drop;
+  }

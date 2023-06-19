@@ -1,0 +1,75 @@
+
+<app-toast [message]="toast.message"></app-toast>
+<div class="panel-header panel-header-sm">
+  <h4 style="color: white;margin-top: -40px;margin-left: 30px;"> {{auth.currentUser.firstName | titlecase}} {{auth.currentUser.lastName | titlecase}}</h4>
+</div>
+<div class="main-content">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-header">
+          <div class="row">
+            <div class="col-md-8"  style="padding-top: 16px;">
+                <h4 class="card-title"> Student List</h4>
+            </div>
+            <div class="col-md-4">
+              <button type="button"  style="background-color:#112048;" class="btn btn-round blue-ink" (click)="createAdmissionform()" >Add Admission Form</button>
+
+            </div>
+          </div>
+        </div>
+        <div class="card-body" >
+          <div class="table-responsive">
+            <table class="table">
+              <thead class=" text-primary">
+                  <th width="18%"  class="text-center blue-link-heading">
+                    Tally Id
+                  </th>
+                  <th width="20%" class="text-center blue-link-heading ">
+                    Name
+                 </th>
+                  <th width="18%" class="text-center blue-link-heading">
+                    Email
+                  </th>
+                  <th width="10%" class="text-center blue-link-heading">
+                    Register No:
+                  </th>
+
+
+              </thead>
+               <tr  *ngFor="let student of students;let i = index;" >
+
+                <td width="5%" class="text-center" >
+
+                   {{student.tally_ID}}
+                </td>
+               <td width="20%" class="text-center">
+                <b> <a (click)="onViewClick(student)" style="color:blue">{{student.firstName | titlecase}} {{student.lastName | titlecase}}</a><br></b>
+
+
+               </td>
+               <td  width="20%" class="text-center">
+                {{student.email}}
+               </td>
+               <td  width="20%" class="text-center">
+               {{student.university_register_number}}
+               </td>
+               <td  width="20%" class="text-center">
+                --
+              </td>
+
+
+
+
+               </tr>
+         </table>
+          </div>
+        </div>
+
+
+      </div>
+    </div>
+
+  </div>
+</div>
+

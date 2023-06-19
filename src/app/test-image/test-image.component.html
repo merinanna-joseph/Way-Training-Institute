@@ -1,0 +1,71 @@
+<!-- <div class="main-content">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-header text-center">
+          <h5 class="title">Test imageForm</h5>
+        </div>
+        <div class="card-body">
+          <form [formGroup]="addTestForm" #addFormDetails="ngForm">
+            <h6 class="title">Personal Details</h6>
+            <div>
+              <img  [src]="imagePreview" height="200px" width="200px">
+
+              <input
+                type="file"
+                placeholder="Upload Image"
+                (change)="onImagePicked($event)"
+              />
+            </div>
+            <div class="row">
+              <div class="col-md-4 pr-1">
+                <div class="form-group">
+                  <label>Title</label>
+                  <input
+                    type="text"
+                    placeholder="Enter Title"
+                    formControlName="title"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div class="col text-center">
+              <button
+                type="button"
+                class="btn btn-danger btn-round"
+                style="background-color: #112048"
+                (click)="onformSubmit()"
+              >
+                Submit
+              </button>
+              <button
+                type="button"
+                class="btn btn-danger btn-round"
+                style="background-color: #112048"
+                (click)="onimageformSave(addFormDetails.value)"
+              >
+                Save
+              </button>
+              <button
+                type="button"
+                class="btn btn-danger btn-round"
+                style="background-color: #112048"
+
+              >
+                Cancel
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div>
+  <div *ngFor="let m of all">
+    <img  [src]="m.title" height="200px" width="200px">
+  </div>
+
+<button (click)="getAllImages()">view image</button>
+<img  [src]="imageofprofilePhoto" style="height: 35mm;width: 35mm;"> -->

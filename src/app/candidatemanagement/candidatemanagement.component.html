@@ -1,0 +1,1710 @@
+<app-toast [message]="toast.message"></app-toast>
+
+<div class="panel-header panel-header-md">
+    <h4 style="color: white;margin-top: -40px;margin-left: 30px;">
+      {{auth.currentUser.firstName | titlecase}} {{auth.currentUser.lastName | titlecase}} <span *ngIf="auth.isAdmin"> - Admin</span>
+    </h4>
+    <div class="container" >
+      <div class="row">
+
+      </div>
+    </div>
+    <div class="row" style="color: white;" >
+      <div class="col-lg-6 col-md-6 col-sm-6 text-left" style="margin-left: 30px;" *ngIf="yearloading">
+        <a  class="previous round" *ngIf="showPrevious" (click)="previous()" style="cursor: pointer;">
+          &#8249;</a>
+        {{export_year[selectedIndex]}}
+        <a  class="next round" *ngIf="showNext" (click)="next()" style="cursor: pointer;">&#8250;</a>
+      </div>
+      <div class="col-lg-6 col-md-6 col-sm-6 text-right" style="margin-left: -100px;">
+
+        <h4>Total student count : {{totalSubmittedStudents}}</h4>
+     </div>
+      <div class="col-md-12 text-left" style="margin-left: 83px;" *ngIf="!yearloading">
+        <div class="spinner-border"></div>
+        <!-- <div class="spinner-border text-primary" style="width: 5rem; height: 5rem;font-size: 20px;">
+
+        </div>    -->
+      </div>
+    </div>
+
+  </div>
+  <div class="main-content" >
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-header">
+            <!-- <div class="row">
+              <div class="col-md-6">
+
+                <h4>Total student count : {{totalSubmittedStudents}}</h4>
+             </div>
+              <div  class="col-md-6 ">
+                <h4>Total student count : {{totalSubmittedStudents}}</h4>
+              </div>
+            </div> -->
+            <div class="row">
+
+              <div class="col-md-8"  style="padding-top: 16px;">
+
+                <div class="row">
+                  <div class="col-md-4">
+                    <h4 class="card-title" *ngIf="isSubmit"> Student List ({{filtered_students_count}})</h4>
+                    <h4 class="card-title" *ngIf="isSaved"> Student List ({{filtered_students_count_saved}})</h4>
+
+                    <!-- <button (click)="getCountOfSubmittedStudents()">LLLLLLLL</button> -->
+                 </div>
+                  <div *ngIf="isSubmit" class="col-md-8 text-right">
+                    <input type="text" class="form-control"
+                    (keyup)="applyFilter($event)"
+                     placeholder="Enter student name">
+
+                  </div>
+                  <div *ngIf="isSaved" class="col-md-8 text-right">
+                    <input type="text" class="form-control"
+                    (keyup)="applyFilterOnSave($event)"
+                     placeholder="Search Students">
+
+                  </div>
+
+
+
+                </div>
+              </div>
+
+              <div class="col-md-4 text-right">
+                <button type="button" style="font-size: 18px;padding:6px 8px;background-color:#112048;"
+                   class="btn btn-round blue-ink
+                   " (click)="clickToExport()"><i class="now-ui-icons arrows-1_cloud-download-93"
+                    style="font-weight: bold;"></i></button>
+                 <button type="button"  style="background-color:#112048;padding:11px 10px;"
+                 class="btn btn-round blue-ink" (click)="getAllSavedStudents()" *ngIf="isSubmit">Saved Admission</button>
+                <button type="button"  style="background-color:#112048;padding:10px 7px;"
+                class="btn btn-round blue-ink" (click)="getAllSubmittedStudents()" *ngIf="isSaved">Submitted Admission</button>
+
+                <button type="button"  style="background-color:#112048;padding:11px 11px;"
+                 class="btn btn-round blue-ink" (click)="createAdmissionform()">New Admission</button>
+
+              </div>
+
+            </div>
+            <form [formGroup]="filterForm" #filterDetails="ngForm">
+              <div class="row">
+                <div class="col-md-2" *ngIf="sortCenter && auth.isAdmin">
+                  <label>Centre</label>
+                  <select  class="form-control" (change)="getSortCenter($event)" [ngModel]="sortCenter"
+                  formControlName="sort_center"
+              [ngClass]="{ 'is-invalid': submitted && f.sort_center.errors}">
+                    <option  value='' disabled selected>--Select Centre--</option>
+                    <option *ngFor="let x of allAdminCenters" value="{{x.center}}">{{x.center}}</option>
+
+                  </select>
+                  <div *ngIf="submitted && f.sort_center.errors" class="invalid-feedback">
+                    <div *ngIf="f.sort_center.errors.required">Centre is required</div>
+                  </div>
+                </div>
+                <div class="col-md-2" *ngIf="!sortCenter && auth.isAdmin">
+                  <label>Centre</label>
+                  <select  class="form-control" (change)="getSortCenter($event)"
+                  formControlName="sort_center"
+              [ngClass]="{ 'is-invalid': submitted && f.sort_center.errors}">
+                    <option  value='' disabled selected>--Select Centre--</option>
+                    <option *ngFor="let x of allAdminCenters" value="{{x.center}}">{{x.center}}</option>
+
+                  </select>
+                  <div *ngIf="submitted && f.sort_center.errors" class="invalid-feedback">
+                    <div *ngIf="f.sort_center.errors.required">Centre is required</div>
+                  </div>
+                </div>
+                  <div class="col-md-2" *ngIf="sortCenter && !auth.isAdmin">
+                    <label>Centre</label>
+                    <select  class="form-control" (change)="getSortCenter($event)" [ngModel]="sortCenter"
+                    formControlName="sort_center"
+                [ngClass]="{ 'is-invalid': submitted && f.sort_center.errors}">
+                      <option  value='' disabled selected>--Select Centre--</option>
+                      <option *ngFor="let x of allCenters" value="{{x.center}}">{{x.center}}</option>
+
+                    </select>
+                    <div *ngIf="submitted && f.sort_center.errors" class="invalid-feedback">
+                      <div *ngIf="f.sort_center.errors.required">Centre is required</div>
+                    </div>
+                  </div>
+                  <div class="col-md-2" *ngIf="!sortCenter && !auth.isAdmin">
+                    <label>Centre</label>
+                    <select  class="form-control" (change)="getSortCenter($event)"
+                    formControlName="sort_center"
+                [ngClass]="{ 'is-invalid': submitted && f.sort_center.errors}">
+                      <option  value='' disabled selected>--Select Centre--</option>
+                      <option *ngFor="let x of allCenters" value="{{x.center}}">{{x.center}}</option>
+
+                    </select>
+                    <div *ngIf="submitted && f.sort_center.errors" class="invalid-feedback">
+                      <div *ngIf="f.sort_center.errors.required">Centre is required</div>
+                    </div>
+                  </div>
+                  <div class="col-md-2" *ngIf="sortIntake">
+                    <div class="form-group">
+                        <label>Intake</label>
+                        <input type="month" formControlName="sort_intake" [ngModel]="sortIntake"
+                        (change)="getSortIntake($event)" id="intakeStyle"
+                        class="form-control" placeholder="Enter intake"
+
+                        [ngClass]="{ 'is-invalid': submitted && f.sort_intake.errors }" >
+
+                        <div *ngIf="submitted && f.sort_intake.errors" class="invalid-feedback">
+                          <div *ngIf="f.sort_intake.errors.required">Intake is required</div>
+                        </div>
+
+                      </div>
+
+                </div>
+                  <div class="col-md-2" *ngIf="!sortIntake">
+                    <div class="form-group">
+                        <label>Intake</label>
+                        <input type="month" formControlName="sort_intake" (change)="getSortIntake($event)"
+                        class="form-control" placeholder="Enter intake" id="intakeStyle"
+
+                        [ngClass]="{ 'is-invalid': submitted && f.sort_intake.errors }" >
+
+                        <div *ngIf="submitted && f.sort_intake.errors" class="invalid-feedback">
+                          <div *ngIf="f.sort_intake.errors.required">Intake is required</div>
+                        </div>
+
+                      </div>
+
+                </div>
+                  <div class="col-md-3" *ngIf="sortUniversity">
+                    <label>University</label>
+                    <select  class="form-control" (change)="getSortUniversity($event)"
+                    [ngModel]="sortUniversity"
+                    formControlName="sort_university">
+                      <option  value='' disabled selected>--Select University--</option>
+                      <option  value='ALL'  >ALL</option>
+                      <option *ngFor="let x of allUniversities" value="{{x.boardoruniveristy}}">{{x.boardoruniveristy}}</option>
+
+                    </select>
+
+                  </div>
+                  <div class="col-md-3" *ngIf="!sortUniversity">
+                    <label>University</label>
+                    <select  class="form-control" (change)="getSortUniversity($event)"
+                    formControlName="sort_university">
+                      <option  value='' disabled selected>--Select University--</option>
+                      <option  value='ALL'  >ALL</option>
+                      <option *ngFor="let x of allUniversities" value="{{x.boardoruniveristy}}">{{x.boardoruniveristy}}</option>
+
+                    </select>
+
+                  </div>
+                  <div class="col-md-3" *ngIf="courseName">
+                    <label>Course</label>
+                    <select class="form-control"
+                       (change)="getSortCourse($event)"
+                       formControlName="sort_course">
+                        <option value='' disabled hidden selected>{{courseName}}</option>
+
+                        <option value='' disabled  selected>--Select Course--</option>
+                        <option  value='ALL'  >ALL</option>
+                        <option *ngFor="let x of allCourses" value="{{x._id}}">{{x.name}} <span *ngIf="x.branch">- ({{x.branch | titlecase}}) - </span>
+                          <span *ngIf="!x.branch"> - </span> {{x.courseType | titlecase}}</option>
+                    </select>
+
+                  </div>
+                  <div class="col-md-3" *ngIf="!courseName">
+                    <label>Course</label>
+                    <select class="form-control"
+                       (change)="getSortCourse($event)"
+                       formControlName="sort_course">
+
+                        <option value='' disabled selected>--Select Course--</option>
+                        <option  value='ALL'  >ALL</option>
+                        <option *ngFor="let x of allCourses" value="{{x._id}}">{{x.name}} <span *ngIf="x.branch">- ({{x.branch | titlecase}}) - </span>
+                          <span *ngIf="!x.branch"> - </span> {{x.courseType | titlecase}}</option>
+                    </select>
+
+                  </div>
+
+                  <div class="col-md-1 text-left" *ngIf="isSubmit">
+                    <a
+                    data-toggle="tooltip"  data-placement="top" title="Click to filter"
+                   (click)="onFilterClick()"><i class="fa fa-filter" aria-hidden="true"
+                    style="color:#112048;font-size: 30px;padding-top: 20px;"></i></a>
+                                  </div>
+                  <div class="col-md-1 text-left" *ngIf="isSaved">
+                  <a
+                    data-toggle="tooltip"  data-placement="top" title="Click to filter"
+                    (click)="onFilterClickSave()"><i class="fa fa-filter" aria-hidden="true"
+                    style="color:#112048;font-size: 30px;padding-top: 20px;"></i></a>
+                  </div>
+
+                  <div class="col-md-1 text-left">
+                    <a
+                    data-toggle="tooltip" (click)="onResetClick()" data-placement="top"
+                    title="Click to reset">
+                   <i class="fa fa-refresh" aria-hidden="true"
+                   style="color:#112048;font-size: 30px;padding-top: 20px;"></i></a>
+
+                  </div>
+                  <!-- <div class="col-md-3" >
+                    <label>Intake/Batch</label>
+                    <select class="form-control"
+                       (change)="getSortIntake($event)"
+                       formControlName="sort_intake"
+                [ngClass]="{ 'is-invalid': submitted && f.sort_intake.errors}">
+                        <option value="" >--Select Intake--</option>
+                        <option value="hot">Hot</option>
+                        <option value="cold">Cold</option>
+                        <option value="warm">Warm</option>
+                    </select>
+                    <div *ngIf="submitted && f.sort_intake.errors" class="invalid-feedback">
+                      <div *ngIf="f.sort_intake.errors.required">Value is required</div>
+                    </div>
+                  </div> -->
+
+
+
+             </div>
+            </form>
+          </div>
+          <div class="col-md-12 text-center"  *ngIf="!showtable">
+            <div class="spinner-border"></div>
+            <!-- <div class="spinner-border text-primary" style="width: 5rem; height: 5rem;font-size: 20px;">
+
+            </div>    -->
+          </div>
+          <div class="card-body" >
+            <!-- <button type="button" style="font-size: 18px;padding:6px 8px;background-color:#112048;"
+                   class="btn btn-round blue-ink
+                   " (click)="clickToExport1()"><i class="now-ui-icons arrows-1_cloud-download-93" style="font-weight: bold;"></i></button> -->
+            <div class="table">
+              <table class="table" *ngIf="showtable && isSubmit">
+                <thead class=" text-primary" style="font-size: 14px;">
+                   <th width="3%"  class="text-left blue-link-heading">
+                      S.No.
+
+                    </th>
+                    <th width="8%"  class="text-left blue-link-heading">
+                      Tally Id<i *ngIf="!modeOfTallyId" class="fa fa-arrow-up" (click)="onSortClickTallyId()"></i>
+                      <i *ngIf="modeOfTallyId" class="fa fa-arrow-down" (click)="onSortClickTallyIdreverse()"></i>
+                    </th>
+                    <th width="24%" class="text-left blue-link-heading ">
+                      Name<i *ngIf="!modeOfName" class="fa fa-arrow-up" (click)="onSortClickName()"></i>
+                      <i *ngIf="modeOfName" class="fa fa-arrow-down" (click)="onSortClickNameReverse()"></i>
+
+                   </th>
+                   <th width="12%" class="text-left blue-link-heading ">
+                    Centre<i   *ngIf="!modeOfCenter" class="fa fa-arrow-up" (click)="onSortClickCenter()"></i>
+                    <i *ngIf="modeOfCenter" class="fa fa-arrow-down" (click)="onSortClickCenterReverse()"></i>
+
+                 </th>
+
+
+                    <th width="14%" class="text-left blue-link-heading">
+                      University
+                    </th>
+
+                    <th width="18%" class="text-left blue-link-heading">
+                      Course Name
+                    </th>
+                    <th   width="13%" class="text-left blue-link-heading">
+                      Actions
+                     </th>
+                </thead>
+                 <tr  *ngFor="let student of filtered_students;let i = index;" style="font-size: 12px;">
+                  <td class="text-left">
+                    <p >
+                    {{i+1}}
+
+                    </p>
+                  </td>
+                  <td class="text-left" *ngIf="student.studentId" >
+                    <p style="cursor: pointer;" data-toggle="tooltip"
+                    data-placement="top"
+                    title=" {{student.studentId.tally_ID}}">
+                    {{student.studentId.tally_ID}}
+                    </p>
+
+
+                  </td>
+                 <td  class="text-left" *ngIf="student.studentId">
+
+                 <b> <span (click)="onViewSubmitClick(student.studentId)"
+                  style="cursor: pointer;margin-top:200px;" data-toggle="tooltip"
+                  data-placement="top"
+                  title="{{student.studentId.firstName |
+                     titlecase}} {{student.studentId.lastName | titlecase}}"
+                      style="color:blue;cursor: pointer;">
+                      {{student.studentId.firstName |
+                    titlecase}} {{student.studentId.lastName | titlecase}}
+                  <!-- {{student.studentId.firstName | titlecase}} {{ ( student.studentId.lastName.length>4)?
+                     (student.studentId.lastName | titlecase | slice:0:3) + '..':
+                     (student.studentId.lastName  | titlecase) }} -->
+
+                  </span>
+
+                  <br></b>
+
+
+                 </td>
+                 <td  *ngIf="student.studentId">
+                  {{student.studentId.centers| titlecase}}
+                 </td>
+
+                 <td   class="text-left" *ngIf="student.studentId">
+                  <p style="cursor: pointer;" data-toggle="tooltip"
+                  data-placement="top"
+                  title="{{student.studentId.studentCourse[0].boardOrUniversity | titlecase}}">
+                  {{ (student.studentId.studentCourse[0].boardOrUniversity.length>19)?
+                    (student.studentId.studentCourse[0].boardOrUniversity | titlecase | slice:0:19) +
+                     '..':(student.studentId.studentCourse[0].boardOrUniversity  | titlecase) }}
+                </p>
+                  </td>
+                  <td   class="text-left" *ngIf="student.studentId">
+                    <p style="cursor: pointer;" data-toggle="tooltip"
+                  data-placement="top"
+                  title="{{student.studentId.studentCourse[0].course_name}}{{student.studentId.studentCourse[0].course_branch | titlecase}}">
+                  {{student.studentId.studentCourse[0].course_name}}   {{student.studentId.studentCourse[0].course_type | titlecase}}
+                  <span *ngIf =  "student.studentId.studentCourse[0].course_branch">
+                    {{ (student.studentId.studentCourse[0].course_branch.length>8)?
+                      (student.studentId.studentCourse[0].course_branch | titlecase | slice:0:8) +
+                       '..':(student.studentId.studentCourse[0].course_branch  | titlecase) }}
+                  </span>
+
+
+
+                </p>
+                    </td>
+                 <td   class="text-left">
+                  <button type="button" class="btn btn-neutral blue-link-heading"
+                  [disabled]="disableButtons"
+                   data-toggle="tooltip" data-placement="top" title="Collect Fees"
+                   (click) = "viewCandidate(student.studentId)"  style="padding: 5px;">
+                   <i class="fa fa-dollar" style="font-size:13px;"></i>
+                 </button>
+                  <button type="button" class="btn btn-neutral blue-link-heading"  [disabled]="disableButtons"
+                  data-toggle="tooltip" data-placement="top" title="Collect Certificate"  style="padding: 5px;"
+                   (click)="onCandidateClick(student.studentId)" data-toggle="modal" data-target="#collectCertificateModal">
+                    <i class="fa fa-graduation-cap" style="font-size: 13px;"></i>
+                </button>
+                  <button type="button" class="btn btn-neutral blue-link-heading"  [disabled]="disableButtons"
+                  data-toggle="tooltip" data-placement="top" title="Collect Book" style="padding: 5px;"
+                  (click)="onCandidateClick(student.studentId)" data-toggle="modal" data-target="#collectBookModal" >
+                    <i class="fa fa-book" style="font-size: 13px;"></i>
+              </button>
+                  <button type="button" class="btn btn-neutral blue-link-heading"  [disabled]="disableButtons"
+                  data-toggle="tooltip" data-placement="top" title="Collect Transportation Fees" style="padding: 5px;"
+                  (click)="onCandidateClick(student.studentId)" data-toggle="modal" data-target="#collectTransportationModal">
+                    <i class="fa fa-car" style="font-size: 13px;"></i>
+            </button>
+                  <button type="button" class="btn btn-neutral blue-link-heading"  [disabled]="disableButtons"
+                  data-toggle="tooltip" data-placement="top" title="Invoice" style="padding: 5px;"
+                  (click)="onInvoiceClick(student.studentId)" data-toggle="modal" data-target="#invoiceModal" >
+                  <i class="fa fa-files-o" style="font-size: 13px;"></i>
+          </button>
+
+                </td>
+                <td width="5%" class="text-right">
+                  <button type="button" class="btn btn-neutral blue-link-heading" style="cursor: no-drop;"
+                  data-toggle="tooltip" data-placement="top" title="deletion for testing purpose"
+                   (click)="deleteStaff(student.studentId._id)"
+                 data-toggle="modal" data-target="#deleteSubmittedAdmissionform">
+                 <i class="fa fa-trash" aria-hidden="true" style="font-size: medium;color:transparent;cursor: no-drop;"></i>
+                </button>
+                 </td>
+
+
+
+                 </tr>
+           </table>
+
+           <table class="table" *ngIf="showtable && isSaved">
+            <thead class=" text-primary" style="font-size: 14px;" *ngIf="filtered_students_saved.length>0">
+                <th width="10%"  class="text-center blue-link-heading">
+                  Reg. No.<i *ngIf="!modeOfRegNOSaved" class="fa fa-arrow-up" (click)="onSortClickRegisterNOSaved()"></i>
+                  <i *ngIf="modeOfRegNOSaved" class="fa fa-arrow-down" (click)="onSortClickNameRegisterNOreverseSaved()"></i>
+                </th>
+                <th width="10%"  class="text-center blue-link-heading">
+                  Tally Id<i *ngIf="!modeOfTallyIdSaved" class="fa fa-arrow-up" (click)="onSortClickTallyIdSaved()"></i>
+                      <i *ngIf="modeOfTallyIdSaved" class="fa fa-arrow-down" (click)="onSortClickTallyIdreverseSaved()"></i>
+                </th>
+                <th width="20%" class="text-center blue-link-heading ">
+                  Name<i *ngIf="!modeOfNameSaved" class="fa fa-arrow-up" (click)="onSortClickNameSaved()"></i>
+                  <i *ngIf="modeOfNameSaved" class="fa fa-arrow-down" (click)="onSortClickNameReverseSaved()"></i>
+               </th>
+               <th  class="text-center blue-link-heading"  *ngIf="auth.isAdmin">
+                Actions
+               </th>
+                <!-- <th width="20%" class="text-center blue-link-heading">
+                  University
+                </th>
+
+                <th width="20%" class="text-center blue-link-heading">
+                  Course Name
+                </th> -->
+            </thead>
+             <tr  *ngFor="let student of filtered_students_saved;let i = index;" style="font-size: 12px;">
+              <td width="10%" class="text-center">
+
+                  {{student.university_register_number}}
+
+
+
+              </td>
+              <td width="10%" class="text-center" >
+
+                  {{student.tally_ID}}
+
+              </td>
+             <td width="20%" class="text-center">
+              <b> <a (click)="onViewSavedClick(student)"  style="color:blue;cursor: pointer;">{{student.firstName | titlecase}} {{student.lastName | titlecase}}</a><br></b>
+              <!-- <p *ngIf="student.email">
+                <i class="now-ui-icons ui-1_email-85"></i> : {{student.email}}
+              </p> -->
+
+             </td>
+             <td width="20%" class="text-center">
+              <button type="button" class="btn btn-neutral blue-link-heading"
+              data-toggle="tooltip" data-placement="top" title="Delete saved admission form"
+               (click)="deleteStaff(student._id)"
+             data-toggle="modal" data-target="#deleteAdmissionform">
+             <i class="fa fa-trash" aria-hidden="true" style="font-size: medium;"></i>
+            </button>
+             </td>
+
+             <!-- <td  width="20%" class="text-left">
+              {{student.studentCourse[0].boardOrUniversity | titlecase}}
+              </td>
+              <td  width="20%" class="text-left">
+                {{student.studentCourse[0].course_name}} {{student.studentCourse[0].course_branch | titlecase}}
+                </td> -->
+
+
+
+
+
+             </tr>
+       </table>
+            </div>
+          </div>
+
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+
+
+
+
+  <!-- Collect Certificate Modal -->
+
+<div class="modal fade" id="collectCertificateModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel" >Collect Certificate</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+
+        <form [formGroup]="addCollectCertificateForm" #collectCertificateDetails="ngForm">
+          <div class="row">
+            <div class="col-md-6" >
+              <div class="form-group">
+                <label>Year</label>
+                      <select class="form-control"
+                               aria-label="Default select example"
+                              [ngClass]="{ 'is-invalid': certificateSubmitted && c.year.errors }"
+                              (click)="onCertificateYearChange($event.target)" >
+                               <option *ngFor="let x of allYears" value="{{x}}">{{x}}</option>
+                      </select>
+
+                <!-- <div *ngIf="certificateSubmitted && c.year.errors" class="invalid-feedback">
+                  <div *ngIf="c.year.errors.required">Year is required</div>
+                </div> -->
+              </div>
+              </div>
+              <div class="col-md-6" >
+              <div class="form-group">
+                  <label>Collect Date</label>
+                  <input type="date" class="form-control" [ngClass]="{ 'is-invalid': certificateSubmitted && c.collectedOn.errors }"
+                     [ngModel] ="currentDate | date:'yyyy-MM-dd'"  max="{{currentDate |date:'yyyy-MM-dd'}}"
+                     placeholder="Enter date" formControlName="collectedOn">
+                      <div *ngIf="certificateSubmitted && c.collectedOn.errors" class="invalid-feedback">
+                        <div *ngIf="c.collectedOn.errors.required">Collected On is required</div>
+                      </div>
+
+                </div>
+              </div>
+              <div class="col-md-12">
+                <div class="row">
+                  <div class="col-md-3">
+                    <div class="form-group">
+
+                      <label><b>Date</b></label>
+
+                      <div *ngFor="let collectionflow of collectionFlow_certificate_display">
+
+                        {{collectionflow.collectedOn | date}}
+                      </div>
+
+                  </div>
+                  </div>
+                  <div class="col-md-9">
+                    <div class="form-group">
+
+                      <label><b>Remarks</b></label>
+
+                      <div *ngFor="let collectionflow of collectionFlow_certificate_display">
+
+                        {{collectionflow.remarks}}
+                      </div>
+
+                  </div>
+                  </div>
+
+                </div>
+
+              </div>
+              <!-- <div class="col-md-12">
+                <div class="form-group">
+                  <div>
+
+                      <span style="font-size: 20px;">
+                        <input type="checkbox" (change)="getcertificateCollected($event)" [ngClass]="{ 'is-invalid': certificateSubmitted && c.certificateCollected.errors }"
+                        formControlName="certificateCollected"/>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        &nbsp;&nbsp;&nbsp;Check if Certificate collected</span>
+                      <div *ngIf="certificateSubmitted && c.certificateCollected.errors" class="invalid-feedback">
+                        <div *ngIf="c.certificateCollected.errors.required">certificateCollected is required</div>
+                      </div>
+                    </div>
+
+              </div>
+              </div> -->
+                <div class="col-md-12">
+                <div class="form-group">
+                    <label>Remarks</label>
+                    <input  class="form-control" type="text"
+                    [ngClass]="{ 'is-invalid': certificateSubmitted && c.remarks.errors }"
+                     formControlName="remarks" id="remarkstyle"
+                     placeholder="Enter Remarks" (change)="OnCertificateRemarkChange($event.target)">
+                     <div *ngIf="certificateSubmitted && c.remarks.errors" class="invalid-feedback">
+                      <div *ngIf="c.remarks.errors.required">Remarks is required</div>
+                    </div>
+
+                </div>
+                </div>
+
+          </div>
+
+      </form>
+
+      </div>
+      <div style="text-align: center;">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal"  id="certificateCollectionModalCloseBtn">Cancel</button>
+        <button type="button" class="btn btn-primary blue-ink" (click)="onCertificateCollectSave()" >Save</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+  <!-- Collect Book Modal -->
+
+  <div class="modal fade" id="collectBookModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel" >Collect Book</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+
+          <form [formGroup]="addCollectBookForm" #collectBookDetails="ngForm">
+            <div class="row">
+              <div class="col-md-6" >
+                <div class="form-group">
+                  <label>Year</label>
+                        <select class="form-control"
+                                 aria-label="Default select example"
+                                [ngClass]="{ 'is-invalid': bookSubmitted && b.year.errors }"
+                                (click)="onBookYearChange($event.target)" >
+                                 <option *ngFor="let x of allYears" value="{{x}}">{{x}}</option>
+                        </select>
+
+                  <!-- <div *ngIf="certificateSubmitted && c.year.errors" class="invalid-feedback">
+                    <div *ngIf="c.year.errors.required">Year is required</div>
+                  </div> -->
+                </div>
+                </div>
+                <div class="col-md-6" >
+                <div class="form-group">
+                    <label>Collect Date</label>
+                    <input type="date" class="form-control" [ngClass]="{ 'is-invalid': bookSubmitted && b.collectedOn.errors }"
+                       [ngModel] ="currentDate | date:'yyyy-MM-dd'"  max="{{currentDate |date:'yyyy-MM-dd'}}"
+                       placeholder="Enter date" formControlName="collectedOn">
+                        <div *ngIf="bookSubmitted && b.collectedOn.errors" class="invalid-feedback">
+                          <div *ngIf="b.collectedOn.errors.required">Collected On is required</div>
+                        </div>
+
+                  </div>
+                </div>
+                <div class="col-md-12">
+                  <div class="row">
+                    <div class="col-md-3">
+                      <div class="form-group">
+
+                        <label><b>Date</b></label>
+
+                        <div *ngFor="let collectionflow of collectionFlow_book_display">
+
+                            {{collectionflow.collectedOn | date}}
+                        </div>
+
+                    </div>
+                    </div>
+                    <div class="col-md-9">
+                      <div class="form-group">
+
+                        <label><b>Remarks</b></label>
+
+                        <div *ngFor="let collectionflow of collectionFlow_book_display">
+
+                            {{collectionflow.remarks}}
+                        </div>
+
+                    </div>
+                    </div>
+
+                  </div>
+                  <!-- <div class="form-group">
+
+                    <label><b>Date&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;Remarks</b></label>
+                    <div *ngFor="let collectionflow of collectionFlow_book_display">
+
+                        {{collectionflow.collectedOn | date}} - {{collectionflow.remarks}}
+                    </div>
+
+                </div> -->
+                </div>
+                <!-- <div class="col-md-12">
+                  <div class="form-group">
+                    <div>
+
+                        <span style="font-size: 20px;">
+                          <input type="checkbox" (change)="getbookCollected($event)" [ngClass]="{ 'is-invalid': bookSubmitted && b.bookCollected.errors }"
+                          formControlName="bookCollected"/>
+                          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                          &nbsp;&nbsp;&nbsp;Check if Book collected</span>
+                        <div *ngIf="bookSubmitted && b.bookCollected.errors" class="invalid-feedback">
+                          <div *ngIf="b.bookCollected.errors.required">Book Collected is required</div>
+                        </div>
+                      </div>
+
+                </div>
+                </div> -->
+                  <div class="col-md-12">
+                  <div class="form-group">
+                      <label>Remarks</label>
+                      <input  class="form-control" type="text"
+                      [ngClass]="{ 'is-invalid': bookSubmitted && b.remarks.errors }"
+                       formControlName="remarks" id="remarkstyle"
+                       placeholder="Enter Remarks" >
+                       <div *ngIf="bookSubmitted && b.remarks.errors" class="invalid-feedback">
+                        <div *ngIf="b.remarks.errors.required">Remarks is required</div>
+                      </div>
+
+                  </div>
+                  </div>
+
+            </div>
+
+        </form>
+
+        </div>
+        <div style="text-align: center;">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal"  id="bookCollectionModalCloseBtn">Cancel</button>
+          <button type="button" class="btn btn-primary blue-ink" (click)="onBookCollectSave()" >Save</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+   <!-- Collect Transportation Modal -->
+   <app-toast [message]="toast.message"></app-toast>
+
+   <div class="modal fade" id="collectTransportationModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel" >Transportation Required?</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+
+          <form [formGroup]="addCollectTransportationFeeForm" #collectTransportDetails="ngForm">
+            <div class="row">
+              <div class="col-md-12" >
+                <div class="form-group">
+                  <label>Year</label>
+                        <select class="form-control"
+                                 aria-label="Default select example"
+                                [ngClass]="{ 'is-invalid': transportSubmitted && t.year.errors }"
+                                (click)="onTransportYearChange($event.target)" >
+                                 <option *ngFor="let x of allYears" value="{{x}}">{{x}}</option>
+                        </select>
+
+                  <!-- <div *ngIf="certificateSubmitted && c.year.errors" class="invalid-feedback">
+                    <div *ngIf="c.year.errors.required">Year is required</div>
+                  </div> -->
+                </div>
+                </div>
+                <div class="col-md-4" *ngFor="let collectionflow of collectionFlow_transport_display_month_list;let i = index;">
+                  <div class="form-group">
+                    <label>
+
+                        <input type="checkbox" [checked]="collectionflow.isRequired" value="{{collectionflow.month}}"
+                        (change)="onTransportMonthSelection(collectionflow.month,$event)"
+                        [disabled]="collectionflow.isPaid"/>
+                        <!-- {{collectionflow.month}} -->
+                        {{allMonthNames[collectionflow.month - 1]}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <span *ngIf="!collectionflow.isPaid && collectionflow.isRequired" style="color: red;">
+                          <input type="radio" [checked]="collectionflow.isPaid"
+
+                          disabled/>&nbsp;Paid?
+                        </span>
+                        <span *ngIf="collectionflow.isPaid && collectionflow.isRequired" style="color: green;">
+                          <input type="radio" [checked]="collectionflow.isPaid"
+
+                          disabled/>&nbsp;Paid
+                        </span>
+                        <span *ngIf="!collectionflow.isPaid && !collectionflow.isRequired" style="color: rgb(11, 12, 11);">
+                          <input type="radio" [checked]="collectionflow.isPaid"
+
+                          disabled/>&nbsp;Paid
+                        </span>
+                    </label>
+                </div>
+                </div>
+
+                  <div class="col-md-12">
+                  <div class="form-group">
+                      <label>Remarks</label>
+                      <textarea  class="form-control" [ngClass]="{ 'is-invalid': transportSubmitted && t.remarks.errors }"
+                       formControlName="remarks" id="remarkstyle"
+                       placeholder="Enter Remarks" (change)="OnTransportRemarkChange($event.target)"></textarea>
+                       <div *ngIf="transportSubmitted && t.remarks.errors" class="invalid-feedback">
+                        <div *ngIf="t.remarks.errors.required">Remarks is required</div>
+                      </div>
+
+                  </div>
+                  </div>
+
+            </div>
+
+        </form>
+
+        </div>
+        <div style="text-align: center;">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal"  id="transportCollectionModalCloseBtn">Cancel</button>
+          <button type="button" class="btn btn-primary blue-ink" (click)="onTransportCollectSave()" >Save</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+   <!-- Invoice table Modal -->
+
+   <div class="modal fade" id="invoiceModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel" >Invoices</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+
+          <div >
+            <table class="table">
+              <thead class=" text-primary" style="font-size: 14px;">
+                  <th width="18%"  class="text-center blue-link-heading">
+                    Date
+                  </th>
+                  <th width="40%" class="text-center blue-link-heading ">
+                    Remarks
+                 </th>
+              </thead>
+               <tr  *ngFor="let invoice of invoices;let i = index;" style="font-size: 12px;">
+
+                <td width="5%" class="text-center" >
+
+                   {{invoice.remittedDate | date | uppercase}}
+                </td>
+               <td width="40%" class="text-left">
+                <a  >{{invoice.remarks}}</a><br>
+
+               </td>
+               <td  width="20%" class="text-center">
+                <button type="button" class="btn btn-neutral blue-link-heading" id="buttonID"
+                 data-toggle="tooltip" data-placement="top" title="Click To Print Invoice"
+                 (click) = "getInvoiceByStudentID(invoice)" style="margin-top: -10px;">
+                 <i class="fa fa-print" style="font-size:16px;"></i>
+                </button>
+
+
+              </td>
+
+
+
+
+               </tr>
+         </table>
+          </div>
+
+        </div>
+        <!-- <div style="text-align: center;">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal" >Cancel</button>
+          <button type="button" class="btn btn-primary blue-ink" (click)="onBookCollectSave()" >Save</button>
+        </div> -->
+      </div>
+    </div>
+  </div>
+
+
+<!-- Delete saved form -->
+<div class="modal fade" id="deleteAdmissionform" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title " id="exampleModalLabel" >Delete Admission Form</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <img src="../../assets/danger.png" class="successimage">
+        </div>
+        <div class="row">
+          <p class="contentstyle" > Are you sure you want to delete ?
+          </p>
+
+        </div>
+
+
+      </div>
+      <div style="text-align: center;">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal"  id="savedadmissionDeleteModalCloseBtn">Cancel</button>
+        <button type="button" class="btn" style="background:#112048;"  (click)="onStudentDelete()" >Delete</button>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- print invoice table -->
+<div id="print-section" style="display: none;">
+  <div class="row">
+    <table >
+      <tbody>
+        <tr>
+          <th width="60%" style="text-align: left;color:#112048;">
+            <img src="../assets/favicon.jpeg" alt="..." width="50" height="50">
+            </th>
+            <th width="100%" style="text-align: center;font-size: 20px;color:#112048;">TIMES EDUCATION</th>
+
+          </tr>
+
+
+     </tbody>
+    </table>
+
+  </div>
+  <hr>
+  <div class="row">
+    <table >
+      <tbody>
+        <tr>
+          <td width="60%" style="text-align: left;font-size: 12px;color:#adb1b8;">BILLING TO</td>
+          <td width="50%" style="text-align: left;font-size: 12px;color:#adb1b8;"> BILLING ADDRESS</td>
+        </tr>
+       <tr>
+         <td width="60%" style="text-align: left;">
+
+            {{invoice_studentname  | titlecase}}
+            <br>
+            {{invoice_contact}}
+      </td>
+         <td width="50%" style="text-align: left;">
+          {{invoice_address | titlecase}}
+        </td>
+
+       </tr>
+       <tr>
+        <td width="60%" style="text-align: left;font-size: 12px;color:#adb1b8;">ISSUE DATE</td>
+        <td width="40%" style="text-align: left;font-size: 12px;color:#adb1b8;">ACADEMIC YEAR</td>
+
+       </tr>
+       <tr>
+        <td width="60%" style="text-align: left;">
+          {{invoiced_fee.remittedDate | date}}
+
+
+      </td>
+        <td width="40%" style="text-align: left;">
+          <p >{{invoiced_fee.year}}</p>
+        </td>
+
+      </tr>
+      <tr>
+        <td width="60%" style="text-align: left;font-size: 12px;color:#adb1b8;">REG. NO.</td>
+        <td width="40%" style="text-align: left;font-size: 12px;color:#adb1b8;"> TALLY ID</td>
+
+       </tr>
+       <tr>
+        <td width="60%" style="text-align: left;">
+
+        {{invoice_regno}}
+      </td>
+        <td width="40%" style="text-align: left;">
+          <p >{{invoice_tallyid}}</p>
+        </td>
+
+      </tr>
+      <tr>
+        <td width="60%" style="text-align: left;font-size: 12px;color:#adb1b8;">UNIVERSITY</td>
+        <td width="40%" style="text-align: left;font-size: 12px;color:#adb1b8;">COURSE DETAILS</td>
+
+       </tr>
+      <tr>
+        <td width="60%" style="text-align: left;">
+
+        {{invoice_university  | titlecase}}
+      </td>
+        <td width="40%" style="text-align: left;">
+          <p >{{invoice_course  | titlecase}}</p>
+        </td>
+
+      </tr>
+      <tr>
+        <td width="60%" style="text-align: left;font-size: 12px;color:#adb1b8;">TOTAL FEE</td>
+        <td width="40%" style="text-align: left;font-size: 12px;color:#adb1b8;">BALANCE FEE</td>
+
+       </tr>
+       <tr>
+        <td width="60%" style="text-align: left;">
+
+        {{invoiced_fee.total_fee_per_year}}
+      </td>
+        <td width="40%" style="text-align: left;">
+          <p >{{invoiced_fee.balance_fee_per_year}}</p>
+        </td>
+
+      </tr>
+     </tbody>
+    </table>
+</div>
+  <hr>
+
+  <div class="row" class="doNotPrint">
+
+    <table >
+      <tbody>
+
+        <tr >
+          <td width="70%" style="text-align: left;font-size: 16px;">DESCRIPTION</td>
+          <td width="80%" style="text-align: right;font-size: 16px;"> AMOUNT  (AED)</td>
+
+         </tr>
+
+        <tr>
+          <th width="80%" style="text-align: left;font-size: 14px;color:#adb1b8;">Registration</th>
+          <td width="20%" style="text-align: right;font-size: 14px;"> {{invoiced_fee.registration_fee | currency:' ':'symbol':'3.0'}}</td>
+
+        </tr>
+        <tr>
+          <th width="80%" style="text-align: left;font-size: 14px;color:#adb1b8;">Coaching</th>
+          <td width="20%" style="text-align: right;font-size: 14px;"> {{invoiced_fee.coaching_fee | currency:' ':'symbol':'3.0'}}</td>
+
+        </tr>
+        <tr>
+          <th width="80%" style="text-align: left;font-size: 14px;color:#adb1b8;">Exam</th>
+          <td width="20%" style="text-align: right;font-size: 14px;"> {{invoiced_fee.exam_fee | currency:' ':'symbol':'3.0'}}</td>
+
+        </tr>
+        <tr>
+          <th width="80%" style="text-align: left;font-size: 14px;color:#adb1b8;">Convocation</th>
+          <td width="20%" style="text-align: right;font-size: 14px;"> {{invoiced_fee.convocation_fee | currency:' ':'symbol':'3.0'}}</td>
+
+        </tr>
+        <tr>
+          <th width="80%" style="text-align: left;font-size: 14px;color:#adb1b8;">Attestation</th>
+          <td width="20%" style="text-align: right;font-size: 14px;"> {{invoiced_fee.attestation_fee | currency:' ':'symbol':'3.0'}}</td>
+
+        </tr>
+        <tr>
+          <th width="80%" style="text-align: left;font-size: 14px;color:#adb1b8;">Equalency</th>
+          <td width="20%" style="text-align: right;font-size: 14px;"> {{invoiced_fee.equalency_fee | currency:' ':'symbol':'3.0'}}</td>
+
+        </tr>
+        <tr>
+          <th width="80%" style="text-align: left;font-size: 14px;color:#adb1b8;">Other</th>
+          <td width="20%" style="text-align: right;font-size: 14px;"> {{invoiced_fee.other_fee | currency:' ':'symbol':'3.0'}}</td>
+
+        </tr>
+
+        <tr>
+          <th width="80%" style="text-align: left;font-size: 14px;color:#adb1b8;">Total Paid Fee</th>
+          <td width="20%" style="text-align: right;font-size: 14px;"> {{invoiced_fee.total_course_fee | currency:' ':'symbol':'3.0'}}</td>
+
+        </tr>
+
+        <tr>
+          <th width="80%" style="text-align: left;font-size: 14px;color:#adb1b8;">Miscellaneous Fee</th>
+          <td width="20%" style="text-align: right;font-size: 14px;"> {{invoiced_fee.miscellaneous_fee | currency:' ':'symbol':'3.0'}}</td>
+
+        </tr>
+        <tr>
+          <th width="80%" style="text-align: left;font-size: 14px;color:#adb1b8;">Transport Fee</th>
+          <td width="20%" style="text-align: right;font-size: 14px;"> {{invoiced_fee.transport_fee | currency:' ':'symbol':'3.0'}}</td>
+
+        </tr>
+        <!-- <tr>
+          <th width="80%" style="text-align: left;font-size: 14px;color:#adb1b8;">Previous Year Arrear</th>
+          <td width="20%" style="text-align: right;font-size: 14px;"> {{invoiced_fee.previousyear_arrear | currency:' ':'symbol':'3.0'}}</td>
+
+        </tr> -->
+
+
+
+     </tbody>
+    </table>
+    <hr>
+    <div class="row">
+      <table >
+        <tbody>
+          <tr>
+            <th width="60%" style="text-align: left;font-size: 20px;color:#adb1b8;">Total Remitted Fee</th>
+            <td width="30%" style="text-align: right;font-size: 20px;"> {{invoiced_fee.total_remitted_fee | currency:' ':'symbol':'3.0'}} AED By {{invoiced_fee.paymentMode}}
+              <!-- {{total_fees_per_year | currency:' ':'symbol':'3.0'}} AED -->
+            </td>
+
+          </tr>
+
+       </tbody>
+      </table>
+
+  </div>
+    <hr>
+  </div>
+
+  <div class="row" style="margin-top: 50px;">
+    <table >
+      <tbody>
+        <!-- <tr>
+          <td width="60%" style="text-align: left;font-size: 12px;color:#adb1b8;">BILLING TO</td>
+          <td width="20%" style="text-align: left;font-size: 12px;color:#adb1b8;"> BILLING ADDRESS</td>
+        </tr> -->
+        <tr>
+          <th width="60%" style="text-align: left;font-size: 14px;color:black;">{{invoice_staff | titlecase}}</th>
+          <td width="20%" style="text-align: right;font-size: 14px;color:#adb1b8;"> Authorised signatory
+<!-- {{total_fees_per_year | currency:' ':'symbol':'3.0'}} AED -->
+          </td>
+
+        </tr>
+
+     </tbody>
+    </table>
+
+</div>
+<div class="row" style="margin-top: 30px;">
+  <table >
+    <tbody>
+
+      <tr>
+        <th width="60%" style="text-align: left;font-size: 14px;color:#adb1b8;">Seal</th>
+        <td width="50%" style="text-align: right;font-size: 14px;">
+          <!-- {{total_fees_per_year | currency:' ':'symbol':'3.0'}} AED -->
+        </td>
+
+      </tr>
+   </tbody>
+  </table>
+
+</div>
+ <footer style="position: fixed;bottom: 0;width: 100%;">
+  <hr>
+  <div style="overflow: hidden;">
+    <p style="float: left;font-size:10px;">Office 2104, ADCP Tower - A Behind City Seasons Electra Street Abu Dhabi United Arab Emirates</p>
+    <p style="float: right;font-size:10px;">info@timeseducation.com;+971 55 2269 076</p>
+</div>
+
+  </footer>
+</div>
+
+
+
+<!-- print excel table -->
+<!-- <table class="table" id="tblData" style="display:none;">
+  <thead class=" text-primary" style="font-size: 14px;" >
+    <th >
+
+    </th>
+       <th >
+        Reg. No.
+      </th>
+      <th >
+        Tally Id
+      </th>
+      <th>
+        Admission Date
+      </th>
+      <th >
+        Name
+      </th>
+      <th>
+        Email
+      </th>
+      <th>
+        Gender
+      </th>
+      <th>
+        DOB
+      </th>
+      <th>
+        Father Name
+      </th>
+      <th>
+        Mother Name
+      </th>
+      <th>
+        Mob No.
+      </th>
+      <th>
+        Res No.
+      </th>
+      <th>
+        Physical Status
+      </th>
+      <th>
+        Passport No.
+      </th>
+      <th>
+        Location
+      </th>
+      <th>
+        Nationality
+      </th>
+      <th>
+        Communication Address
+      </th>
+      <th>
+        Permanent Address
+      </th>
+      <th>
+        Previously Completed course
+      </th>
+      <th>
+        Previous University/Board Name
+      </th>
+      <th>
+        Previous Institute Name
+      </th>
+      <th>
+        Previous Passed Out Year
+      </th>
+      <th>
+        Centre Name
+      </th>
+      <th>
+        Intake
+      </th>
+      <th>
+        University/Board Name
+      </th>
+
+      <th>
+        Course Name
+      </th>
+      <th>
+        Course Branch
+      </th>
+
+      <th>
+        Course Type
+      </th>
+      <th>
+        Course Duration
+      </th>
+      <th>
+        Subject List
+      </th>
+       <th >
+        Per year fee
+      </th>
+       <th>
+        Total Course Fee
+      </th>
+      <th>
+        Total Payable Amount
+      </th>
+
+      <th>
+        Lead Officer
+      </th>
+      <th>
+        Lead source
+      </th>
+      <th>
+        Remarks
+      </th>
+
+        </thead>
+   <tr  *ngFor="let student of filtered_students;let i = index;" style="font-size: 12px;">
+    <td width="2%" class="text-center">
+
+      <i class="fa fa-wheelchair" *ngIf="student.disablitity_status == 'Differently Abled'"style="font-size:15px;"
+      style="cursor: pointer;" data-toggle="tooltip"
+      data-placement="top"
+      title="{{student.disablitity_status}}"></i>
+
+
+
+  </td>
+     <td>
+
+      {{student.university_register_number}}
+   </td>
+    <td>
+
+      {{student.tally_ID}}
+   </td>
+   <td>
+     {{student.admission_Date | date}}
+   </td>
+   <td>
+     {{student.firstName | titlecase}} {{student.lastName | titlecase}}
+   </td>
+   <td>
+    {{student.email}}
+   </td>
+   <td>
+    {{student.gender}}
+   </td>
+   <td>
+    {{student.DOB | date}}
+   </td>
+   <td>
+    {{student.fatherName}}
+   </td>
+   <td>
+    {{student.motherName}}
+   </td>
+   <td>
+    {{student.contact.mobilenumber}}
+   </td>
+   <td>
+    {{student.contact.residencenumber}}
+   </td>
+   <td>
+    {{student.disablitity_status}}
+   </td>
+   <td>
+     {{student.passportNumber}}
+   </td>
+   <td>
+    {{student.address.location}}
+  </td>
+  <td>
+    {{student.address.nationality}}
+  </td>
+  <td>
+    {{student.address.permanent_address}}
+  </td>
+  <td>
+    {{student.address.temporary_address}}
+  </td>
+  <td>
+    {{student.education_qualification.last_Completed_Course}}
+   </td>
+   <td>
+    {{student.education_qualification.university}}
+   </td>
+   <td>
+    {{student.education_qualification.institute}}
+   </td>
+   <td>
+    {{student.education_qualification.passout_year}}
+   </td>
+   <td>
+    {{student.centers | titlecase}}
+   </td>
+    <td>
+    {{student.intake | date: "MMM-yyyy"}}
+   </td>
+   <td *ngIf="student.studentCourse[0]">
+    {{student.studentCourse[0].boardOrUniversity | titlecase }}
+    </td>
+
+    <td *ngIf="student.studentCourse[0]">
+    {{student.studentCourse[0].course_name}}
+      </td>
+
+    <td *ngIf="student.studentCourse[0]">
+    {{student.studentCourse[0].course_branch | titlecase}}
+    </td>
+    <td *ngIf="student.studentCourse[0]">
+      {{student.studentCourse[0].course_type | titlecase}}
+      </td>
+      <td *ngIf="student.studentCourse[0]">
+        {{student.studentCourse[0].course_duration_year}} Y  {{student.studentCourse[0].course_duration_month}} M
+        {{student.studentCourse[0].course_startYear | date: "MMM-yyyy"}} - {{student.studentCourse[0].course_endYear | date: "MMM-yyyy"}}
+       </td>
+       <td *ngIf="student.subject_list.length > 0">
+        {{student.subject_list}},
+     </td>
+     <td *ngIf="student.subject_list.length <= 0">
+      ----
+   </td>
+    <td >
+     <table>
+       <tr >
+         <th>Year</th>
+         <th> Total</th>
+         <th>Payable</th>
+         <th>Discount</th>
+       </tr>
+       <tr *ngFor="let fee of student.studentFees;let i = index;">
+         <td >{{fee.year}}</td>
+         <td>{{fee.per_year_total_fee | currency: " ":"symbol":"3.0"}} AED</td>
+         <td>{{fee.per_year_payable_total_fee | currency: " ":"symbol":"3.0"}} AED</td>
+         <td>{{fee.per_year_discount | currency: " ":"symbol":"3.0"}} AED</td>
+       </tr>
+     </table>
+
+
+
+  </td>
+  <td>
+        {{
+          student.original_course_amount
+            | currency: " ":"symbol":"3.0"
+        }}
+        AED
+       </td>
+       <td>
+        {{
+          student.total_payable_fee_with_discount
+            | currency: " ":"symbol":"3.0"
+        }}
+        AED
+       </td>
+
+      <td>
+        {{student.lead_officer.firstName}}  {{student.lead_officer.lastName}}
+       </td>
+   <td>
+    {{student.lead_source}}
+   </td>
+   <td>
+    {{student.remarks}}
+   </td>
+
+   <td>
+
+  </td>
+
+
+
+
+   </tr>
+</table> -->
+
+
+
+<!-- print excel table   1 -->
+<table class="table" id="tblData1" style="display:none;" >
+  <thead class=" text-primary" style="font-size: 14px;" >
+
+    <th >
+      Reg. No.
+    </th>
+    <th >
+      Tally Id
+    </th>
+    <th>
+      Admission Date
+    </th>
+    <th >
+      Name
+    </th>
+    <th >
+      Username
+    </th>
+    <th >
+      Password
+    </th>
+    <th>
+      Email
+    </th>
+    <th>
+      Gender
+    </th>
+    <th>
+      DOB
+    </th>
+    <th>
+      Father Name
+    </th>
+    <th>
+      Mother Name
+    </th>
+    <th>
+      Mob No.
+    </th>
+    <th>
+      Res No.
+    </th>
+    <th>
+      Physical Status
+    </th>
+    <th>
+      Passport No.
+    </th>
+    <th>
+      Location
+    </th>
+    <th>
+      Nationality
+    </th>
+    <th>
+      Communication Address
+    </th>
+    <th>
+      Permanent Address
+    </th>
+    <th>
+      Previously Completed course
+    </th>
+    <th>
+      Previous University/Board Name
+    </th>
+    <th>
+      Previous Institute Name
+    </th>
+    <th>
+      Previous Passed Out Year
+    </th>
+    <th>
+      Centre Name
+    </th>
+    <th>
+      Intake
+    </th>
+    <th>
+      University/Board Name
+    </th>
+
+    <th>
+      Course Name
+    </th>
+    <th>
+      Course Branch
+    </th>
+
+    <th>
+      Course Type
+    </th>
+    <th>
+      Course Duration
+    </th>
+    <th>
+      Subject List
+    </th>
+
+   <th> {{export_year[selectedIndex]}}Total </th>
+
+  <th>  {{export_year[selectedIndex]}} Balance</th>
+
+  <th>  {{export_year[selectedIndex]}}Paid</th>
+      <th>
+        Remarks
+      </th>
+  </thead>
+
+   <tr *ngFor="let student of filtered_students;let i = index;" >
+    <td>
+
+      {{filtered_students[i].studentId.university_register_number}}
+   </td>
+    <td>
+
+      {{filtered_students[i].studentId.tally_ID}}
+   </td>
+   <td>
+     {{filtered_students[i].studentId.admission_Date | date}}
+   </td>
+   <td   *ngIf="filtered_students[i].studentId">
+
+    {{filtered_students[i].studentId.firstName | titlecase}}
+    {{filtered_students[i].studentId.lastName | titlecase}}
+  </td>
+  <td>
+    {{filtered_students[i].studentId.username}}
+
+  </td>
+  <td>
+    {{filtered_students[i].studentId.password}}
+
+  </td>
+   <td>
+    {{filtered_students[i].studentId.email}}
+   </td>
+   <td>
+    {{filtered_students[i].studentId.gender}}
+   </td>
+   <td>
+    {{filtered_students[i].studentId.DOB | date}}
+   </td>
+   <td>
+    {{filtered_students[i].studentId.fatherName}}
+   </td>
+   <td>
+    {{filtered_students[i].studentId.motherName}}
+   </td>
+   <td>
+    {{filtered_students[i].studentId.contact.mobilenumber}}
+   </td>
+   <td>
+    {{filtered_students[i].studentId.contact.residencenumber}}
+   </td>
+   <td>
+    {{filtered_students[i].studentId.disablitity_status}}
+   </td>
+   <td>
+     {{filtered_students[i].studentId.passportNumber}}
+   </td>
+   <td>
+    {{filtered_students[i].studentId.address.location}}
+  </td>
+  <td>
+    {{filtered_students[i].studentId.address.nationality}}
+  </td>
+  <td>
+    {{filtered_students[i].studentId.address.permanent_address}}
+  </td>
+  <td>
+    {{filtered_students[i].studentId.address.temporary_address}}
+  </td>
+  <td>
+    {{filtered_students[i].studentId.education_qualification.last_Completed_Course}}
+   </td>
+   <td>
+    {{filtered_students[i].studentId.education_qualification.university}}
+   </td>
+   <td>
+    {{filtered_students[i].studentId.education_qualification.institute}}
+   </td>
+   <td>
+    {{filtered_students[i].studentId.education_qualification.passout_year}}
+   </td>
+   <td>
+    {{filtered_students[i].studentId.centers | titlecase}}
+   </td>
+    <td>
+    {{filtered_students[i].studentId.intake | date: "MMM-yyyy"}}
+   </td>
+   <td *ngIf="filtered_students[i].studentId.studentCourse[0]">
+    {{filtered_students[i].studentId.studentCourse[0].boardOrUniversity | titlecase }}
+    </td>
+
+    <td *ngIf="filtered_students[i].studentId.studentCourse[0]">
+    {{filtered_students[i].studentId.studentCourse[0].course_name}}
+      </td>
+
+    <td *ngIf="filtered_students[i].studentId.studentCourse[0]">
+    {{filtered_students[i].studentId.studentCourse[0].course_branch | titlecase}}
+    </td>
+    <td *ngIf="filtered_students[i].studentId.studentCourse[0]">
+      {{filtered_students[i].studentId.studentCourse[0].course_type | titlecase}}
+      </td>
+      <td *ngIf="filtered_students[i].studentId.studentCourse[0]">
+        {{filtered_students[i].studentId.studentCourse[0].course_duration_year}} Y
+         {{filtered_students[i].studentId.studentCourse[0].course_duration_month}} M
+        {{filtered_students[i].studentId.studentCourse[0].course_startYear | date: "MMM-yyyy"}} -
+         {{filtered_students[i].studentId.studentCourse[0].course_endYear | date: "MMM-yyyy"}}
+       </td>
+       <td *ngIf="filtered_students[i].studentId.subject_list.length > 0">
+        {{filtered_students[i].studentId.subject_list}},
+     </td>
+     <td *ngIf="filtered_students[i].studentId.subject_list.length <= 0">
+      ----
+   </td>
+   <p *ngFor="let fee of filtered_students[i].fee_per_year;let j = index;">
+      <td *ngIf="filtered_students[i].fee_per_year[j].year == export_year[selectedIndex]">
+        {{filtered_students[i].fee_per_year[j].total_fee}}
+
+      </td>
+      <td *ngIf="filtered_students[i].fee_per_year[j].year == export_year[selectedIndex]" >
+        {{filtered_students[i].fee_per_year[j].balance_fee}}
+
+      </td>
+      <td *ngIf="filtered_students[i].fee_per_year[j].year == export_year[selectedIndex]">
+        {{filtered_students[i].fee_per_year[j].paid_fee}}
+
+      </td>
+    </p>
+<td>
+  {{filtered_students[i].studentId.remarks}}
+ </td>
+   </tr>
+</table>
+
+
+
+
+
+
+<!-- Delete Submitted admission form -->
+<div class="modal fade" id="deleteSubmittedAdmissionform" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title " id="exampleModalLabel" >Delete Submitted Admission Form</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <img src="../../assets/danger.png" class="successimage">
+        </div>
+        <div class="row">
+          <p class="contentstyle" > Are you sure you want to delete form?
+          </p>
+
+        </div>
+
+
+      </div>
+      <div style="text-align: center;">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal"  id="submittedadmissionDeleteModalCloseBtn">Cancel</button>
+        <button type="button" class="btn" style="background:#112048;"  (click)="onAdmissionDelete()" >Delete</button>
+
+      </div>
+    </div>
+  </div>
+</div>

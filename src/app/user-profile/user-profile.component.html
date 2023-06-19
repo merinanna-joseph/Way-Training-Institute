@@ -1,0 +1,223 @@
+<app-toast [message]="toast.message"></app-toast>
+<div class="panel-header panel-header-sm">
+  <h4 style="color: white;margin-top: -40px;margin-left: 30px;">{{auth.currentUser.firstName | titlecase}} {{auth.currentUser.lastName | titlecase}}</h4>
+
+</div>
+<div class="main-content">
+  <div class="row">
+    <div class="col-md-8">
+      <div class="card">
+        <div class="card-header">
+          <h5 class="title">Edit Profile</h5>
+        </div>
+        <div class="card-body">
+          <form [formGroup]="userForm" #profileDetails="ngForm" >
+            <div class="row">
+              <div class="col-md-6 pr-1">
+                <div class="form-group">
+                  <label>First Name</label>
+                  <input class="form-control"
+                   [ngClass]="{ 'is-invalid': submitted && cf.firstname.errors }"
+                   [(ngModel)]="currentUsername.firstName"  formControlName="firstname"
+                   (change)="getFirstName($event.target)"  >
+                  <div *ngIf="submitted && cf.firstname.errors" class="invalid-feedback">
+                    <div *ngIf="cf.firstname.errors.required">First name required</div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6 pl-1">
+                <div class="form-group">
+                  <label>Last Name</label>
+                  <input type="text" formControlName="lastname"
+                  class="form-control"  [ngClass]="{ 'is-invalid': submitted && cf.lastname.errors }"
+                 [(ngModel)]="currentUsername.lastName"
+                    (change)="getLastName($event.target)">
+                    <div *ngIf="submitted && cf.lastname.errors" class="invalid-feedback">
+                      <div *ngIf="cf.lastname.errors.required">Last name required</div>
+                    </div>
+                 </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-6 pr-1">
+                <div class="form-group">
+                  <label>Email</label>
+                  <input type="text"formControlName="email"
+                   class="form-control"
+                  [(ngModel)]="currentUsername.email" readonly >
+                </div>
+              </div>
+              <div class="col-md-6 pl-1">
+                <div class="form-group">
+                  <label>Mobile</label>
+                  <input type="text" formControlName="mobile"[ngClass]="{ 'is-invalid': submitted && cf.mobile.errors }"
+                  class="form-control" [(ngModel)]="currentUsername.mobile"
+                   (change)="getMobile($event.target)">
+                   <div *ngIf="submitted && cf.mobile.errors" class="invalid-feedback">
+                    <div *ngIf="cf.mobile.errors.required">Mobile required</div>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+
+         <div class="col text-right">
+              <button type="button" class="btn btn-danger btn-round" (click)="updateUser(currentUsername)"style="background-color:#112048;">Save</button>
+              <button type="button" class="btn btn-danger btn-round"  data-toggle="modal" data-target="#exampleModal"style="background-color:#112048;">Reset Password</button>
+
+          </div>
+        </form>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card card-user">
+        <div class="image">
+          <img src="../assets/img/bg5.jpg" alt="...">
+        </div>
+        <div class="card-body">
+          <div class="author">
+            <!-- <a href="#"> -->
+              <!-- <img class="avatar border-gray" src="../assets/img/mike.jpg" alt="..."> -->
+            <!-- </a> -->
+            <br>
+            <br>
+            <br>
+            <!-- <h5 class="title">lllllllllllll</h5> -->
+           <h5 class="description">
+              {{currentUsername.firstName}}{{currentUsername.lastName}}
+           </h5>
+          </div>
+          <p class="description text-center">
+            {{currentUsername.roles}}
+            <br> {{currentUsername.email}}
+            <br>  {{currentUsername.mobile}}
+          </p>
+        </div>
+           </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel" >Change Password</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+          <form  [formGroup]="ResetPasswordForm" #passwordDetails="ngForm">
+              <div class="row">
+                  <div class="col-md-12 pr-1">
+                    <div class="form-group"  *ngIf="!showCurrentPassword">
+                      <div class="input-group input-group-alternative">
+                        <div class="input-group-prepend">
+                          <span class="input-group-text"><i class="now-ui-icons ui-1_lock-circle-open"></i></span>
+                        </div>
+                        <input type="password" class="form-control"
+                        placeholder="Enter current password"
+                        formControlName="current_password">
+                       <div class="input-group-append">
+                        <span *ngIf="!showCurrentPassword" class="input-group-text">
+                          <i style="cursor: pointer;padding-left: 9px;" class="fa fa-eye-slash" (click)="showCurrentPassword=true"></i>
+                       </span>
+                       </div>
+                      </div>
+                    </div>
+                    <div class="form-group"  *ngIf="showCurrentPassword">
+                      <div class="input-group input-group-alternative">
+                        <div class="input-group-prepend">
+                          <span class="input-group-text"><i class="now-ui-icons ui-1_lock-circle-open"></i></span>
+                        </div>
+                        <input type="text" class="form-control"
+                        placeholder="Enter current password"
+                        formControlName="current_password">
+                       <div class="input-group-append">
+                        <span *ngIf="showCurrentPassword" class="input-group-text">
+                          <i style="cursor: pointer;padding-left: 9px;" class="fa fa-eye" (click)="showCurrentPassword=false"></i>
+                       </span>
+                       </div>
+                      </div>
+                    </div>
+                 
+                  </div>
+              </div>
+               <div class="row">
+              <div class="col-md-12 pr-1">
+                <div class="form-group"  *ngIf="!showNewPassword">
+                  <div class="input-group input-group-alternative">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text"><i class="now-ui-icons ui-1_lock-circle-open"></i></span>
+                    </div>
+                    <input  type="password" class="form-control"
+                  placeholder="Enter new password" formControlName="new_password">
+                   <div class="input-group-append">
+                    <span *ngIf="!showNewPassword" class="input-group-text">
+                      <i style="cursor: pointer;padding-left: 9px;" class="fa fa-eye-slash" (click)="showNewPassword=true"></i>
+                   </span>
+                   </div>
+                  </div>
+                </div>
+                <div class="form-group"  *ngIf="showNewPassword">
+                  <div class="input-group input-group-alternative">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text"><i class="now-ui-icons ui-1_lock-circle-open"></i></span>
+                    </div>
+                    <input  type="text" class="form-control"
+                  placeholder="Enter new password" formControlName="new_password">
+                   <div class="input-group-append">
+                    <span *ngIf="showNewPassword" class="input-group-text">
+                      <i style="cursor: pointer;padding-left: 9px;" class="fa fa-eye" (click)="showNewPassword=false"></i>
+                   </span>
+                   </div>
+                  </div>
+                </div>
+                 
+              
+               </div>
+              </div>
+             <div class="row">
+              <div class="col-md-12 pr-1">
+                <div class="form-group"  *ngIf="!showConfirmPassword">
+                  <div class="input-group input-group-alternative">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text"><i class="now-ui-icons ui-1_lock-circle-open"></i></span>
+                    </div>
+                    <input  type="password" class="form-control"
+                    placeholder="Confirm Password" formControlName="confirm_password">
+                   <div class="input-group-append">
+                    <span *ngIf="!showConfirmPassword" class="input-group-text">
+                      <i style="cursor: pointer;padding-left: 9px;" class="fa fa-eye-slash" (click)="showConfirmPassword=true"></i>
+                   </span>
+                   </div>
+                  </div>
+                </div>
+                <div class="form-group"  *ngIf="showConfirmPassword">
+                  <div class="input-group input-group-alternative">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text"><i class="now-ui-icons ui-1_lock-circle-open"></i></span>
+                    </div>
+                    <input  type="text" class="form-control"
+                  placeholder="Confirm Password" formControlName="confirm_password">
+                   <div class="input-group-append">
+                    <span *ngIf="showConfirmPassword" class="input-group-text">
+                      <i style="cursor: pointer;padding-left: 9px;" class="fa fa-eye" (click)="showConfirmPassword=false"></i>
+                   </span>
+                   </div>
+                  </div>
+                </div>
+               
+             
+               </div>
+             </div>
+          </form>
+      </div>
+      <div style="text-align: center;">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal"  id="passwordUpdateModalCloseBtn">Cancel</button>
+        <button type="button" class="btn btn-primary" (click)="ResetPasswordSave(passwordDetails.value)" style="background-color:#112048;">Save</button>
+      </div>
+    </div>
+  </div>
+</div>

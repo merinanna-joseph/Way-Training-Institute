@@ -1,0 +1,753 @@
+<app-toast [message]="toast.message"></app-toast>
+<div class="panel-header panel-header-sm">
+  <h4 style="color: white;margin-top: -40px;margin-left: 30px;">
+    {{auth.currentUser.firstName | titlecase}} {{auth.currentUser.lastName | titlecase}} - Admin</h4>
+</div>
+<div class="main-content">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-header">
+            <div class="row">
+                <div class="col-md-8"  style="padding-top: 16px;">
+                    <h4 class="card-title"> Lead Management ({{leadLength}})</h4>
+                     <div class="row">
+                        <div class="col-md-3">
+                          <select id="filter" class="form-control" [(ngModel)]="selectedLead" (change)="getLeads($event)">
+                            <option value="ALL">All Leads</option>
+                            <option value="INPROGRESS">Inprogress Leads</option>
+                            <option value="CONVERTED">Converted Leads</option>
+                            <option value="CANCELLED">Cancelled Leads</option>
+                          </select>
+                        </div>
+                        <div class="col-md-3" style="padding-left: 29px;">
+                          <select id="filter1" class="form-control" [(ngModel)]="selectedStaff" (change)="getStaffs($event)">
+                            <option value="ALL_STAFFS">--Select Staff--</option>
+                            <option *ngFor="let x of users" value="{{x._id}}">{{x.firstName}} {{x.lastName}}</option>
+                          </select>
+                        </div>
+                        <div class="col-md-3" style="padding-left: 43px;">
+                          <select id="filter2" class="form-control" [(ngModel)]="selectedCourse"
+                             (change)="sortCourse($event)">
+                              <option value="ALL_COURSES" >--Select Course--</option>
+                              <option *ngFor="let x of courses" value="{{x}}">{{x}}</option>
+                          </select>
+                        </div>
+                        <div class="col-md-3" style="padding-left: 57px;">
+                          <select id="filter2" class="form-control" [(ngModel)]="selectedPriorityStatus"
+                             (change)="getPriority($event)">
+                              <option value="ALL_PRIORITY" >--Select Priority--</option>
+                              <option value="hot">Hot</option>
+                              <option value="cold">Cold</option>
+                              <option value="warm">Warm</option>
+                          </select>
+                        </div>
+
+                     </div>
+                </div>
+                <div class="col-md-4">
+                  <button type="button" style="font-size: 18px;padding:6px 8px;"
+                   class="btn btn-round blue-ink
+                   " (click)="clickToExport()"><i class="now-ui-icons arrows-1_cloud-download-93" style="font-weight: bold;"></i></button>
+                  <!-- <button type="button" class="btn btn-danger btn-round" (click)="clickToExport()">Export</button> -->
+                  <button type="button" class="btn btn-round blue-ink
+                  " data-toggle="modal" data-target="#exampleModal">Create Lead</button>
+                </div>
+            </div>
+        </div>
+        <div class="card-body">
+          <div class="table-responsive">
+            <table class="table">
+              <thead class=" text-primary">
+                  <!-- <th width="5%" class="text-center">
+                      Sno
+                  </th> -->
+                  <th width="18%"  class="text-center blue-link-heading">
+                    Created On
+                    <!-- <i class="fa fa-sort-asc" aria-hidden="true" *ngIf="!isSortByCreatedon" (click)="sortByCreatedon()"></i>
+                    <i class="fa fa-sort-desc" aria-hidden="true" *ngIf="isSortByCreatedon" (click)="sortByCreatedon()"></i> -->
+                  </th>
+                  <th width="20%" class="text-center blue-link-heading ">
+                   Lead Details
+                   <!-- <i class="fa fa-sort-asc" *ngIf="!isSort" aria-hidden="true" (click)="sortByName()"></i>
+                   <i class="fa fa-sort-desc" aria-hidden="true" *ngIf="isSort" (click)="sortByName()"></i> -->
+                  </th>
+                  <th width="18%" class="text-center blue-link-heading">
+                  Course
+                  <!-- <i class="fa fa-sort-asc" aria-hidden="true" *ngIf="!isSortByCourse" (click)="sortByCourse()"></i>
+                  <i class="fa fa-sort-desc" aria-hidden="true" *ngIf="isSortByCourse" (click)="sortByCourse()"></i> -->
+                  </th>
+                  <th width="10%" class="text-center blue-link-heading">
+                 status
+                 <!-- <i class="fa fa-sort-asc" aria-hidden="true" *ngIf="!isSortByStatus" (click)="sortByStatus()"></i>
+                 <i class="fa fa-sort-desc" aria-hidden="true" *ngIf="isSortByStatus" (click)="sortByStatus()"></i> -->
+                  </th>
+
+                  <th width="18%" class="text-center blue-link-heading">
+                    Assigned<br> By
+                    <!-- <i class="fa fa-sort-asc" aria-hidden="true" *ngIf="!isSortByAssignedBy" (click)="sortByAssignedBy()"></i>
+                    <i class="fa fa-sort-desc" aria-hidden="true" *ngIf="isSortByAssignedBy" (click)="sortByAssignedBy()"></i> -->
+                  </th>
+                  <th width="18%" class="text-center blue-link-heading">
+                    Assigned <br>To
+                    <!-- <i class="fa fa-sort-asc" aria-hidden="true" *ngIf="!isSortByAssignedTo" (click)="sortByAssignedTo()"></i>
+                    <i class="fa fa-sort-desc" aria-hidden="true" *ngIf="isSortByAssignedTo" (click)="sortByAssignedTo()"></i> -->
+                  </th>
+                  <th width="10%" class="text-center blue-link-heading">
+                    Assign <br> status
+                    <!-- <i class="fa fa-sort-asc" aria-hidden="true" *ngIf="!isSortByAssignedStatus" (click)="sortByAssignedStatus()"></i>
+                    <i class="fa fa-sort-desc" aria-hidden="true" *ngIf="isSortByAssignedStatus" (click)="sortByAssignedStatus()"></i> -->
+                  </th>
+                  <th width="20%" class="text-center blue-link-heading">Actions</th>
+              </thead>
+              <tbody>
+                <tr *ngFor="let lead of leadDetails1;let i = index;">
+                  <!-- <td width="5%" class="text-center">
+                       <a (click)="onViewClick(lead)">{{i+1}}</a>
+                  </td> -->
+                  <td width="18%" class="text-center">
+                    <a (click)="onViewClick(lead)">{{lead.createdOn | date}}</a>
+                  </td>
+                  <td width="20%" class="text-left">
+                  <b><a (click)="onViewClick(lead)" style="color: blue;"> {{lead.firstName}} {{lead.lastName}}
+                    <span class="badge badge-danger" id="badge" *ngIf="lead.priorityStatus == 'hot'">Hot</span>
+                    <span class="badge badge-primary" id="badge" *ngIf="lead.priorityStatus == 'cold'">Cold</span>
+                    <span class="badge badge-warning" id="badge" *ngIf="lead.priorityStatus == 'warm'">Warm</span>
+                  </a><br></b>
+                    <a (click)="onViewClick(lead)" *ngIf="lead.email"> {{lead.email}}<br></a>
+                    <a (click)="onViewClick(lead)" *ngIf="lead.mobile">{{lead.mobile}}</a>
+                  </td>
+
+                  <td width="18%" class="text-center">
+                    <a (click)="onViewClick(lead)">{{lead.courseId}}</a>
+                  </td>
+                  <td width="10%" class="text-center">
+                    <a (click)="onViewClick(lead)">{{lead.status | titlecase}}
+                    </a>
+                 </td>
+
+                  <td width="18%" class="text-center">
+                    <a (click)="onViewClick(lead)">{{lead.assignedBy.firstName}} {{lead.assignedBy.lastName}}</a>
+
+                  </td>
+                  <td width="18%" class="text-center">
+                   <a (click)="onViewClick(lead)">{{lead.assignedTo.firstName}} {{lead.assignedTo.lastName}}</a>
+                  </td>
+                  <td width="10%" class="text-center">
+                    <a (click)="onViewClick(lead)">{{lead.assignedStatus | titlecase}}</a>
+                  </td>
+                  <td width="20%"  class="text-center" >
+
+                    <button type="button"
+                     *ngIf ="lead.assignedStatus != 'REQUESTED' && lead.status == 'INPROGRESS'" class="btn btn-neutral blue-link-heading" data-toggle="tooltip" (click)="editAdminLead(lead._id)" data-placement="top" title="Edit"
+                    data-toggle="modal" data-target="#exampleModalEditAdmin">
+                    <i class="fa fa-pencil" style="font-size: small;"></i>
+                   </button>
+                   <button type="button" *ngIf ="lead.assignedStatus != 'REQUESTED' && lead.status == 'INPROGRESS'" class="btn btn-neutral blue-link-heading" data-toggle="tooltip" data-placement="top" title="Re - Assign" (click)="onAssigntoStaffClick(lead)" data-toggle="modal" data-target="#assignStatusModal">
+                    <i class="now-ui-icons ui-1_send" style="font-size: small;"></i>
+                  </button>
+                  <button type="button" *ngIf ="lead.assignedStatus == 'REQUESTED' || lead.status != 'INPROGRESS'" disabled  class="btn btn-neutral blue-link-heading" data-toggle="tooltip" data-placement="top" title="Services Unavailable" (click)="onAssigntoStaffClick(lead)" data-toggle="modal" data-target="#assignStatusModal">
+                    <i class="now-ui-icons ui-1_send" style="font-size: small;"></i>
+                  </button>
+
+                  </td>
+
+
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+
+<!-- create lead modal -->
+  <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel" >Create Lead</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            <form  [formGroup]="addLeadForm" #leadDetails="ngForm">
+                <div class="row">
+                    <div class="col-md-6 pr-1">
+                    <div class="form-group">
+                        <label>First Name</label>
+                        <input [ngClass]="{ 'is-invalid': submitted && f.firstname.errors }" type="text" class="form-control"
+                         placeholder="Enter First Name" formControlName="firstname">
+                         <div *ngIf="submitted && f.firstname.errors" class="invalid-feedback">
+                          <div *ngIf="f.firstname.errors.required">First Name is required</div>
+                        </div>
+                    </div>
+                    </div>
+                    <div class="col-md-6 pl-1">
+                    <div class="form-group">
+                        <label>Last Name</label>
+                        <input  type="text" class="form-control" placeholder="Last Name" formControlName="lastname">
+                        <!-- <div *ngIf="submitted && f.lastname.errors" class="invalid-feedback">
+                          <div *ngIf="f.lastname.errors.required">Last Name is required</div>
+                        </div> -->
+                    </div>
+                    </div>
+                </div>
+            <div class="row">
+                <div class="col-md-6 pr-1">
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input name="email" id="email" type="email" class="form-control" placeholder="Enter Email" formControlName="email">
+                    <!-- <div *ngIf="submitted && f.email.errors" class="invalid-feedback">
+                      <div *ngIf="f.email.errors.required">Email is required</div>
+                      <div *ngIf="f.email.errors.email">Email must be a valid email address</div>
+                    </div> -->
+                  </div>
+                </div>
+                <div class="col-md-6 pl-1">
+                    <div class="form-group">
+                    <label>Mobile</label>
+                    <input [ngClass]="{ 'is-invalid': submitted && f.mobile.errors }" type="text" class="form-control" placeholder="Enter Mobile Number" formControlName="mobile">
+                    <div *ngIf="submitted && f.mobile.errors" class="invalid-feedback">
+                      <div *ngIf="f.mobile.errors.required">Mobile is required</div>
+                      <div *ngIf="f.mobile.errors.minlength">Mobile must be 10 digits</div>
+                    </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                <div class="form-group">
+                  <label>Course</label>
+                  <select class="form-control"
+                  (change)="getCourse($event.target)"
+                  aria-label="Default select example" formControlName="course"
+                  [ngClass]="{ 'is-invalid': submitted && f.course.errors}">
+                  <option value="" [selected]="true">Select Course</option>
+                    <option *ngFor="let x of courses" value="{{x}}">{{x}}</option>
+                 </select>
+                 <div *ngIf="submitted && f.course.errors" class="invalid-feedback">
+                  <div *ngIf="f.course.errors.required">Course is required</div>
+                </div>
+                </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                      <!-- <label>Status</label>
+                     <select disabled class="form-control" (change)="onStatusChange($event.target)" aria-label="Default select example">
+                        <option [value]="lead_status.inprogress">{{lead_status.inprogress}}</option>
+                        <option [value]="lead_status.closed">{{lead_status.closed}}</option>
+                        <option [value]="lead_status.converted">{{lead_status.converted}}</option>
+                      </select> -->
+
+                      <div class="form-check-inline" style="padding-top: 38px;">
+                        <label class="form-check-label">
+                          <input type="radio" class="form-check-input" value="hot" name="priority_status"
+                           style="cursor: pointer;" (change)="getPriorityStatus($event)"
+                           checked> Hot
+                        </label>
+                      </div>
+                      <div class="form-check-inline">
+                        <label class="form-check-label">
+                          <input type="radio" class="form-check-input" value="warm" name="priority_status"
+                           style="cursor: pointer;" (change)="getPriorityStatus($event)"> Warm
+                        </label>
+                      </div>
+                      <div class="form-check-inline">
+                        <label class="form-check-label">
+                          <input type="radio" class="form-check-input" value="cold" name="priority_status"
+                           style="cursor: pointer;" (change)="getPriorityStatus($event)"> Cold
+                        </label>
+                      </div>
+                    </div>
+                    </div>
+            </div>
+             <div class="row">
+              <div class="col-md-6 pr-1">
+                <div class="form-group">
+                  <label>Sources</label>
+                    <select class="form-control"
+                    (change)="getSource($event.target)"
+                     aria-label="Default select example"
+                      formControlName="source"
+                       [ngClass]="{ 'is-invalid': submitted && f.source.errors}">
+                       <option value="" [selected]="true">Select Source</option>
+                      <option *ngFor="let x of sources" value="{{x}}">{{x}}</option>
+                   </select>
+                   <div *ngIf="submitted && f.source.errors" class="invalid-feedback">
+                    <div *ngIf="f.source.errors.required">Source is required</div>
+                   </div>
+                </div>
+                </div>
+                <div class="col-md-6 pl-1">
+                <div class="form-group">
+                    <label>Assign to</label>
+                  <select class="form-control"
+                   (change)="onAssigntoChange($event.target)"
+                     aria-label="Default select example"
+                     [ngClass]="{ 'is-invalid': submitted && f.assignedto.errors}"
+                     formControlName="assignedto">
+                      <option value="" selected="true">Select staff</option>
+                      <option *ngFor="let staff of staffDetails_noCurrentuser" [value]="staff._id">
+                        {{staff.firstName}} {{staff.lastName}}
+                      </option>
+                    </select>
+                    <div *ngIf="submitted && f.assignedto.errors" class="invalid-feedback">
+                      <div *ngIf="f.assignedto.errors.required"> Please assign the staff</div>
+                     </div>
+
+                </div>
+                </div>
+
+                <!-- </div> -->
+            </div>
+            <div class="col-md-12"  >
+              <div class="form-group">
+                  <label>Remarks</label>
+                  <textarea rows="4" cols="80" [ngClass]="{ 'is-invalid': submitted && f.remarks.errors }"
+                   class="form-control" placeholder="Enter Remarks" formControlName="remarks"></textarea>
+                  <div *ngIf="submitted && f.remarks.errors" class="invalid-feedback">
+                   <div *ngIf="f.remarks.errors.required">Remarks required</div>
+                 </div>
+              </div>
+              </div>
+        </form>
+        </div>
+        <div style="text-align: center;">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal" id="leadSaveModalCloseBtn">Cancel</button>
+          <button type="button" class="btn  blue-ink
+          " (click)="onLeadSave(leadDetails.value)" >Save</button>
+        </div>
+      </div>
+    </div>
+</div>
+<!-- edit lead -->
+<div class="modal fade" id="exampleModalEditAdmin" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel" >Edit Lead</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+          <form  [formGroup]="editLeadForm" #leadDetails="ngForm">
+              <div class="row">
+                  <div class="col-md-6 pr-1">
+                  <div class="form-group">
+                      <label>First Name</label>
+                      <input [ngClass]="{ 'is-invalid': editsubmitted && editForm.firstname.errors }" type="text"  class="form-control"
+                       placeholder="Enter First Name" [(ngModel)]="lead.firstName" formControlName="firstname">
+                      <div *ngIf="editsubmitted && editForm.firstname.errors" class="invalid-feedback">
+                       <div *ngIf="editForm.firstname.errors.required">First Name is required</div>
+                     </div>
+                   </div>
+                  </div>
+                  <div class="col-md-6 pl-1">
+                  <div class="form-group">
+                      <label>Last Name</label>
+                      <input [(ngModel)]="lead.lastName" type="text"  class="form-control"
+                      placeholder="Enter Last Name" [(ngModel)]="lead.lastName" formControlName="lastname">
+                      <!-- <div *ngIf="editsubmitted && editForm.lastname.errors" class="invalid-feedback">
+                        <div *ngIf="editForm.lastname.errors.required">Last Name is required</div>
+                      </div> -->
+                    </div>
+                  </div>
+              </div>
+          <div class="row">
+
+              <div class="col-md-6 pr-1">
+              <div class="form-group">
+                  <label for="email">Email</label>
+                  <input name="email" id="email" type="email"  [(ngModel)]="lead.email"
+                   class="form-control" placeholder="Enter Email" formControlName="email">
+              </div>
+              </div>
+              <div class="col-md-6 pl-1">
+                  <div class="form-group">
+                  <label>Mobile</label>
+                   <input [(ngModel)]="lead.mobile" [ngClass]="{ 'is-invalid': editsubmitted && editForm.mobile.errors }" type="text"  class="form-control"
+                   placeholder="Mobile Number is required" formControlName="mobile">
+                   <div *ngIf="editsubmitted && editForm.mobile.errors" class="invalid-feedback">
+                     <div *ngIf="editForm.mobile.errors.required">Mobile Number is required</div>
+                   </div>
+                  </div>
+              </div>
+          </div>
+
+          <div class="row">
+
+              <div class="col-md-6">
+              <div class="form-group">
+                <label>Course</label>
+                <select class="form-control" (change)="getCourse($event.target)"
+                 aria-label="Default select example" [value]="lead.courseId">
+                  <option *ngFor="let x of courses" value="{{x}}">{{x}}</option>
+               </select>
+
+              </div>
+              </div>
+              <!-- <div class="col-md-6">
+                  <div class="form-group">
+                    <label>Status</label>
+                      <select class="form-control" (change)="onStatusChange($event.target)" aria-label="Default select example"
+                      [value]="lead.status">
+                        <option value="INPROGRESS">INPROGRESS</option>
+                        <option value="CANCELLED">CANCELLED</option>
+                        <option value="CONVERTED">CONVERTED</option>
+                      </select>
+                  </div>
+                  </div> -->
+                  <div class="col-md-6 pr-1">
+                    <div class="form-group">
+                      <label>Sources</label>
+                      <select class="form-control" [value]="lead.source"
+                       (change)="getSource($event.target)" aria-label="Default select example">
+                        <option *ngFor="let x of sources" value="{{x}}">{{x}}</option>
+                     </select>
+                   </div>
+                  </div>
+          </div>
+           <div class="row">
+
+              <div class="col-md-6 pl-1">
+                <!-- <div class="form-group">
+                    <label>Assign to</label>
+
+                    <select class="form-control" (change)="onAssigntoChange($event.target)"
+                    [value]="lead.assignedTo" aria-label="Default select example">
+                      <option *ngFor="let staff of staffDetails" [value]="staff._id">
+                        {{staff.firstName}}
+                      </option>
+                    </select>
+
+                </div> -->
+                </div>
+          </div>
+          <div class="col-md-12"  >
+            <div class="form-group">
+                <label>Remarks</label>
+                <textarea rows="4" cols="80" class="form-control"  [ngClass]="{ 'is-invalid': editsubmitted && editForm.remarks.errors }"
+                  [(ngModel)]="lead.remarks"
+                class="form-control" placeholder="Enter Email" formControlName="remarks">
+               </textarea>
+               <div *ngIf="editsubmitted && editForm.remarks.errors" class="invalid-feedback">
+                <div *ngIf="editForm.remarks.errors.required">Remarks required</div>
+              </div>
+            </div>
+            </div>
+          </form>
+      </div>
+      <div style="text-align: center;">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal"  id="leadUpdateModalCloseBtn">Cancel</button>
+        <button type="button" class="btn  blue-ink
+        " (click)="onLeadUpdate(lead)">Update</button>
+      </div>
+    </div>
+  </div>
+</div>
+<table class="table" id="tblData" style="display: none;">
+  <thead class=" text-primary">
+      <th>
+          Sno
+      </th>
+      
+      <th>
+       Name
+      </th>
+      <th>
+        Email
+       </th>
+       <th>
+        Mobile
+       </th>
+       <th>
+        Created On
+       </th>
+       <th>
+        Closed On
+       </th>
+      <th>
+      Course
+      </th>
+      <th>
+        Source
+        </th>
+      <th>
+     status
+      </th>
+      <th>
+        Created By
+      </th>
+      <th>
+        Assigned By
+      </th>
+      <th>
+        Assigned To
+      </th>
+      <th>
+        Assign status
+      </th>
+      <th>
+        Priority Status
+      </th>
+      <th>
+        Remarks
+      </th>
+  </thead>
+  <tbody>
+    <tr *ngFor="let lead of leadDetails1;let i = index;">
+      <td>
+           <a (click)="onViewClick(lead)">{{i+1}}</a>
+      </td>
+     
+      <td>
+        <a (click)="onViewClick(lead)"> {{lead.firstName}} {{lead.lastName}}</a>
+      </td>
+      <td>  <a (click)="onViewClick(lead)"> {{lead.email}}</a>
+       </td>
+       <td> <a (click)="onViewClick(lead)">{{lead.mobile}}</a></td>
+       <td>
+        <a (click)="onViewClick(lead)">{{lead.createdOn | date}} </a>
+   </td>
+   <td>
+    <a (click)="onViewClick(lead)">{{lead.closedOn | date}} </a>
+   </td>
+      <td>
+        
+        <a (click)="onViewClick(lead)">{{lead.courseId}}</a>
+      </td>
+      <td>
+        <a (click)="onViewClick(lead)">{{lead.source}}</a>
+      </td>
+      <td>
+        <a (click)="onViewClick(lead)">{{lead.status}}
+        </a>
+     </td>
+     <td>
+      <a (click)="onViewClick(lead)">{{lead.createdBy.firstName}} {{lead.createdBy.lastName}}</a>
+    </td>
+      <td>
+        <a (click)="onViewClick(lead)">{{lead.assignedBy.firstName}} {{lead.assignedBy.lastName}}</a>
+      </td>
+      <td>
+       <a (click)="onViewClick(lead)">{{lead.assignedTo.firstName}} {{lead.assignedTo.lastName}}</a>
+      </td>
+      <td>
+        <a (click)="onViewClick(lead)">{{lead.assignedStatus}}</a>
+      </td>
+      <td>
+        <a (click)="onViewClick(lead)">{{lead.priorityStatus}}</a>
+      </td>
+      <td>
+        <a (click)="onViewClick(lead)">{{lead.remarks}}</a>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- Change Lead Status -->
+<div class="modal fade" id="leadStatusModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel" >Change Lead Status</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="col-md-12 pr-1"  style="text-align: center;">
+          <label *ngIf="isLeadStatus" style="color: red;">Cannot assign since events are not closed!!</label>
+        </div>
+        <form [formGroup]="addStatusForm" #changeStatusDetails="ngForm">
+          <div class="row">
+              <div class="col-md-12 pr-1" >
+              <div class="form-group">
+                  <label>Select Status</label>
+                  <select class="form-control" (change)="getleadStatusChange($event.target)"
+                  aria-label="Default select example" [value]="leadChangeStatus.status"  [disabled]="isLeadStatus">
+                    <!-- <option disabled selected>{{leadChangeStatus.status}}</option> -->
+                    <option [value]="lead_status.inprogress">{{lead_status.inprogress}}</option>
+                    <option [value]="lead_status.closed">{{lead_status.closed}}</option>
+                    <option [value]="lead_status.converted">{{lead_status.converted}}</option>
+
+                  </select>
+
+                </div>
+              </div>
+                <div class="col-md-12"  >
+                <div class="form-group">
+                    <label>Remarks</label>
+                    <textarea rows="4" cols="80" class="form-control"
+                    [ngClass]="{ 'is-invalid': changeLeadStatus && changeStatus.remarks.errors }"
+                     formControlName="remarks"
+                     placeholder="Enter Remarks" (change)="OnremarkChange($event.target)"></textarea>
+                     <div *ngIf="changeLeadStatus && changeStatus.remarks.errors" class="invalid-feedback">
+                      <div *ngIf="changeStatus.remarks.errors.required">Remarks  required</div>
+                    </div>
+
+                </div>
+                </div>
+
+          </div>
+
+      </form>
+
+      </div>
+      <div style="text-align: center;">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal"  id="leadStatusModalCloseBtn">Cancel</button>
+        <button type="button" class="btn btn-primary blue-ink" (click)="OnStatusStaffChangeFromModal()"  [disabled]="isLeadStatus">Save</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Re-Assign Lead Modal -->
+<div class="modal fade" id="assignStatusModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel" >Assign To</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+          <form [formGroup]="addAssignForm" #changeAssignDetails="ngForm">
+
+              <div class="row">
+                  <div class="col-md-12 pr-1"  style="text-align: center;">
+                  <div class="form-group">
+                      <label *ngIf="!isEventsStatus">Select staff</label>
+                      <label *ngIf="isEventsStatus" style="color: red;">Cannot assign since events are not closed!!</label>
+                      <select class="form-control"
+                      [ngClass]="{ 'is-invalid': assignedsubmitted  && af.assignto.errors }"
+                       (change)="getAssigntoStaffChange($event.target)" formControlName="assignto"
+                        aria-label="Default select example" [disabled]="isEventsStatus">
+                        <option  value="" selected="true">select</option>
+
+                        <option  *ngFor="let staff of staffDetails_noCurrentuser" [value]="staff._id" >
+                          {{staff.firstName}}   {{staff.lastName}}
+                        </option>
+                      </select>
+                      <div *ngIf="assignedsubmitted && af.assignto.errors" class="invalid-feedback">
+                        <div *ngIf="af.assignto.errors.required">Please select staff</div>
+                      </div>
+
+                    </div>
+                  </div>
+
+              </div>
+              <div style="text-align: center;">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" id="leadAssigntoStaffModalCloseBtn">Cancel</button>
+                <button type="button" class="btn blue-ink" (click)="onAssigntoStaffChangeFromModal()" [disabled]="isEventsStatus">Save</button>
+              </div>
+
+          </form>
+      </div>
+       </div>
+  </div>
+</div>
+
+<!-- Call Event Modal -->
+<div class="modal fade" id="callEventModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel" >Create Event</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            <form  [formGroup]="addCallEventForm" #eventDetails="ngForm">
+                <div class="row">
+                    <div class="col-md-6 pr-1">
+                    <div class="form-group">
+                        <label>Lead Name :<b> {{leadForCallEvent.firstName}}&nbsp;{{leadForCallEvent.lastName}}</b></label>
+                      </div>
+                    </div>
+                    <div class="col-md-6 pl-1">
+                    <div class="form-group">
+                      <label>Email : <b>{{leadForCallEvent.email}}</b></label>
+                    </div>
+                    </div>
+                </div>
+            <div class="row">
+
+                 <div class="col-md-12 pr-1">
+                <div class="form-group">
+                    <label for="email">Event Type</label>
+                    <select class="form-control" (change)="getEvent($event.target)" aria-label="Default select example">
+                      <option>Select</option>
+                      <option value="Call">Call </option>
+                      <option value="Visit">Visit</option>
+                      <option value="Walk In">Walk In</option>
+                      <option value="Other">Others</option>
+                    </select>
+                 </div>
+                </div>
+            </div>
+
+             <div class="row">
+                <div class="col-md-6 pr-1">
+                <div class="form-group">
+                    <label>Event Date</label>
+                    <input type="date" class="form-control"
+                     [ngClass]="{ 'is-invalid': calleventsubmitted && cf.date.errors }"
+                     placeholder="Call Date" formControlName="date"
+                     [ngModel] ="currentDate | date:'yyyy-MM-dd'" [min]="getToday()">
+                     <div *ngIf="calleventsubmitted && cf.date.errors"
+                      class="invalid-feedback">
+                      <div *ngIf="cf.date.errors.required"> Call Date is required</div>
+                    </div>
+
+                </div>
+                </div>
+                <div class="col-md-6 pr-1">
+                  <div class="form-group">
+                      <label>Event Time</label>
+                      <input type="time" class="form-control"
+                      [ngClass]="{ 'is-invalid': calleventsubmitted && cf.time.errors }"
+                       placeholder="Call Time"
+                       formControlName="time" [ngModel] ="currentTime">
+                       <div *ngIf="calleventsubmitted && cf.time.errors" class="invalid-feedback">
+                        <div *ngIf="cf.time.errors.required">Call Time is required</div>
+                      </div>
+                    </div>
+                  </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                <div class="form-group">
+                    <label>Remarks</label>
+                    <textarea rows="4" cols="80" class="form-control"
+                     [ngClass]="{ 'is-invalid': calleventsubmitted && cf.remarks.errors }"
+                    placeholder="Enter Remarks" formControlName="remarks"></textarea>
+                    <div *ngIf="calleventsubmitted && cf.remarks.errors" class="invalid-feedback">
+                      <div *ngIf="cf.remarks.errors.required">Remarks required</div>
+                    </div>
+
+                  </div>
+                </div>
+            </div>
+            <div style="text-align: center;">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal"  id="callEventSaveModalCloseBtn">Cancel</button>
+              <button type="button" class="btn btn-primary blue-ink" (click)="onCallEventSave(eventDetails.value)" >Add Event</button>
+            </div>
+          </form>
+        </div>
+
+      </div>
+    </div>
+</div>
+

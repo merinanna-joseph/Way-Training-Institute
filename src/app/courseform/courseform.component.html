@@ -1,0 +1,597 @@
+<app-toast [message]="toast.message"></app-toast>
+<div class="panel-header panel-header-sm">
+    <h4 style="color: white;margin-top: -40px;margin-left: 30px;">
+      {{auth.currentUser.firstName | titlecase}} {{auth.currentUser.lastName | titlecase}} <span *ngIf="auth.isAdmin"> - Admin</span>
+      </h4>
+  </div>
+  <div class="main-content">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-header">
+              <div class="row">
+                  <div class="col-md-8"  style="padding-top: 16px;">
+                      <h4 class="card-title"> Course Management</h4>
+                  </div>
+                  <div class="col-md-4" *ngIf="auth.currentUser.roles[0] != 'teacher'">
+                    <button type="button" *ngIf="showtbl" class="btn btn-danger btn-round"  style="background-color:#112048;" (click)="show()">Create Course</button>
+                    <button type="button" *ngIf="showtbl" class="btn btn-danger btn-round"  style="background-color:#112048;" (click)="ViewCourse()">Delete Course Name and Branch</button>
+
+                  </div>
+              </div>
+              <div class="row">
+                
+                <div class="col-md-4" *ngFor="let x of centers" >
+                  <button type="button"  class="btn btn-danger"  style="background-color:#b2b8c7;color:#112048;height: 80px;" (click)="getCoursesInCenters(x.center)" data-toggle="tooltip"  data-placement="top" title="Click to view courses">{{x.center}}</button>
+
+                </div>
+            </div>
+          </div>
+          <div class="card-body" *ngIf="showtbl && allCourseandFee.length > 0">
+            <div>
+              <table class="table">
+                <thead class=" text-primary"  style="font-size: 14px;">
+                  <th width="8%" class="text-left blue-link-heading">
+                    Name
+
+                    </th>
+                  <th width="18%" class="text-left blue-link-heading">
+                    Board Or University
+
+                  </th>
+
+
+                    <!-- <th  class="text-center blue-link-heading">
+                   Duration
+
+                    </th> -->
+
+                    <th width="20%" class="text-left blue-link-heading">
+                     Branch
+
+                    </th>
+                    <th width="10%" class="text-left blue-link-heading">
+                      Type
+
+                     </th>
+                    <!-- <th  class="text-center blue-link-heading">
+                      Board Or<br>University
+
+                    </th> -->
+                    <th width="10%" class="text-left blue-link-heading" *ngIf="auth.currentUser.roles[0] != 'teacher'">
+                      Total Fee(AED)
+                    </th>
+
+                </thead>
+                <tbody>
+                  <tr *ngFor="let x of allCourseandFee"  style="font-size: 12px;">
+                    <td class="text-left">
+                      <b><a (click)="onViewClick(x)"
+                         style="color:blue;cursor: pointer;">{{x.name}}
+                        </a><br></b>
+                    </td>
+                    <td width="18%" class="text-left" >
+                      {{ (x.boardOrUniversity.boardoruniveristy.length>36)? (x.boardOrUniversity.boardoruniveristy | titlecase | slice:0:35) + '..':(x.boardOrUniversity.boardoruniveristy  | titlecase) }}
+                    </td>
+
+
+                      <td width="20%" class="text-left"  *ngIf="x.branch">{{x.branch | titlecase}}</td>
+                      <td width="20%" class="text-left"  *ngIf="!x.branch">----</td>
+
+                      <td width="10%" class="text-left" *ngIf="x.courseType">{{x.courseType | titlecase}}</td>
+                      <td width="10%" class="text-left" *ngIf="x.feeId && auth.currentUser.roles[0] != 'teacher'">{{x.feeId.totalAmount | currency: " ":"symbol":"3.0"}}</td>
+
+                  </tr>
+
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div class="card-body" *ngIf="!showtbl">
+            <div class="pb-5">
+                <form [formGroup]="addCourseForm">
+                    <div class="row">
+                      <div class="col-md-6 pr-5 pl-5">
+                        <div class="form-group">
+                          <label>Course Name</label>
+                          <!-- <div class="col-md-6"> -->
+                          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+                          <a style="color: blue;cursor: pointer;"
+                            data-toggle="modal" data-target="#addcourseModal">+ Add Course</a>
+                         <!-- </div> -->
+
+                          <select [ngClass]="{ 'is-invalid': submitted && f.coursename.errors }"
+                          placeholder="Enter Course Name" formControlName="coursename"
+                          (change)="onCourseSelection($event)"
+                          class="form-control">
+                           <option value="" selected="true">--Select Course--</option>
+                           <!-- <option *ngFor="let x of courseArray" value="{{x}}">{{x}}</option> -->
+                           <option  *ngFor="let x of allCoursenames" value="{{x._id}}"
+                           >
+                           <p class="fa fa-times" >{{x.coursename}}</p>
+
+
+                          </option>
+
+
+                          </select>
+
+                          <div *ngIf="submitted && f.coursename.errors" class="invalid-feedback">
+                            <div *ngIf="f.coursename.errors.required">Course Name is required</div>
+                          </div>
+                        </div>
+
+                      </div>
+
+                      <div class="col-md-3 pr-5 pl-5">
+                        <div class="form-group">
+                          <label>Duration</label>
+                           <select class="form-control" (change)="durationYear($event)"
+                            aria-label="Default select example"
+                            [ngClass]="{ 'is-invalid': submitted && f.durationInYear.errors }"
+                            formControlName="durationInYear">
+                             <option value="" selected="true">--Select Year--</option>
+                             <option value="0">0 </option>
+                             <option value="1">1 </option>
+                             <option value="2">2</option>
+                             <option value="3">3</option>
+                             <option value="4">4</option>
+                             <option value="5">5</option>
+                           </select>
+                           <div *ngIf="submitted && f.durationInYear.errors" class="invalid-feedback">
+                            <div *ngIf="f.durationInYear.errors.required">Year required</div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-3 pr-5 pl-5">
+                        <div class="form-group">
+                           <label>Month</label>
+                           <select class="form-control" (change)="durationMonth($event)"
+                            aria-label="Default select example"
+                            [ngClass]="{ 'is-invalid': submitted && f.durationInMonths.errors }"
+                            formControlName="durationInMonths">
+                             <option value="" selected="true">--Select Month--</option>
+                             <option value="0">0 </option>
+                             <option value="1">1 </option>
+                             <option value="2">2</option>
+                             <option value="3">3</option>
+                             <option value="4">4</option>
+                             <option value="5">5</option>
+                             <option value="6">6 </option>
+                             <option value="7">7</option>
+                             <option value="8">8</option>
+                             <option value="9">9</option>
+                             <option value="10">10</option>
+                             <option value="11">11</option>
+                             <option value="12">12</option>
+                           </select>
+                           <div *ngIf="submitted && f.durationInMonths.errors" class="invalid-feedback">
+                            <div *ngIf="f.durationInMonths.errors.required">Month required</div>
+                          </div>
+                        </div>
+                      </div>
+
+                    </div>
+                    <div class="row">
+                        <!-- <div class="col-md-6 pr-5 pl-5" *ngIf="!cBBA">
+                          <div class="form-group">
+                            <label>Branch</label>
+                            <select class="form-control" [ngClass]="{ 'is-invalid': submitted && f.branch.errors }"
+                            placeholder="Enter Branch" formControlName="branch">
+                             <option value="" selected="true">--Select Branch--</option>
+                             <option *ngFor="let x of branchArray" value="{{x}}">{{x}}</option>
+                            </select>
+
+                             <div *ngIf="submitted && f.branch.errors" class="invalid-feedback">
+                              <div *ngIf="f.branch.errors.required">Branch is required</div>
+                            </div>
+                          </div>
+                        </div> -->
+                        <div class="col-md-6 pr-5 pl-5" *ngIf="showBranch">
+                            <label>Branch</label>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            &nbsp;&nbsp;&nbsp;
+                            <a style="color: blue;cursor: pointer;"
+                            data-toggle="modal" data-target="#addbranchModal">+ Add Branch</a>
+                          <div class="form-group">
+
+                            <select class="form-control"
+                            placeholder="Enter Branch" formControlName="branch" (change)="onBranchSelection($event)">
+                            <!-- <select class="form-control" [ngClass]="{ 'is-invalid': submitted && f.branch.errors }"
+                            placeholder="Enter Branch" formControlName="branch"> -->
+
+                             <option value="" selected="true">--Select Branch--</option>
+                             <option *ngFor="let x of branchList" value="{{x._id}}">{{x.branch}}</option>
+                            </select>
+
+                            <!-- <input class="form-control" [ngClass]="{ 'is-invalid': submitted && f.branch.errors }"
+                             placeholder="Enter Branch" formControlName="branch"> -->
+                             <!-- <div *ngIf="submitted && f.branch.errors" class="invalid-feedback">
+                              <div *ngIf="f.branch.errors.required">Branch is required</div>
+                            </div> -->
+                          </div>
+                        </div>
+                        <div class="col-md-6 pr-5 pl-5">
+                          <div class="form-group">
+                              <div class="row">
+                                  <div class="col-md-6">
+                                    <label>Board or University</label>
+                                  </div>
+                                   <div class="col-md-6">
+                                     <a style="color: blue;cursor: pointer;"
+                                     data-toggle="modal" data-target="#exampleModal">+ Add Board Or University</a>
+                                  </div>
+                              </div>
+                              <select class="form-control"
+                              aria-label="Default select example"
+                              [ngClass]="{ 'is-invalid': submitted && f.board.errors }"
+                              formControlName="board">
+                               <option value="" selected="true">--Select Board--</option>
+                               <option *ngFor="let x of allUniversities" value="{{x._id}}">{{x.boardoruniveristy}}</option>
+                             </select>
+                             <div *ngIf="submitted && f.board.errors" class="invalid-feedback">
+                              <div *ngIf="f.board.errors.required">Board is required</div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    <div class="row">
+
+                        <div class="col-md-4 pr-1 pl-5">
+                          <div class="form-group">
+                            <label>Course Type</label><br>
+                            <div class="row  pt-2">
+
+                              <div class="col-md-12 pr-1">
+                                <div class="form-group">
+                                  <input type="radio" [ngClass]="{ 'is-invalid': submitted && f.courseType.errors }"
+                                   value="Regular" formControlName="courseType"> Regular
+                                   <input type="radio"  [ngClass]="{ 'is-invalid': submitted && f.courseType.errors }"
+                                   value="Distance" formControlName="courseType"> Distance
+                                   <div *ngIf="submitted && f.courseType.errors" class="invalid-feedback">
+                                    <div *ngIf="f.courseType.errors.required">Course Type is required</div>
+                                  </div>
+                                  </div>
+
+                              </div>
+
+                            </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 pr-5 pl-5">
+                          <div class="form-group">
+                            <label>Starting Year</label>
+                            <input type="month" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.startYear.errors }"
+                            placeholder="Enter Start Year" formControlName="startYear" (change)="onStartYear($event)">
+                            <div *ngIf="submitted && f.startYear.errors" class="invalid-feedback">
+                              <div *ngIf="f.startYear.errors.required">Start Year is required</div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-md-4 pr-5 pl-5">
+                          <div class="form-group">
+                            <label>Ending Year</label>
+                            <input type="month" [(ngModel)]="course.endYear"  class="form-control" [ngClass]="{ 'is-invalid': submitted && f.endYear.errors }"
+                            placeholder="Enter End Year" formControlName="endYear">
+                             <div *ngIf="submitted && f.endYear.errors" class="invalid-feedback">
+                              <div *ngIf="f.endYear.errors.required">End Year is required</div>
+                            </div>
+                          </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                    
+                      <div class="col-md-4 pr-1 pl-5">
+                        <div class="form-group">
+                            <label>Centre Name</label>
+                            <select class="form-control"
+                            class="form-control" formControlName="centers"
+                            (change)="onCentersSelection($event.target)"
+                            [ngClass]="{ 'is-invalid': submitted && f.centers.errors }">
+                             <option value='' selected="true">--Select Centre--</option>
+                             <option *ngFor="let x of centers" value="{{x.center}}">{{x.center}}</option>
+                            </select>
+                            <div *ngIf="submitted && f.centers.errors" class="invalid-feedback">
+                              <div *ngIf="f.centers.errors.required">Select Centre</div>
+                            </div>
+        
+        
+                         </div>
+                    </div>
+        
+                      
+        
+        
+                    </div>
+                 <div class="col text-center">
+                      <button type="button" class="btn btn-danger btn-round" style="background-color:#112048;" (click)="onCourseSave()" [disabled]="showTable">Submit</button>
+                      <button type="button" *ngIf="!showtbl" class="btn btn-danger btn-round"  style="background-color:#112048;" (click)="show()" [disabled]="showTable">Cancel</button>
+
+                  </div>
+                </form>
+
+            </div>
+          </div>
+          <div class="row" *ngIf="showTable">
+            <div class="col-md-8"  style="padding: 16px 33px;margin-top: -56px;">
+              <label style="font-size:20px;color: black;">Fee Allocation - {{course.name}}</label>
+            </div>
+          </div>
+          <div class="row" *ngIf="showTable">
+            <div class="col-md-12">
+              <div class="card-body">
+                <form [formGroup]="feeForm" >
+               <div formArrayName="feeStructure"  >
+                    <table >
+                      <tbody>
+                        <tr>
+                           <th></th>
+                           <th>Registration Fee</th>
+                           <th>Coaching Fee</th>
+                           <th>Exam Fee</th>
+                           <th>Convocation Fee</th>
+                           <th>Attestation Fee</th>
+                           <th>Equalency Fee</th>
+                           <th>Other Fee</th>
+                           <th>Total Fee</th>
+                        </tr>
+                       <tr  *ngFor="let group of getFormData.controls; let i=index"
+                         [formGroupName]="i" >
+                          <td>
+                            <div class="form-group">
+                              <div class="col-sm-12">
+                                <input type="text"
+                                readonly
+                                 class="form-control"
+                                formControlName="year"
+                                >
+                              </div>
+                            </div>
+                          </td>
+                          <td>
+                          <div class="form-group row">
+                            <div class="col-sm-12">
+                              <input  type="number"
+                              class="form-control"
+                               formControlName="registration_fee"
+                               #registration
+                               placeholder="registration"
+                               (keyup)="getTotal(i)">
+                            </div>
+                          </div>
+                         </td>
+                         <td>
+                          <div class="form-group row">
+                            <div class="col-sm-12">
+                              <input type="number"
+                               class="form-control"
+                               formControlName="coaching_fee"
+                               #coaching
+                               placeholder="coaching"
+                               (keyup)="getTotal(i)">
+                            </div>
+                          </div>
+                         </td>
+                         <td>
+                          <div class="form-group row">
+                            <div class="col-sm-12">
+                              <input type="number"
+                               class="form-control"
+                              formControlName="exam_fee"
+                              #exam
+                              placeholder="exam"
+                              (keyup)="getTotal(i)">
+                            </div>
+                          </div>
+                         </td>
+                         <td>
+                          <div class="form-group row">
+                            <div class="col-sm-12">
+                              <input type="number"
+                              class="form-control"
+                               formControlName="convocation_fee"
+                               #convocation
+                               placeholder="convocation"
+                               (keyup)="getTotal(i)">
+                            </div>
+                          </div>
+                        </td>
+                        <td >
+                          <div class="form-group row">
+                            <div class="col-sm-12">
+                              <input type="number"
+                               class="form-control"
+                               formControlName="attestation_fee"
+                               #attestation
+                               placeholder="attestation"
+                               (keyup)="getTotal(i)">
+                            </div>
+                          </div>
+                        </td>
+                        <td >
+                          <div class="form-group row">
+                            <div class="col-sm-12">
+                              <input type="number"
+                              class="form-control"
+                               formControlName="equalency_fee"
+                               #equalency
+                               placeholder="equalency"
+                               (keyup)="getTotal(i)">
+                            </div>
+                          </div>
+                        </td>
+                        <td >
+                          <div class="form-group row">
+                            <div class="col-sm-12">
+                              <input type="number"
+                               class="form-control"
+                               formControlName="other_fee"
+                               #other
+                               placeholder="others"
+                                (keyup)="getTotal(i)">
+                            </div>
+                          </div>
+                        </td>
+                        <td >
+                          <div class="form-group row">
+                            <div class="col-sm-12">
+                              <input type="number"
+                               class="form-control"
+                               placeholder="total"
+                               formControlName="total_fee"
+                               >
+                            </div>
+                          </div>
+                        </td>
+                     </tr>
+                     </tbody>
+                    </table>
+               </div>
+               <div *ngIf="ModeofTotal" >
+                    <p class="text-right"
+                    style="padding-right:80px;
+                    padding-top:40px;">
+                      Total Amount:{{total_Amount}}</p>
+               </div>
+                <button *ngIf="showSavebutton"
+                 type="button"
+                  class="btn btn-round blue-ink"
+                  style="background-color:#112048;
+                  margin-right:10px;float: right;"
+                  (click)="onfeeSave( )" >
+                  Save
+                </button>
+              </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel" >Add Board Or University</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            <form  [formGroup]="addBoardOrUniversityForm" #boardOruniveristyDetails="ngForm">
+                <div class="row">
+                    <div class="col-md-12 pr-1">
+                    <div class="form-group">
+                        <label>Board Or University</label>
+                        <input [ngClass]="{ 'is-invalid': submittedBoardOrUniversity && board.boardoruniveristy.errors }" type="text" class="form-control"
+                         placeholder="Enter Board Or University" formControlName="boardoruniveristy">
+                         <div *ngIf="submittedBoardOrUniversity && board.boardoruniveristy.errors" class="invalid-feedback">
+                          <div *ngIf="board.boardoruniveristy.errors.required">Board or Univeristy is required</div>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+        </form>
+        </div>
+        <div style="text-align: center;">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal" id="boardSaveModalCloseBtn">Cancel</button>
+          <button type="button" class="btn  blue-ink
+          " (click)="saveboardOrUniversity(boardOruniveristyDetails.value)" >Save</button>
+        </div>
+      </div>
+    </div>
+</div>
+<div class="modal fade" id="addcourseModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel" >Add Course</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+          <form  [formGroup]="addCourseNameForm" #courseDetails="ngForm">
+              <div class="row">
+                  <div class="col-md-12 pr-1">
+                  <div class="form-group">
+                      <label>Course Name</label>
+
+                      <input  type="text" class="form-control"
+                       placeholder="Enter Course Name" formControlName="course"
+                       [ngClass]="{ 'is-invalid': submittedCourseName && coursename.course.errors }">
+
+                       <!-- <input [ngClass]="{ 'is-invalid': submittedBoardOrUniversity && board.boardoruniveristy.errors }" type="text" class="form-control"
+                       placeholder="Enter Course Name" formControlName="boardoruniveristy"> -->
+                       <div *ngIf="submittedCourseName && coursename.course.errors" class="invalid-feedback">
+                        <div *ngIf="coursename.course.errors.required">Course Name is required</div>
+                      </div>
+                  </div>
+                  </div>
+              </div>
+      </form>
+      </div>
+      <div style="text-align: center;">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" id="courseSaveModalCloseBtn">Cancel</button>
+        <button type="button" class="btn  blue-ink
+        " (click)="saveCourse(courseDetails.value)" >Save</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<div class="modal fade" id="addbranchModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel" >Add Branch</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+          <form  [formGroup]="addBranchForm" #branchDetails="ngForm">
+              <div class="row">
+                  <div class="col-md-12 pr-1">
+                  <div class="form-group">
+                      <label>Branch Name</label>
+
+                      <input  type="text" class="form-control"
+                       placeholder="Enter Branch Name" formControlName="branch"
+                       [ngClass]="{ 'is-invalid': submittedCourseName && coursename.course.errors }">
+
+                       <!-- <input [ngClass]="{ 'is-invalid': submittedBoardOrUniversity && board.boardoruniveristy.errors }" type="text" class="form-control"
+                       placeholder="Enter Course Name" formControlName="boardoruniveristy"> -->
+                       <!-- <div *ngIf="submittedCourseName && coursename.course.errors" class="invalid-feedback">
+                        <div *ngIf="coursename.course.errors.required">Course Name is required</div>
+                      </div> -->
+                  </div>
+                  </div>
+              </div>
+      </form>
+      </div>
+      <div style="text-align: center;">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" id="branchSaveModalCloseBtn">Cancel</button>
+        <button type="button" class="btn  blue-ink
+        " (click)="saveBranch(branchDetails.value)" >Save</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
