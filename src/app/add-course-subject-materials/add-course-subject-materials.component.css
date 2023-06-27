@@ -62,7 +62,7 @@ input#file {
   }
   .blue-ink
   {
-  background: #112048;
+  background: #7e120e;
   }
   .node:hover .close {
     display:inline-flex
@@ -84,7 +84,7 @@ input#file {
   }
   
   .next {
-    background-color: #112048;
+    background-color: #7e120e;
     color: white;
   }
   

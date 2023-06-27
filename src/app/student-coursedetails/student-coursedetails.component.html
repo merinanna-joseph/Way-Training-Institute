@@ -4,7 +4,7 @@
     {{ auth.currentUser.firstName | titlecase }}
     {{ auth.currentUser.lastName | titlecase }}
     <span *ngIf="auth.isAdmin"> - Admin</span>
-    <span style="color: #112048;font-size: 15px;">({{ student.studentCourse[0].course_name }}
+    <span style="color: #7e120e;font-size: 15px;">({{ student.studentCourse[0].course_name }}
       <span *ngIf="student.studentCourse[0].course_branch">-{{ student.studentCourse[0].course_branch | titlecase }} -
       </span>
     <span *ngIf="!student.studentCourse[0].course_branch">-</span>
@@ -55,7 +55,7 @@
         <br>
           <div class="row">
             <div class="col-lg-12 col-md-12 col-sm-12 text-center"    >
-              <button type="button"  class="btn btn-outline-success"style="padding:11px 18px;background-color:#112048;" (click)="getStudymaterials(x._id,x.subject)">
+              <button type="button"  class="btn btn-outline-success"style="padding:11px 18px;background-color:#7e120e;" (click)="getStudymaterials(x._id,x.subject)">
                 View Materials</button>
                 </div>
             
@@ -100,12 +100,12 @@
           <br>
           <div class="row">
             <div class="col-lg-6 col-md-6 col-sm-6 text-left"   >
-              <button type="button"  class="btn btn-outline-success"style="padding:11px 18px;background-color:#112048;" (click)="getImageofstudymaterials(y.materials,y.name)">
+              <button type="button"  class="btn btn-outline-success"style="padding:11px 18px;background-color:#7e120e;" (click)="getImageofstudymaterials(y.materials,y.name)">
                 View files</button>
                 
             </div>
             <div class="col-lg-6 col-md-6 col-sm-6 text-right">
-              <button type="button" class="btn btn-outline-success"style="padding:11px 25px;background-color:#112048;" (click)="onstudymaterialbackClick()"  >
+              <button type="button" class="btn btn-outline-success"style="padding:11px 25px;background-color:#7e120e;" (click)="onstudymaterialbackClick()"  >
                 Back</button>
                </div>
           </div>
@@ -210,11 +210,11 @@
 <br>
           <div class="row">
             <div class="col-lg-6 col-md-6 col-sm-6 text-left"  >
-              <button type="button"  class="btn btn-outline-success"style="padding:11px 18px;background-color:#112048;" (click)="downloadAllStudyMaterials()">
+              <button type="button"  class="btn btn-outline-success"style="padding:11px 18px;background-color:#7e120e;" (click)="downloadAllStudyMaterials()">
                 Download All</button>
                </div>
             <div class="col-lg-6 col-md-6 col-sm-6 text-right">
-              <button type="button" class="btn btn-outline-success"style="padding:11px 25px;background-color:#112048;" (click)="onfilesbackClick()"  >
+              <button type="button" class="btn btn-outline-success"style="padding:11px 25px;background-color:#7e120e;" (click)="onfilesbackClick()"  >
                 Back</button>
                </div>
           </div>
@@ -313,8 +313,8 @@
                   <table border="1">
                     <tbody>
                       <tr>
-                        <th style="font-size: 12px;color:#112048;">Year &nbsp;</th>
-                        <th style="font-size: 12px;color:#112048;">Subject &nbsp;</th>
+                        <th style="font-size: 12px;color:#7e120e;">Year &nbsp;</th>
+                        <th style="font-size: 12px;color:#7e120e;">Subject &nbsp;</th>
                        
 
                       </tr>
@@ -342,7 +342,7 @@
                     
                     <tbody  > 
                       <tr>
-                        <th style="font-size: 12px;color:#112048;">Materials &nbsp;</th>
+                        <th style="font-size: 12px;color:#7e120e;">Materials &nbsp;</th>
                        
 
                       </tr>

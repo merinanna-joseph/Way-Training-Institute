@@ -64,6 +64,7 @@
     "nouislider": "14.6.3",
     "perfect-scrollbar": "1.5.0",
     "popper.js": "^1.14.3",
+    "postcss": "^8.4.24",
     "rellax": "1.12.1",
     "rxjs": "~6.6.0",
     "tether": "^1.4.7",

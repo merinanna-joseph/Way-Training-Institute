@@ -11,13 +11,13 @@
       </div>
       
         <div class="col-lg-4 col-md-4 col-sm-12 text-center"  (click) = "viewBalance(filter_year[selectedIndex])" >
-          <button type="button" *ngIf="showBalanceFees" class="btn btn-outline-success"style="padding:11px 18px;background-color:#112048;">
+          <button type="button" *ngIf="showBalanceFees" class="btn btn-outline-success"style="padding:11px 18px;background-color:#7e120e;">
             Outstanding Fees</button>
             <button type="button" *ngIf="!showBalanceFees" class="btn btn-outline-success"style="padding:11px 18px;">
               Outstanding Fees</button>
         </div>
         <div class="col-lg-4 col-md-4 col-sm-12 text-center">
-          <button type="button" *ngIf="showCollectedFees" class="btn btn-outline-success"style="padding:11px 25px;background-color:#112048;"  (click) = "viewCollectedFees(filter_year[selectedIndex])" >
+          <button type="button" *ngIf="showCollectedFees" class="btn btn-outline-success"style="padding:11px 25px;background-color:#7e120e;"  (click) = "viewCollectedFees(filter_year[selectedIndex])" >
             Collected Fees</button>
             <button type="button" *ngIf="!showCollectedFees" class="btn btn-outline-success"style="padding:11px 25px;"  (click) = "viewCollectedFees(filter_year[selectedIndex])" >
               Collected Fees</button>
@@ -80,13 +80,13 @@
 
         <!-- <div class="row">
           <div class="col-lg-6 col-md-6 col-sm-6 text-left"  (click) = "viewTotalBalanceFees(filter_year[selectedIndex])" >
-            <button type="button" *ngIf="showTotalBalanceFees" class="btn btn-outline-success"style="padding:11px 18px;background-color:#112048;">
+            <button type="button" *ngIf="showTotalBalanceFees" class="btn btn-outline-success"style="padding:11px 18px;background-color:#7e120e;">
               Outstanding Fees</button>
               <button type="button" *ngIf="!showTotalBalanceFees" class="btn btn-outline-success"style="padding:11px 18px;">
                 Outstanding Fees</button>
           </div>
           <div class="col-lg-6 col-md-6 col-sm-6 text-right">
-            <button type="button" *ngIf="showTotalCollectedFees" class="btn btn-outline-success"style="padding:11px 25px;background-color:#112048;"  (click) = "viewTotalCollectedFees()" >
+            <button type="button" *ngIf="showTotalCollectedFees" class="btn btn-outline-success"style="padding:11px 25px;background-color:#7e120e;"  (click) = "viewTotalCollectedFees()" >
               Collected Fees</button>
               <button type="button" *ngIf="!showTotalCollectedFees" class="btn btn-outline-success"style="padding:11px 25px;"  (click) = "viewTotalCollectedFees()" >
                 Collected Fees</button>

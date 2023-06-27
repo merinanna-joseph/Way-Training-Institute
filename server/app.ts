@@ -58,16 +58,16 @@ if (process.env.NODE_ENV === 'test') {
 }
 
 (mongoose as any).Promise = global.Promise;
-mongoose.connect(mongodbURI,{ useNewUrlParser: true,useUnifiedTopology: true })
+mongoose.connect(mongodbURI,{ useNewUrlParser: true,useUnifiedTopology: true,})
   .then(db => {
-    console.log('Connected to MongoDB');
+    console.log('Connected to MongoDB',mongodbURI);
     setRoutes(app);
     app.get('/*', function(req, res) {
       res.sendFile(path.join(__dirname, '../client/index.html'));
     });
-
+    app.get('port')
     if (!module.parent) {
-      app.listen(app.get('port'), () => console.log(`App listening on port ${app.get('port')}`));
+      app.listen(app.get('port'), () => console.log(`App listening on portsssssssssssssssssssssss ${app.get('port')}`));
     }
   })
   .catch(err => console.error(err));

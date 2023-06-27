@@ -514,9 +514,9 @@
 
 
                            <div class="col text-center">
-                               <button type="button" *ngIf="closingAdmission" class="btn btn-danger btn-round" style="background-color:#112048;" data-toggle="modal" data-target="#closingConfirmModal">Collect</button>
-                                <button type="button" *ngIf="!closingAdmission" class="btn btn-danger btn-round" style="background-color:#112048;" [disabled]="clicked" (click)="clicked = true;onFeeCollectSave();">Collect</button>
-                                <button type="button"  class="btn btn-danger btn-round"  style="background-color:#112048;" (click)="onCancelClick()">Cancel</button>
+                               <button type="button" *ngIf="closingAdmission" class="btn btn-danger btn-round" style="background-color:#7e120e;" data-toggle="modal" data-target="#closingConfirmModal">Collect</button>
+                                <button type="button" *ngIf="!closingAdmission" class="btn btn-danger btn-round" style="background-color:#7e120e;" [disabled]="clicked" (click)="clicked = true;onFeeCollectSave();">Collect</button>
+                                <button type="button"  class="btn btn-danger btn-round"  style="background-color:#7e120e;" (click)="onCancelClick()">Cancel</button>
                             </div>
                           </form>
                       </div>
@@ -544,10 +544,10 @@
     <table >
       <tbody>
         <tr>
-          <th width="60%" style="text-align: left;color:#112048;">
+          <th width="60%" style="text-align: left;color:#7e120e;">
             <img src="../assets/favicon.jpeg" alt="..." width="50" height="50">
             </th>
-            <th width="100%" style="text-align: center;font-size: 20px;color:#112048;">TIMES EDUCATION</th>
+            <th width="100%" style="text-align: center;font-size: 20px;color:#7e120e;">TIMES EDUCATION</th>
         </tr>
 
 
@@ -813,8 +813,8 @@
       </div>
       <div style="text-align: center;">
         <button type="button" class="btn btn-secondary" data-dismiss="modal"  id="admissioncloseModalCloseBtn">Cancel</button>
-        <button type="button" *ngIf="!dropout_confirmNO" class="btn" style="background:#112048;" [disabled]="clicked"  (click)="clicked = true;onFeeCollectSave();" >Collect</button>
-        <button type="button" *ngIf="dropout_confirmNO" class="btn" style="background:#112048;" [disabled]="clicked"  (click)="clicked = true;onFeeCollectSave();" >Collect</button>
+        <button type="button" *ngIf="!dropout_confirmNO" class="btn" style="background:#7e120e;" [disabled]="clicked"  (click)="clicked = true;onFeeCollectSave();" >Collect</button>
+        <button type="button" *ngIf="dropout_confirmNO" class="btn" style="background:#7e120e;" [disabled]="clicked"  (click)="clicked = true;onFeeCollectSave();" >Collect</button>
 
 
       </div>
