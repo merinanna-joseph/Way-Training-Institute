@@ -24,7 +24,7 @@
 
           </div>
           <div class="col-md-4 col-lg-4 col-sm-12" *ngIf="auth.currentUser.roles[0] != 'teacher'">
-            <button type="button" class="btn btn-danger btn-round"  style="background-color:#112048;" (click)="gotoCourseEdit()">Create New Fees</button>
+            <button type="button" class="btn btn-danger btn-round"  style="background-color:#7e120e;" (click)="gotoCourseEdit()">Create New Fees</button>
           </div>
           
       </div>
@@ -49,7 +49,7 @@
                     </div>
                     <!-- create subject year wise -->
                     <!-- <div class="col-lg-4 col-md-4 col-sm-12" *ngIf="isCollapsed[i]">
-                      <button type="button" class="btn btn-outline-success"  style="cursor: pointer;padding:11px 18px;background-color:#112048;" 
+                      <button type="button" class="btn btn-outline-success"  style="cursor: pointer;padding:11px 18px;background-color:#7e120e;" 
                       (click)="feeYear(course_year[selectedIndex])"  data-toggle="tooltip" 
                       data-placement="top" title="Click to add subjects"aria-hidden="true" data-toggle="modal"
                                   data-target="#addsubjectModal">Create Subject</button>  &nbsp;
@@ -103,11 +103,11 @@
                             <br>
                               <div class="row">
                                 <div class="col-lg-6 col-md-6 col-sm-12 text-left"    >
-                                  <button type="button"  class="btn btn-outline-success"style="padding:11px 18px;background-color:#112048;" (click)="getStudymaterials(x._id,x.subject)">
+                                  <button type="button"  class="btn btn-outline-success"style="padding:11px 18px;background-color:#7e120e;" (click)="getStudymaterials(x._id,x.subject)">
                                     View Materials</button>
                                 </div>
                                 <div class="col-lg-6 col-md-6 col-sm-12 text-right">
-                                  <button type="button" class="btn btn-outline-success"style="padding:11px 25px;background-color:#112048;cursor: pointer" 
+                                  <button type="button" class="btn btn-outline-success"style="padding:11px 25px;background-color:#7e120e;cursor: pointer" 
                                   data-toggle="tooltip" data-placement="top" title="Click to add study materials"
                                   aria-hidden="true" data-toggle="modal"
                                   
@@ -172,13 +172,13 @@
                                 <br>
                                 <div class="row">
                                   <div class="col-lg-6 col-md-6 col-sm-12 text-left"   >
-                                    <button type="button"  class="btn btn-outline-success"style="padding:11px 18px;background-color:#112048;" (click)="getImageofstudymaterials(y,y.materials,y.name)">
+                                    <button type="button"  class="btn btn-outline-success"style="padding:11px 18px;background-color:#7e120e;" (click)="getImageofstudymaterials(y,y.materials,y.name)">
                                       View files</button>
                                       
                                   </div>
                                   
                                   <div class="col-lg-6 col-md-6 col-sm-12 text-right">
-                                    <button type="button" class="btn btn-outline-success"style="padding:11px 25px;background-color:#112048;" (click)="onstudymaterialbackClick()"  >
+                                    <button type="button" class="btn btn-outline-success"style="padding:11px 25px;background-color:#7e120e;" (click)="onstudymaterialbackClick()"  >
                                       Back</button>
                                     </div>
                                 </div>
@@ -274,11 +274,11 @@
                       <br>
                               <div class="row">
                                 <div class="col-lg-6 col-md-6 col-sm-6 text-left"  >
-                                  <button type="button"  class="btn btn-outline-success"style="padding:11px 18px;background-color:#112048;" (click)="downloadAllStudyMaterials()">
+                                  <button type="button"  class="btn btn-outline-success"style="padding:11px 18px;background-color:#7e120e;" (click)="downloadAllStudyMaterials()">
                                     Download All</button>
                                   </div>
                                 <div class="col-lg-6 col-md-6 col-sm-6 text-right">
-                                  <button type="button" class="btn btn-outline-success"style="padding:11px 25px;background-color:#112048;" (click)="onfilesbackClick()"  >
+                                  <button type="button" class="btn btn-outline-success"style="padding:11px 25px;background-color:#7e120e;" (click)="onfilesbackClick()"  >
                                     Back</button>
                                   </div>
                               </div>
@@ -305,15 +305,15 @@
                           <table border="1">
                             <tbody>
                               <tr>
-                                <th style="font-size: 12px;color:#112048;">Year &nbsp;</th>
-                                <th style="font-size: 12px;color:#112048;">Registration &nbsp;</th>
-                                <th style="font-size: 12px;color:#112048;">Coaching &nbsp;</th>
-                                <th style="font-size: 12px;color:#112048;">Exam &nbsp;</th>
-                                <th style="font-size: 12px;color:#112048;">Convocation &nbsp;</th>
-                                <th style="font-size: 12px;color:#112048;">Attestation &nbsp;</th>
-                                <th style="font-size: 12px;color:#112048;">Equalency &nbsp;</th>
-                                <th style="font-size: 12px;color:#112048;">Other &nbsp;</th>
-                                <th  style="font-size: 12px;color:#112048;">Total <br>Fee&nbsp;</th>
+                                <th style="font-size: 12px;color:#7e120e;">Year &nbsp;</th>
+                                <th style="font-size: 12px;color:#7e120e;">Registration &nbsp;</th>
+                                <th style="font-size: 12px;color:#7e120e;">Coaching &nbsp;</th>
+                                <th style="font-size: 12px;color:#7e120e;">Exam &nbsp;</th>
+                                <th style="font-size: 12px;color:#7e120e;">Convocation &nbsp;</th>
+                                <th style="font-size: 12px;color:#7e120e;">Attestation &nbsp;</th>
+                                <th style="font-size: 12px;color:#7e120e;">Equalency &nbsp;</th>
+                                <th style="font-size: 12px;color:#7e120e;">Other &nbsp;</th>
+                                <th  style="font-size: 12px;color:#7e120e;">Total <br>Fee&nbsp;</th>
 
                               </tr>
                              <tr *ngFor = "let fee of details.feeId.feeStructure;let i = index;">
@@ -409,7 +409,7 @@
       </div>
       <div style="text-align: center;">
         <button type="button" class="btn btn-secondary" data-dismiss="modal"  id="submittedCourseDeleteModalCloseBtn">Cancel</button>
-        <button type="button" class="btn" style="background:#112048;"  (click)="onCourseDelete()" >Delete</button>
+        <button type="button" class="btn" style="background:#7e120e;"  (click)="onCourseDelete()" >Delete</button>
 
       </div>
     </div>
@@ -655,7 +655,7 @@
       </div>
       <div style="text-align: center;">
         <button type="button" class="btn btn-secondary" data-dismiss="modal"  id="imagesDeleteModalCloseBtn">Cancel</button>
-        <button type="button" class="btn" style="background:#112048;" (click)="deleteImages()">Delete</button>
+        <button type="button" class="btn" style="background:#7e120e;" (click)="deleteImages()">Delete</button>
 
       </div>
     </div>

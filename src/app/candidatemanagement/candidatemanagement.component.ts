@@ -297,40 +297,41 @@ export class CandidatemanagementComponent implements OnInit {
             this.studentsWithCurrentYear.push(data[i].items[0]);
           }
         }
-        for (let p = 0; p < this.studentsWithCurrentYear.length; p++) {
-          if (this.studentsWithCurrentYear[p].fee_per_year[0]) {
-            if (
-              this.studentsWithCurrentYear[p].fee_per_year[0].year ==
-              this.currentYear_Pair
-            ) {
-              this.students.push(this.studentsWithCurrentYear[p]);
-            }
-          }
-          if (this.studentsWithCurrentYear[p].fee_per_year[1]) {
-            if (
-              this.studentsWithCurrentYear[p].fee_per_year[1].year ==
-              this.currentYear_Pair
-            ) {
-              this.students.push(this.studentsWithCurrentYear[p]);
-            }
-          }
-          if (this.studentsWithCurrentYear[p].fee_per_year[2]) {
-            if (
-              this.studentsWithCurrentYear[p].fee_per_year[2].year ==
-              this.currentYear_Pair
-            ) {
-              this.students.push(this.studentsWithCurrentYear[p]);
-            }
-          }
-          if (this.studentsWithCurrentYear[p].fee_per_year[3]) {
-            if (
-              this.studentsWithCurrentYear[p].fee_per_year[3].year ==
-              this.currentYear_Pair
-            ) {
-              this.students.push(this.studentsWithCurrentYear[p]);
-            }
-          }
-        }
+        // for (let p = 0; p < this.studentsWithCurrentYear.length; p++) {
+        //   if (this.studentsWithCurrentYear[p].fee_per_year[0]) {
+        //     if (
+        //       this.studentsWithCurrentYear[p].fee_per_year[0].year ==
+        //       this.currentYear_Pair
+        //     ) {
+        //       this.students.push(this.studentsWithCurrentYear[p]);
+        //     }
+        //   }
+        //   if (this.studentsWithCurrentYear[p].fee_per_year[1]) {
+        //     if (
+        //       this.studentsWithCurrentYear[p].fee_per_year[1].year ==
+        //       this.currentYear_Pair
+        //     ) {
+        //       this.students.push(this.studentsWithCurrentYear[p]);
+        //     }
+        //   }
+        //   if (this.studentsWithCurrentYear[p].fee_per_year[2]) {
+        //     if (
+        //       this.studentsWithCurrentYear[p].fee_per_year[2].year ==
+        //       this.currentYear_Pair
+        //     ) {
+        //       this.students.push(this.studentsWithCurrentYear[p]);
+        //     }
+        //   }
+        //   if (this.studentsWithCurrentYear[p].fee_per_year[3]) {
+        //     if (
+        //       this.studentsWithCurrentYear[p].fee_per_year[3].year ==
+        //       this.currentYear_Pair
+        //     ) {
+        //       this.students.push(this.studentsWithCurrentYear[p]);
+        //     }
+        //   }
+        // }
+        this.students = this.studentsWithCurrentYear;
         this.students.reverse();
         if(this.courseID_local == null){
           this.local_Storage_Sort();
@@ -1040,16 +1041,19 @@ export class CandidatemanagementComponent implements OnInit {
         this.showtable = true;
       }
     } else if (this.sortCenter) {
+      // alert("hi")
       if (this.sortCenter == 'ALL') {
         this.filtered_students = this.students;
         this.filtered_students_count = this.filtered_students.length;
         this.showtable = true;
       } else {
+        // alert("yes")
         this.filtered_students = this.students.filter(
           (x) => x.studentId.centers == this.sortCenter
         );
         this.filtered_students_count = this.filtered_students.length;
         this.showtable = true;
+        console.log(this.filtered_students,"ooo")
       }
     }
   }

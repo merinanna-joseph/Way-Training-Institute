@@ -41,9 +41,9 @@
 
                   <p style="margin-top: 24px;font-size: large;"  >{{lead.status | titlecase}}<button  [disabled]="lead.status != lead_status.inprogress ||
                     lead.assignedStatus == lead_assignment_status.requested" class="btn btn-neutral" type="button"style="padding: 8px;font-size: 12px;" (click)="onleadStatusClick(lead)"  data-toggle="tooltip" data-placement="top"  title="Change Status" data-toggle="modal" data-target="#leadStatusModal" >
-                    <i class="now-ui-icons tech_watch-time" style="font-size: medium;color:#112048;"></i></button> </p>
+                    <i class="now-ui-icons tech_watch-time" style="font-size: medium;color:#7e120e;"></i></button> </p>
                     <p style="margin-top: -20px;font-size: large;" *ngIf="lead.priorityStatus">{{lead.priorityStatus | titlecase}}<button   class="btn btn-neutral" type="button"style="padding: 8px;font-size: 12px;" (click)="onleadPriorityStatusClick(lead)"  data-toggle="tooltip" data-placement="top"  title="Change Priority Status" data-toggle="modal" data-target="#leadPriorityStatusModal" >
-                      <i class="now-ui-icons tech_watch-time" style="font-size: medium;color:#112048;"></i></button> </p>
+                      <i class="now-ui-icons tech_watch-time" style="font-size: medium;color:#7e120e;"></i></button> </p>
                
                     <!-- <select  style="margin-top: 30px;" class="form-control" (change)="getleadStatusChange($event.target,lead)"
                   aria-label="Default select example" [value]="lead.status">
@@ -99,7 +99,7 @@
 
            </div>
            <div class="col text-right" *ngIf="lead.status == lead_status.inprogress && (lead.assignedStatus == lead_assignment_status.accepted || lead.assignedStatus == lead_assignment_status.rejected)" >
-            <button type="button"style="padding: 8px 14px;font-size: 12px;" class="btn btn-danger btn-round" (click)="onCallEventClick(lead)" data-toggle="modal" data-target="#callEventModal" style="background-color:#112048;">Create Event</button>
+            <button type="button"style="padding: 8px 14px;font-size: 12px;" class="btn btn-danger btn-round" (click)="onCallEventClick(lead)" data-toggle="modal" data-target="#callEventModal" style="background-color:#7e120e;">Create Event</button>
 
           </div>
           </div>
@@ -405,7 +405,7 @@
             </div>
             <div style="text-align: center;">
               <button type="button" class="btn btn-secondary" data-dismiss="modal"  id="callEventSaveModalCloseBtn">Cancel</button>
-              <button type="button" class="btn btn-primary" (click)="onCallEventSave(eventDetails.value)"style="background-color:#112048;" >Add Event</button>
+              <button type="button" class="btn btn-primary" (click)="onCallEventSave(eventDetails.value)"style="background-color:#7e120e;" >Add Event</button>
             </div>
           </form>
         </div>
@@ -466,7 +466,7 @@
       </div>
       <div style="text-align: center;">
         <button type="button" class="btn btn-secondary" data-dismiss="modal"  id="leadStatusModalCloseBtn">Cancel</button>
-        <button type="button" class="btn btn-primary" (click)="OnStatusStaffChange()" [disabled]="isEventsStatus" style="background-color:#112048;">Save</button>
+        <button type="button" class="btn btn-primary" (click)="OnStatusStaffChange()" [disabled]="isEventsStatus" style="background-color:#7e120e;">Save</button>
       </div>
     </div>
   </div>
@@ -506,7 +506,7 @@
       </div>
       <div style="text-align: center;">
         <button type="button" class="btn btn-secondary" data-dismiss="modal" id="leadAssigntoStaffModalCloseBtn">Close</button>
-        <button type="button" class="btn btn-primary" (click)="onAssigntoStaffChange()" style="background-color:#112048;">Save</button>
+        <button type="button" class="btn btn-primary" (click)="onAssigntoStaffChange()" style="background-color:#7e120e;">Save</button>
       </div>
     </div>
   </div>
@@ -564,7 +564,7 @@
       </div>
       <div style="text-align: center;">
         <button type="button" class="btn btn-secondary" data-dismiss="modal"  id="eventStatusStaffModalCloseBtn"  (click)="closeEventStatus()">Cancel</button>
-        <button type="button" class="btn btn-primary" (click)="OneventStatusStaffChange()"style="background-color:#112048;" >Save</button>
+        <button type="button" class="btn btn-primary" (click)="OneventStatusStaffChange()"style="background-color:#7e120e;" >Save</button>
       </div>
     </div>
   </div>
@@ -639,7 +639,7 @@
       </div>
       <div style="text-align: center;">
         <button type="button" class="btn btn-secondary" data-dismiss="modal"  id="leadPriorityStatusModalCloseBtn">Cancel</button>
-        <button type="button" class="btn btn-primary" (click)="OnPriorityStatusStaffChange()" [disabled]="isEventsStatus" style="background-color:#112048;">Save</button>
+        <button type="button" class="btn btn-primary" (click)="OnPriorityStatusStaffChange()" [disabled]="isEventsStatus" style="background-color:#7e120e;">Save</button>
       </div>
     </div>
   </div>

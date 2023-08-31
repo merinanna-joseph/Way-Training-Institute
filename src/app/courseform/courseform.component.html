@@ -14,15 +14,15 @@
                       <h4 class="card-title"> Course Management</h4>
                   </div>
                   <div class="col-md-4" *ngIf="auth.currentUser.roles[0] != 'teacher'">
-                    <button type="button" *ngIf="showtbl" class="btn btn-danger btn-round"  style="background-color:#112048;" (click)="show()">Create Course</button>
-                    <button type="button" *ngIf="showtbl" class="btn btn-danger btn-round"  style="background-color:#112048;" (click)="ViewCourse()">Delete Course Name and Branch</button>
+                    <button type="button" *ngIf="showtbl" class="btn btn-danger btn-round"  style="background-color:#7e120e;" (click)="show()">Create Course</button>
+                    <button type="button" *ngIf="showtbl" class="btn btn-danger btn-round"  style="background-color:#7e120e;" (click)="ViewCourse()">Delete Course Name and Branch</button>
 
                   </div>
               </div>
               <div class="row">
                 
                 <div class="col-md-4" *ngFor="let x of centers" >
-                  <button type="button"  class="btn btn-danger"  style="background-color:#b2b8c7;color:#112048;height: 80px;" (click)="getCoursesInCenters(x.center)" data-toggle="tooltip"  data-placement="top" title="Click to view courses">{{x.center}}</button>
+                  <button type="button"  class="btn btn-danger"  style="background-color:#b2b8c7;color:#7e120e;height: 80px;" (click)="getCoursesInCenters(x.center)" data-toggle="tooltip"  data-placement="top" title="Click to view courses">{{x.center}}</button>
 
                 </div>
             </div>
@@ -293,8 +293,8 @@
         
                     </div>
                  <div class="col text-center">
-                      <button type="button" class="btn btn-danger btn-round" style="background-color:#112048;" (click)="onCourseSave()" [disabled]="showTable">Submit</button>
-                      <button type="button" *ngIf="!showtbl" class="btn btn-danger btn-round"  style="background-color:#112048;" (click)="show()" [disabled]="showTable">Cancel</button>
+                      <button type="button" class="btn btn-danger btn-round" style="background-color:#7e120e;" (click)="onCourseSave()" [disabled]="showTable">Submit</button>
+                      <button type="button" *ngIf="!showtbl" class="btn btn-danger btn-round"  style="background-color:#7e120e;" (click)="show()" [disabled]="showTable">Cancel</button>
 
                   </div>
                 </form>
@@ -445,7 +445,7 @@
                 <button *ngIf="showSavebutton"
                  type="button"
                   class="btn btn-round blue-ink"
-                  style="background-color:#112048;
+                  style="background-color:#7e120e;
                   margin-right:10px;float: right;"
                   (click)="onfeeSave( )" >
                   Save

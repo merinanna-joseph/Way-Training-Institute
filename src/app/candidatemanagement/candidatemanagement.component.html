@@ -11,10 +11,10 @@
     </div>
     <div class="row" style="color: white;" >
       <div class="col-lg-6 col-md-6 col-sm-6 text-left" style="margin-left: 30px;" *ngIf="yearloading">
-        <a  class="previous round" *ngIf="showPrevious" (click)="previous()" style="cursor: pointer;">
+        <!-- <a  class="previous round" *ngIf="showPrevious" (click)="previous()" style="cursor: pointer;">
           &#8249;</a>
         {{export_year[selectedIndex]}}
-        <a  class="next round" *ngIf="showNext" (click)="next()" style="cursor: pointer;">&#8250;</a>
+        <a  class="next round" *ngIf="showNext" (click)="next()" style="cursor: pointer;">&#8250;</a> -->
       </div>
       <div class="col-lg-6 col-md-6 col-sm-6 text-right" style="margin-left: -100px;">
 
@@ -73,16 +73,16 @@
               </div>
 
               <div class="col-md-4 text-right">
-                <button type="button" style="font-size: 18px;padding:6px 8px;background-color:#112048;"
+                <button type="button" style="font-size: 18px;padding:6px 8px;background-color:#7e120e;"
                    class="btn btn-round blue-ink
                    " (click)="clickToExport()"><i class="now-ui-icons arrows-1_cloud-download-93"
                     style="font-weight: bold;"></i></button>
-                 <button type="button"  style="background-color:#112048;padding:11px 10px;"
+                 <button type="button"  style="background-color:#7e120e;padding:11px 10px;"
                  class="btn btn-round blue-ink" (click)="getAllSavedStudents()" *ngIf="isSubmit">Saved Admission</button>
-                <button type="button"  style="background-color:#112048;padding:10px 7px;"
+                <button type="button"  style="background-color:#7e120e;padding:10px 7px;"
                 class="btn btn-round blue-ink" (click)="getAllSubmittedStudents()" *ngIf="isSaved">Submitted Admission</button>
 
-                <button type="button"  style="background-color:#112048;padding:11px 11px;"
+                <button type="button"  style="background-color:#7e120e;padding:11px 11px;"
                  class="btn btn-round blue-ink" (click)="createAdmissionform()">New Admission</button>
 
               </div>
@@ -228,13 +228,13 @@
                     <a
                     data-toggle="tooltip"  data-placement="top" title="Click to filter"
                    (click)="onFilterClick()"><i class="fa fa-filter" aria-hidden="true"
-                    style="color:#112048;font-size: 30px;padding-top: 20px;"></i></a>
+                    style="color:#7e120e;font-size: 30px;padding-top: 20px;"></i></a>
                                   </div>
                   <div class="col-md-1 text-left" *ngIf="isSaved">
                   <a
                     data-toggle="tooltip"  data-placement="top" title="Click to filter"
                     (click)="onFilterClickSave()"><i class="fa fa-filter" aria-hidden="true"
-                    style="color:#112048;font-size: 30px;padding-top: 20px;"></i></a>
+                    style="color:#7e120e;font-size: 30px;padding-top: 20px;"></i></a>
                   </div>
 
                   <div class="col-md-1 text-left">
@@ -242,7 +242,7 @@
                     data-toggle="tooltip" (click)="onResetClick()" data-placement="top"
                     title="Click to reset">
                    <i class="fa fa-refresh" aria-hidden="true"
-                   style="color:#112048;font-size: 30px;padding-top: 20px;"></i></a>
+                   style="color:#7e120e;font-size: 30px;padding-top: 20px;"></i></a>
 
                   </div>
                   <!-- <div class="col-md-3" >
@@ -273,7 +273,7 @@
             </div>    -->
           </div>
           <div class="card-body" >
-            <!-- <button type="button" style="font-size: 18px;padding:6px 8px;background-color:#112048;"
+            <!-- <button type="button" style="font-size: 18px;padding:6px 8px;background-color:#7e120e;"
                    class="btn btn-round blue-ink
                    " (click)="clickToExport1()"><i class="now-ui-icons arrows-1_cloud-download-93" style="font-weight: bold;"></i></button> -->
             <div class="table">
@@ -908,7 +908,7 @@
       </div>
       <div style="text-align: center;">
         <button type="button" class="btn btn-secondary" data-dismiss="modal"  id="savedadmissionDeleteModalCloseBtn">Cancel</button>
-        <button type="button" class="btn" style="background:#112048;"  (click)="onStudentDelete()" >Delete</button>
+        <button type="button" class="btn" style="background:#7e120e;"  (click)="onStudentDelete()" >Delete</button>
 
       </div>
     </div>
@@ -921,10 +921,10 @@
     <table >
       <tbody>
         <tr>
-          <th width="60%" style="text-align: left;color:#112048;">
+          <th width="60%" style="text-align: left;color:#7e120e;">
             <img src="../assets/favicon.jpeg" alt="..." width="50" height="50">
             </th>
-            <th width="100%" style="text-align: center;font-size: 20px;color:#112048;">TIMES EDUCATION</th>
+            <th width="100%" style="text-align: center;font-size: 20px;color:#7e120e;">Way Training Institute</th>
 
           </tr>
 
@@ -1007,10 +1007,10 @@
        <tr>
         <td width="60%" style="text-align: left;">
 
-        {{invoiced_fee.total_fee_per_year}}
+        {{invoiced_fee.total_fee}}
       </td>
         <td width="40%" style="text-align: left;">
-          <p >{{invoiced_fee.balance_fee_per_year}}</p>
+          <p >{{invoiced_fee.balance_fee}}</p>
         </td>
 
       </tr>
@@ -1030,7 +1030,7 @@
 
          </tr>
 
-        <tr>
+        <!-- <tr>
           <th width="80%" style="text-align: left;font-size: 14px;color:#adb1b8;">Registration</th>
           <td width="20%" style="text-align: right;font-size: 14px;"> {{invoiced_fee.registration_fee | currency:' ':'symbol':'3.0'}}</td>
 
@@ -1064,7 +1064,7 @@
           <th width="80%" style="text-align: left;font-size: 14px;color:#adb1b8;">Other</th>
           <td width="20%" style="text-align: right;font-size: 14px;"> {{invoiced_fee.other_fee | currency:' ':'symbol':'3.0'}}</td>
 
-        </tr>
+        </tr> -->
 
         <tr>
           <th width="80%" style="text-align: left;font-size: 14px;color:#adb1b8;">Total Paid Fee</th>
@@ -1077,11 +1077,11 @@
           <td width="20%" style="text-align: right;font-size: 14px;"> {{invoiced_fee.miscellaneous_fee | currency:' ':'symbol':'3.0'}}</td>
 
         </tr>
-        <tr>
+        <!-- <tr>
           <th width="80%" style="text-align: left;font-size: 14px;color:#adb1b8;">Transport Fee</th>
           <td width="20%" style="text-align: right;font-size: 14px;"> {{invoiced_fee.transport_fee | currency:' ':'symbol':'3.0'}}</td>
 
-        </tr>
+        </tr> -->
         <!-- <tr>
           <th width="80%" style="text-align: left;font-size: 14px;color:#adb1b8;">Previous Year Arrear</th>
           <td width="20%" style="text-align: right;font-size: 14px;"> {{invoiced_fee.previousyear_arrear | currency:' ':'symbol':'3.0'}}</td>
@@ -1149,7 +1149,7 @@
   <hr>
   <div style="overflow: hidden;">
     <p style="float: left;font-size:10px;">Office 2104, ADCP Tower - A Behind City Seasons Electra Street Abu Dhabi United Arab Emirates</p>
-    <p style="float: right;font-size:10px;">info@timeseducation.com;+971 55 2269 076</p>
+    <p style="float: right;font-size:10px;">info@theway-institute.com;+971 568547524</p>
 </div>
 
   </footer>
@@ -1702,7 +1702,7 @@
       </div>
       <div style="text-align: center;">
         <button type="button" class="btn btn-secondary" data-dismiss="modal"  id="submittedadmissionDeleteModalCloseBtn">Cancel</button>
-        <button type="button" class="btn" style="background:#112048;"  (click)="onAdmissionDelete()" >Delete</button>
+        <button type="button" class="btn" style="background:#7e120e;"  (click)="onAdmissionDelete()" >Delete</button>
 
       </div>
     </div>

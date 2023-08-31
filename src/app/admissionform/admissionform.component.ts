@@ -469,7 +469,7 @@ saved=false;
             this.lead_officer = this.lead.assignedTo.firstName + " " +this.lead.assignedTo.lastName;
             this.student.lead_officer = this.lead.assignedTo;
             this.student.lead_source = this.lead.source;
-            this.student.password = 'Times123';
+            this.student.password = 'Way123';
             // console.log(this.lead_officer)
 
 
@@ -483,7 +483,7 @@ saved=false;
         this.lead_officer = this.auth.currentUser.firstName + " " + this.auth.currentUser.lastName;
         this.student.lead_officer = this.auth.currentUser._id;
         this.student.lead_source = this.sources[0];
-        this.student.password = 'Times123';
+        this.student.password = 'Way123';
         console.log(this.lead_officer)
 
       }
