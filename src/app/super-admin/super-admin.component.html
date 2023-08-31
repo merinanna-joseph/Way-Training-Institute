@@ -1,0 +1,12 @@
+<button (click)="addAdmin()">Add admin</button><br><br>
+<button (click)="addStaff()">Add staff</button>
+<br>
+<div class="row" *ngIf="addingUser">
+    <div class="col-md-12">
+        <app-add-user [userrole]="role" (onUseradd)="userStatus()"></app-add-user>
+    </div>
+    <!-- <div class="col-md-12" *ngFor="let user of userlist">
+
+        {{user.firstName}}
+    </div> -->
+</div>

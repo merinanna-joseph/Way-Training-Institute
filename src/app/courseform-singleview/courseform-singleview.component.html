@@ -1,0 +1,747 @@
+
+
+<app-toast [message]="toast.message"></app-toast>
+<div class="panel-header panel-header-sm">
+  <h4 style="color: white;margin-top: -40px;margin-left: 30px;">
+    {{auth.currentUser.firstName | titlecase}} {{auth.currentUser.lastName | titlecase}} <span *ngIf="auth.isAdmin"> - Admin</span>
+  </h4>
+ 
+</div>
+<div class="main-content">
+  <div class="row">
+    <div class="col-md-12">
+     <div class="card">
+      <div class="card-header">
+        <div class="row">
+          <div class="col-md-8 col-lg-8 col-sm-12"  style="padding-top: 16px;">
+              <h4 class="card-title">{{Cname}} <span *ngIf="cBranch">{{cBranch | titlecase}}</span> 
+                {{cType | titlecase}} ({{cDuration}}) - 
+                <span *ngIf="courses[0]">
+                  {{courses[0].boardOrUniversity.boardoruniveristy | titlecase}}
+                </span> 
+                <br> {{center | titlecase}}
+              </h4>
+
+          </div>
+          <div class="col-md-4 col-lg-4 col-sm-12" *ngIf="auth.currentUser.roles[0] != 'teacher'">
+            <button type="button" class="btn btn-danger btn-round"  style="background-color:#112048;" (click)="gotoCourseEdit()">Create New Fees</button>
+          </div>
+          
+      </div>
+      </div>
+      <div class="card-body">
+
+          <div>
+
+
+                <ng-container *ngFor="let data of courses;let i = index;">
+                  <div class="row" >
+                    <div class="col-lg-4 col-md-4 col-sm-12" (click)="onExpandClick(i,data)" style="cursor: pointer;">
+                      <b style="cursor: pointer;color: blue !important;">{{ isCollapsed[i] ? '&ndash;' : '+'}} {{ data.startYear | date}}</b>
+                      <button type="button" class="btn btn-neutral blue-link-heading" style="cursor: no-drop;" *ngIf="auth.currentUser.roles[0] != 'teacher'"
+                      data-toggle="tooltip" data-placement="top" title="Delete course and fees"
+                       (click)="deleteCourse(data._id,data.feeId)"
+                     data-toggle="modal" data-target="#submittedCourseDeleteModalCloseBtn">
+                     <i class="fa fa-trash" aria-hidden="true" style="font-size: medium;cursor: no-drop;"></i>
+                      </button>
+                  
+                   
+                    </div>
+                    <!-- create subject year wise -->
+                    <!-- <div class="col-lg-4 col-md-4 col-sm-12" *ngIf="isCollapsed[i]">
+                      <button type="button" class="btn btn-outline-success"  style="cursor: pointer;padding:11px 18px;background-color:#112048;" 
+                      (click)="feeYear(course_year[selectedIndex])"  data-toggle="tooltip" 
+                      data-placement="top" title="Click to add subjects"aria-hidden="true" data-toggle="modal"
+                                  data-target="#addsubjectModal">Create Subject</button>  &nbsp;
+                        <a  class="previous round" *ngIf="showPrevious" (click)="previous(data._id)" style="cursor: pointer;">&#8249;</a>
+                        {{course_year[selectedIndex]}}
+                        <a  class="next round" *ngIf="showNext" (click)="next(data._id)" style="cursor: pointer;">&#8250;</a>
+                    </div> -->
+                    <!-- <div class="col-lg-4 col-md-4 col-sm-12" *ngIf="isCollapsed[i]">
+                      <h6  *ngIf="whenclicked && material_length > 0 && showMaterials"style="color: black;"> 
+                        {{subjectname}}'s Study materials ({{material_length}})
+                        
+                      </h6>
+                     
+                      <h6  *ngIf="showFiles && studymaterialfile_length > 0"style="color: black;"> 
+                       {{studymaterialname}}'s 
+                        Files ({{studymaterialfile_length}})
+                      </h6>
+                     
+                    </div> -->
+                   
+                    </div>
+                    <br>
+                    <!-- <div *ngIf="isCollapsed[i]">
+                      <div class="row" *ngIf="showSubjects">
+                        <div  *ngFor="let x of studentCoursesubjects" class="col-lg-4 col-md-6 col-sm-6">
+                          <div class="card card-stats" >
+                            <div class="card-header card-header-warning card-header-icon">
+                              
+                    
+                              <div class="row">
+                    
+                                <div class="col-lg-12 col-md-12 col-sm-12">
+                                  <h3 class="card-title text-center" style="font-size:1.3em;">{{x.subject}}
+                                    <i  *ngIf="auth.currentUser.roles[0] != 'teacher'" (click)="deleteSubject(x)" data-toggle="tooltip"
+                                      data-placement="top"
+                                      title="Delete subject"
+                                      class="fa fa-trash" aria-hidden="true"
+                                     
+                                      style="font-size: medium;cursor:pointer;color: red;"></i>&nbsp;
+                                      <i *ngIf="auth.currentUser.roles[0] != 'teacher'" (click)="editSubjectname(x)" data-toggle="tooltip"
+                                      data-placement="top"
+                                      title="Edit subject"
+                                      class="fa fa-pencil" aria-hidden="true" data-toggle="modal"
+                                      data-target="#editSubjectModal"
+                                      style="font-size: medium;cursor:pointer;color: rgb(38, 19, 202);"></i>
+                                                  </h3>
+                    
+                                </div>
+                              </div>
+                    
+                            <br>
+                              <div class="row">
+                                <div class="col-lg-6 col-md-6 col-sm-12 text-left"    >
+                                  <button type="button"  class="btn btn-outline-success"style="padding:11px 18px;background-color:#112048;" (click)="getStudymaterials(x._id,x.subject)">
+                                    View Materials</button>
+                                </div>
+                                <div class="col-lg-6 col-md-6 col-sm-12 text-right">
+                                  <button type="button" class="btn btn-outline-success"style="padding:11px 25px;background-color:#112048;cursor: pointer" 
+                                  data-toggle="tooltip" data-placement="top" title="Click to add study materials"
+                                  aria-hidden="true" data-toggle="modal"
+                                  
+                                  data-target="#singleSubjectModal" (click)="getSingleSubjectId(x._id)"  >
+                                    Add Materials</button>
+                                </div>
+                              </div>
+                    
+                    
+                    
+                            </div>
+                            <div class="card-footer">
+                              <div class="stats">
+                               </div>
+                            </div>
+                          </div>
+                        </div>
+                    
+                        
+                      </div>
+                        <div class="row" *ngIf="showMaterials">
+
+                          <div  *ngFor="let y of studymaterials" class="col-lg-4 col-md-6 col-sm-6">
+                            <div class="card card-stats" >
+                              <div class="card-header card-header-warning card-header-icon">
+                              <div class="row">
+                                <div class="col-lg-12 col-md-12 col-sm-12 text-center"  data-toggle="tooltip" data-placement="top" title="Upload files" >
+                                  <input id="file"
+                                  type="file" multiple
+                                  (change)="uploadOtherDocument($event,y._id)"/>
+                                
+                                </div>
+                              </div>
+                                
+                                <div class="row">
+
+                                  <div class="col-lg-12 col-md-12 col-sm-12">
+                                  
+                                    <h3 class="card-title text-center" style="font-size:1.3em;">{{y.name}}({{y.materials.length}})   
+                                      <i *ngIf="auth.currentUser.roles[0] != 'teacher'" (click)="deleteStudyMaterial(y)" data-toggle="tooltip"
+                                      data-placement="top"
+                                      title="Delete study material"
+                                      class="fa fa-trash" aria-hidden="true"
+                                      
+                  
+                                      style="font-size: medium;cursor:pointer;color: red;"></i>&nbsp;
+                                      <i *ngIf="auth.currentUser.roles[0] != 'teacher'" (click)="editStudyMaterialname(y)" data-toggle="tooltip"
+                                      data-placement="top"
+                                      title="Edit study material"
+                                      class="fa fa-pencil" aria-hidden="true" data-toggle="modal"
+                                      data-target="#editStudyMaterialModal"
+                                      style="font-size: medium;cursor:pointer;color: rgb(38, 19, 202);"></i>
+                                                    </h3>
+
+                                  </div>
+                                </div>
+
+                                <br>
+                                <span *ngIf="y.materials.length" style="color: red;">
+                                  last updated on {{y.materials[y.materials.length - 1].uploadDate | date:'medium'}}
+                                </span>          
+                                <br>
+                                <div class="row">
+                                  <div class="col-lg-6 col-md-6 col-sm-12 text-left"   >
+                                    <button type="button"  class="btn btn-outline-success"style="padding:11px 18px;background-color:#112048;" (click)="getImageofstudymaterials(y,y.materials,y.name)">
+                                      View files</button>
+                                      
+                                  </div>
+                                  
+                                  <div class="col-lg-6 col-md-6 col-sm-12 text-right">
+                                    <button type="button" class="btn btn-outline-success"style="padding:11px 25px;background-color:#112048;" (click)="onstudymaterialbackClick()"  >
+                                      Back</button>
+                                    </div>
+                                </div>
+
+
+
+                              </div>
+                              <div class="card-footer">
+                                <div class="stats">
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+
+                          
+                        </div> 
+                      <div class="row" *ngIf="showFiles">
+
+                        <div  class="col-lg-12 col-md-12 col-sm-12">
+                          <div class="card card-stats" >
+                            <div class="card-header card-header-warning card-header-icon">
+                            
+                              <div class="row linehoverstyle" *ngFor="let k of pdfdocs_studymaterial" >
+                              
+                                  <div class="col-lg-10 col-md-10 col-sm-10" >
+                                    <span style="font-size: 18px; text-align: left;cursor: pointer;" data-toggle="tooltip"
+                                    data-placement="top"
+                                    title="{{ k.name }}"
+                                    
+                                    aria-hidden="true"
+                                  
+                                    (click)="showPdf(k.path)"
+                                  >
+                                      {{ k.name }}
+                                    </span>
+                                  </div>
+                                <div class="col-lg-2 col-md-2 col-sm-2">
+                                  <i class="fa fa-download" aria-hidden="true" (click)="downloadsingleFile(k.path)" style="cursor: pointer;"></i>
+                                  <button
+                                  type="button"
+                                  class="close list"
+                              (click)="getImagestoDelete(k.path,k.name,'otherfiles')"
+                              data-toggle="modal"
+                              data-target="#modalDeleteImages"
+          
+                              style="float: right; color: red; background-color: white;font-size: medium"
+                                >
+                                <i
+                                  class="fa fa-trash"
+                                  aria-hidden="true"
+                                  style="font-size: medium"  data-toggle="tooltip"
+                                  data-placement="top"
+                                  title="Click to delete file"
+                                ></i>
+                                </button>
+                                </div>
+                              </div>
+                              <div class="row linehoverstyle" *ngFor="let m of imagedocs_studymaterial">
+                                <div class="col-lg-10 col-md-10 col-sm-10" >
+                                  <span style="font-size: 18px; text-align: left;cursor: pointer;" data-toggle="tooltip"
+                                  data-placement="top"
+                                  title="{{ m.name }}"
+                                  
+                                  aria-hidden="true"
+                                
+                                  (click)="showPdf(m.path)"
+                                >
+                                    {{ m.name }}
+                                  </span>
+                                </div>
+                              <div class="col-lg-2 col-md-2 col-sm-2">
+                                <i class="fa fa-download" aria-hidden="true" (click)="downloadsingleFile(m.path)" style="cursor: pointer;"></i>
+                                <button
+                                type="button"
+                                class="close list"
+                            (click)="getImagestoDelete(m.path,m.name,'images')"
+                            data-toggle="modal"
+                            data-target="#modalDeleteImages"
+
+                            style="float: right; color: red; background-color: white;font-size: medium"
+                              >
+                              <i
+                                class="fa fa-trash"
+                                aria-hidden="true"
+                                style="font-size: medium"  data-toggle="tooltip"
+                                data-placement="top"
+                                title="Click to delete file"
+                              ></i>
+                              </button>
+                              </div>
+                              </div>
+                            
+                      <br>
+                              <div class="row">
+                                <div class="col-lg-6 col-md-6 col-sm-6 text-left"  >
+                                  <button type="button"  class="btn btn-outline-success"style="padding:11px 18px;background-color:#112048;" (click)="downloadAllStudyMaterials()">
+                                    Download All</button>
+                                  </div>
+                                <div class="col-lg-6 col-md-6 col-sm-6 text-right">
+                                  <button type="button" class="btn btn-outline-success"style="padding:11px 25px;background-color:#112048;" (click)="onfilesbackClick()"  >
+                                    Back</button>
+                                  </div>
+                              </div>
+
+
+
+                            </div>
+                            <div class="card-footer">
+                              <div class="stats">
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                        
+                      </div>
+                    </div> -->
+                  <ng-container *ngIf="isCollapsed[i] && showSubjects">
+                    <div class="row" *ngFor="let details of findDetails(data)">
+                    
+                      <br>
+                      <div class="col-md-12 pr-1" *ngIf="auth.currentUser.roles[0] != 'teacher'">
+                        <div class="form-group">
+                          <table border="1">
+                            <tbody>
+                              <tr>
+                                <th style="font-size: 12px;color:#112048;">Year &nbsp;</th>
+                                <th style="font-size: 12px;color:#112048;">Registration &nbsp;</th>
+                                <th style="font-size: 12px;color:#112048;">Coaching &nbsp;</th>
+                                <th style="font-size: 12px;color:#112048;">Exam &nbsp;</th>
+                                <th style="font-size: 12px;color:#112048;">Convocation &nbsp;</th>
+                                <th style="font-size: 12px;color:#112048;">Attestation &nbsp;</th>
+                                <th style="font-size: 12px;color:#112048;">Equalency &nbsp;</th>
+                                <th style="font-size: 12px;color:#112048;">Other &nbsp;</th>
+                                <th  style="font-size: 12px;color:#112048;">Total <br>Fee&nbsp;</th>
+
+                              </tr>
+                             <tr *ngFor = "let fee of details.feeId.feeStructure;let i = index;">
+                                <td >
+                                  {{fee.year}}
+                                </td>
+                                <td>
+                                  {{fee.registration_fee}}
+                               </td>
+                              <td >
+                                {{fee.coaching_fee}}
+                               </td>
+                               <td>
+                                 {{fee.exam_fee}}
+                               </td>
+                               <td>
+                                 {{fee.convocation_fee}}
+                              </td>
+                              <td>
+                                      {{fee.attestation_fee}}
+                              </td>
+                              <td>
+                                      {{fee.equalency_fee}}
+                              </td>
+                              <td>
+                                      {{fee.other_fee}}
+                              </td>
+                              <td>
+                                {{fee.total_fee}} AED
+                              </td>
+                              
+                                  </tr>
+                           </tbody>
+                          </table>
+
+
+
+                          </div>
+
+                     </div>
+                      <br>
+                      <div class="col-md-8 pr-1" *ngIf="auth.currentUser.roles[0] != 'teacher'">
+
+                      </div>
+                      <div class="col-md-4 pl-1" *ngIf="auth.currentUser.roles[0] != 'teacher'">
+                              <div class="form-group">
+
+                                  <p style="padding-left:100px;" *ngIf="details.feeId">  Total Course Fee:<b>{{details.feeId.totalAmount|currency:' ':'symbol':'3.0'}} AED</b></p>
+
+
+                                </div>
+                       </div>
+
+                        </div>
+
+                  </ng-container>
+                </ng-container>
+
+
+          </div>
+
+        
+      </div>
+  </div>
+
+    </div>
+    </div>
+
+
+
+
+    <!-- Delete Submitted admission form -->
+<div class="modal fade" id="submittedCourseDeleteModalCloseBtn" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title " id="exampleModalLabel" >Delete course and fees</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <img src="../../assets/danger.png" class="successimage">
+        </div>
+        <div class="row">
+          <p class="contentstyle" > Are you sure you want to delete form?
+          </p>
+
+        </div>
+
+
+      </div>
+      <div style="text-align: center;">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal"  id="submittedCourseDeleteModalCloseBtn">Cancel</button>
+        <button type="button" class="btn" style="background:#112048;"  (click)="onCourseDelete()" >Delete</button>
+
+      </div>
+    </div>
+  </div>
+</div>
+<!-- add course subject modal -->
+<div class="modal fade" id="addsubjectModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel" >Add Subject</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form  #subjectDetails="ngForm" [formGroup]="addsubjectNameForm" >
+          <div class="row">
+              <div class="col-md-12 pr-1">
+              <div class="form-group">
+                  <label>Subject Name</label>
+                  <input  type="text" class="form-control"
+                   placeholder="Enter Subject Name" formControlName="subject"
+                   [ngClass]="{ 'is-invalid': submittedSubjectName && coursesubject.subject.errors }"
+                  >
+                  <div *ngIf="submittedSubjectName && coursesubject.subject.errors" class="invalid-feedback">
+                    <div *ngIf="coursesubject.subject.errors.required">Subject Name is required</div>
+                  </div>
+
+
+                   </div>
+              </div>
+          </div>
+  </form>
+        </div>
+        <div style="text-align: center;">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal" id="addsubjectModal">Cancel</button>
+          <button type="button" class="btn  blue-ink"    (click)="saveSubject()"
+          >Save</button>
+        </div>
+
+      </div>
+  </div>
+</div>
+
+<!-- single sub modal -->
+
+<div class="modal fade" id="singleSubjectModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel" >Add study materials</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+         <form  #studymaterialsDetails="ngForm" [formGroup]="addstudymaterialForm" >
+          <div class="row">
+              <div class="col-md-12 pr-1">
+              <div class="form-group">
+                  <label>Study material Name</label>
+                  <input  type="text" class="form-control"
+                   placeholder="Enter Study material Name" formControlName="name"
+                   [ngClass]="{ 'is-invalid': submittedStudymaterialName && studymaterial.name.errors }"
+                  >
+                  <div *ngIf="submittedStudymaterialName && studymaterial.name.errors" class="invalid-feedback">
+                    <div *ngIf="studymaterial.name.errors.required">Study material Name is required</div>
+                  </div>
+
+
+                   </div>
+              </div>
+          </div>
+        </form>
+        </div>
+        <div style="text-align: center;">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal" id="singleSubjectModal">Cancel</button>
+          <button type="button" class="btn  blue-ink"    (click)="saveStudymaterial()"
+          >Save</button>
+        </div>
+
+      </div>
+  </div>
+</div>
+
+
+
+<!-- modal for view studyMaterials -->
+<div
+  class="modal fade"
+  id="modalforstudymaterials"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Study materials</h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <!-- <div style="text-align: center">
+          <button
+          type="button"  class="btn blue-ink" 
+         
+          (click)="onViewanduploadfiles()"
+          style="font-size: medium" 
+        >
+         View and upload files
+        </button>
+        <button
+          type="button"  class="btn blue-ink" 
+         
+          (click)="onDeletefiles()"
+
+          style="font-size: medium" 
+        >
+         Delete files
+        </button>
+        </div> -->
+        <div class="row">
+          <div *ngFor="let k of pdfdocs_studymaterial" style="text-align: center">
+            <div style="padding: 15px" class="node">
+              <button
+                type="button"
+                class="close list"
+                (click)="getImagestoDelete(k.path,k.name,'otherfiles')"
+                data-toggle="modal"
+                data-target="#modalDeleteImages"
+                style="float: right; color: red; background-color: white;font-size: medium"
+              >
+              <i
+              class="fa fa-trash"
+              aria-hidden="true"
+              style="font-size: medium"  data-toggle="tooltip"
+              data-placement="top"
+              title="Click to delete file"
+            ></i>
+              </button>
+              <i
+                data-toggle="tooltip"
+                data-placement="top"
+                title="{{ k.name }}"
+                class="fa fa-file-pdf-o"
+                aria-hidden="true"
+                style="font-size: 60px; color: red"
+                (click)="showPdf(k.path)"
+              ></i>
+              <br />
+              <p style="font-size: 8px; text-align: center">
+                {{ k.name | slice: 0:9 }}
+              </p>
+            </div>
+          </div>
+
+          <div *ngFor="let m of imagedocs_studymaterial">
+            <div style="padding: 15px" class="node">
+              <button
+                type="button"
+                class="close list"
+            (click)="getImagestoDelete(m.path,m.name,'images')"
+            data-toggle="modal"
+            data-target="#modalDeleteImages"
+      
+            style="float: right; color: red; background-color: white;font-size: medium"
+              >
+               <i
+                class="fa fa-trash"
+                aria-hidden="true"
+                style="font-size: medium"  data-toggle="tooltip"
+                data-placement="top"
+                title="Click to delete file"
+              ></i>
+              </button>
+
+              <img
+                [src]="m.path"
+                width="60px"
+                height="50px"
+                (click)="showPdf(m.path)"
+                data-toggle="tooltip"
+                data-placement="top"
+                title="{{ m.name }}"
+              />
+              <br />
+              <p style="font-size: 10px; text-align: center">
+                {{ m.name | slice: 0:9 }}
+              </p>
+            </div>
+          </div>
+        </div>
+        
+      </div>
+
+      <div style="text-align: center" >
+        <button
+          type="button"
+                    class="btn btn-secondary"
+          data-dismiss="modal"
+          id="filesModalCloseBtn"
+        >
+          Cancel
+        </button>
+
+        <button type="button" class="btn blue-ink" (click)="downloadAllStudyMaterials()">
+          Download All
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- delete multiple image modal -->
+<div class="modal fade" id="modalDeleteImages" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title " id="exampleModalLabel" >Delete Image </h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <img src="../../assets/danger.png" class="successimage">
+        </div>
+        <div class="row">
+          <p class="contentstyle"> Are you sure you want to delete ?
+          </p>
+          
+        </div>
+
+      </div>
+      <div style="text-align: center;">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal"  id="imagesDeleteModalCloseBtn">Cancel</button>
+        <button type="button" class="btn" style="background:#112048;" (click)="deleteImages()">Delete</button>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<!-- edit Subject Modal -->
+
+<div class="modal fade" id="editSubjectModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel" >Edit subject</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+         <form  #editsubjectDetails="ngForm" [formGroup]="editsubjectNameForm" >
+          <div class="row">
+              <div class="col-md-12 pr-1">
+              <div class="form-group">
+                  <label>Subject Name</label>
+                  <input  type="text" class="form-control"
+                   placeholder="Enter Subject Name" formControlName="subject" [ngModel] = "editSubject.subject"
+                   [ngClass]="{ 'is-invalid': editsubmittedSubjectName && editcoursesubject.subject.errors }"
+                  >
+                  <div *ngIf="editsubmittedSubjectName && editcoursesubject.subject.errors" class="invalid-feedback">
+                    <div *ngIf="editcoursesubject.subject.errors.required">Subject Name is required</div>
+                  </div>
+
+
+                   </div>
+              </div>
+          </div>
+        </form>
+        </div>
+        <div style="text-align: center;">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal" id="editsingleSubjectModal">Cancel</button>
+          <button type="button" class="btn  blue-ink"    (click)="updateSubject()"
+          >Update</button>
+        </div>
+
+      </div>
+  </div>
+</div>
+
+<!-- edit Study Material Modal -->
+
+<div class="modal fade" id="editStudyMaterialModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel" >Edit study materials</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+         <form  #editstudymaterialsDetails="ngForm" [formGroup]="editstudymaterialForm" >
+          <div class="row">
+              <div class="col-md-12 pr-1">
+              <div class="form-group">
+                  <label>Study material Name</label>
+                  <input  type="text" class="form-control"
+                   placeholder="Enter Study material Name" formControlName="name" [ngModel] = "editStudyMaterial.name"
+                   [ngClass]="{ 'is-invalid': editsubmittedStudymaterialName && editstudymaterial.name.errors }"
+                  >
+                  <div *ngIf="editsubmittedStudymaterialName && editstudymaterial.name.errors" class="invalid-feedback">
+                    <div *ngIf="editstudymaterial.name.errors.required">Study material Name is required</div>
+                  </div>
+
+
+                   </div>
+              </div>
+          </div>
+        </form>
+        </div>
+        <div style="text-align: center;">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal" id="editsingleStudymaterialModal">Cancel</button>
+          <button type="button" class="btn  blue-ink"    (click)="updateStudymaterial()"
+          >Update</button>
+        </div>
+
+      </div>
+  </div>
+</div>

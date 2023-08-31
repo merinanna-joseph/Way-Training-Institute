@@ -1,0 +1,14 @@
+
+.table th, .table td {
+  padding: 0.55rem;
+  vertical-align: top;
+  border-top: 1px solid #dee2e6;
+}
+.blue-link-heading
+{
+color:#112048;
+
+}
+.highlightTableColor{
+  background-color: rgb(149, 155, 236)
+}

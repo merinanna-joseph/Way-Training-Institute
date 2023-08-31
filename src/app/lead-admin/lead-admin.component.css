@@ -1,0 +1,38 @@
+a:hover {
+    color: blue !important;
+    border-bottom: 1px solid blue;
+    cursor: pointer;
+}
+.btn-neutral
+{
+padding-left: 1px;
+
+}
+#filter{
+    width: 173px !important;
+  }
+  #filter1{
+    width: 173px !important;
+  }
+  #filter2{
+    width: 173px !important;
+  }
+  i{
+      cursor: pointer;
+  }
+  button[disabled]:hover {
+    cursor:no-drop;
+  }
+  #badge{
+    border-radius: 50%;
+    width: 38px;
+  }
+  .blue-ink
+{
+background: #112048;
+}
+.blue-link-heading
+{
+  color:#112048;
+
+}

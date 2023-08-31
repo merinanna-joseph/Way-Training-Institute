@@ -1,0 +1,173 @@
+<app-toast [message]="toast.message"></app-toast>
+
+<div class="panel-header panel-header-sm">
+    <h4 style="color: white;margin-top: -40px;margin-left: 30px;">Fee Collection Form</h4>
+</div>
+
+<div class="main-content">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+            <div class="card-header">
+                <div class="row">
+                    <div class="col-md-8"  >
+                        <h4 class="card-title"> Collect Fees</h4>
+                    </div>
+                    <div class="col-md-4" >
+                        Total fees/Year: &nbsp;<b>{{total_fees_per_year | currency:' ':'symbol':'3.0'}} AED</b>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="pb-5">
+                    <form [formGroup]="addCollectFeeForm">
+                        <div class="row">
+                          <div class="col-md-4 pr-1">
+                            <div class="form-group">
+                              <label>Year</label>
+                                    <select class="form-control"
+                                             aria-label="Default select example"
+                                            [ngClass]="{ 'is-invalid': submitted && f.month.errors }"
+                                            (change)="onYearChange($event.target)">
+                                             <option *ngFor="let x of student.studentFees" value="{{x}}">{{x.year}}</option>
+                                    </select>
+                                    <!-- <select class="form-control" [value]="lead.source"
+                                    (change)="getSource($event.target)" aria-label="Default select example">
+                                     <option *ngFor="let x of sources" value="{{x}}">{{x}}</option>
+                                  </select> -->
+                              <div *ngIf="submitted && f.month.errors" class="invalid-feedback">
+                                <div *ngIf="f.month.errors.required">Course Name is required</div>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-md-4 pr-1">
+                            <div class="form-group">
+                              <label>Month</label>
+                                    <select class="form-control"
+                                            aria-label="Default select example"
+                                            [ngClass]="{ 'is-invalid': submitted && f.month.errors }"
+                                            formControlName="month">
+                                             <option value="" selected="true">--Select Month--</option>
+                                             <option *ngFor="let x of allMonths" value="{{x}}">{{x}}</option>
+                                    </select>
+                              <div *ngIf="submitted && f.month.errors" class="invalid-feedback">
+                                <div *ngIf="f.month.errors.required">Course Name is required</div>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-md-4 pl-1">
+                            <div class="form-group">
+                              <label>Remitted Date</label>
+                              <input type="date" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.date.errors }"
+                              [ngModel] ="currentDate | date:'yyyy-MM-dd'"  placeholder="Enter date" formControlName="date"> 
+                              <div *ngIf="submitted && f.date.errors" class="invalid-feedback">
+                                <div *ngIf="f.date.errors.required">Remitted Date is required</div>
+                              </div>
+                            </div>
+                          </div>
+                       
+                        </div>
+
+                        <div class="row">
+                          <div class="col-md-3 pr-1">
+                            <div class="form-group">
+                              <label>Payment Mode</label>
+                              <select class="form-control"
+                              (change)="getPaymentMode($event.target)"
+                               aria-label="Default select example"
+                                formControlName="payment_mode"
+                                 [ngClass]="{ 'is-invalid': submitted && f.payment_mode.errors}">
+                                 <option value="" [selected]="true">Select Type</option>
+                                <option *ngFor="let x of payment_mode" value="{{x}}">{{x}}</option>
+                             </select> 
+                            </div>
+                          </div>
+                          <div class="col-md-2 pr-1">
+                            <div class="form-group">
+                              <label>Coaching Amount</label>
+                              <input class="form-control" 
+                               placeholder="Enter Coaching" formControlName="fineAmount"> 
+                            </div>
+                            </div>
+                            <div class="col-md-2 pr-1">
+                              <div class="form-group">
+                                <label>Add more</label>
+                                <select class="form-control"
+                                (change)="getFeetype($event.target)"
+                                 aria-label="Default select example"
+                                  formControlName="payment_mode"
+                                   [ngClass]="{ 'is-invalid': submitted && f.payment_mode.errors}">
+                                   <option value="" [selected]="true">Select Type</option>
+                                  <option *ngFor="let x of Feetype" value="{{x}}">{{x}}</option>
+                               </select> 
+                              </div>
+                              </div>
+                             
+                            <div class="col-md-5 pl-1">
+                              <div class="form-group">
+                                <label *ngIf = "registration_fee_input">Registration Fee</label>
+                                <input class="form-control" *ngIf = "registration_fee_input"
+                                 placeholder="Enter Registration Fees" > 
+                                 <label *ngIf = "convocation_fee_input">Convocation Fee</label>
+                                 <input class="form-control" *ngIf = "convocation_fee_input"
+                                 placeholder="Enter Convocation Fees" > 
+                                 <label *ngIf = "exam_fee_input">Exam Fee</label>
+                                 <input class="form-control" *ngIf = "exam_fee_input"
+                                 placeholder="Enter Exam Fees" > 
+                                 <label *ngIf = "attestation_fee_input">Attestation Fee</label>
+
+                                 <input class="form-control" *ngIf = "attestation_fee_input"
+                                 placeholder="Enter Attestation Fees" >
+                                 <label *ngIf = "equalency_fee_input">Equalency Fee</label>
+ 
+                                 <input class="form-control" *ngIf = "equalency_fee_input"
+                                 placeholder="Enter Equalency Fees" > 
+                                 <label *ngIf = "others_fee_input">Other Fee</label>
+
+                                 <input class="form-control" *ngIf = "others_fee_input"
+                                 placeholder="Enter Other Fees" > 
+                              </div>
+                            </div>
+                         
+                        </div>
+                        <div class="row">
+                          <div class="col-md-3 pr-1">
+                            <div class="form-group">
+                              <label>Paid Amount</label>
+                              <input class="form-control"
+                               placeholder="Enter date" formControlName="paidAmount"> 
+                            </div>
+                            
+                          </div>
+                        <div class="col-md-3 pl-1">
+                          <div class="form-group">
+                            <label>Total Amount</label>
+                            <input class="form-control" [ngModel] = "total_fees_per_month"
+                             placeholder="Enter date" formControlName="totAmount"> 
+                          </div>
+                        </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12 pr-1">
+                                <div class="form-group">
+                                    <label>Remarks</label>
+                                    <textarea  class="form-control"
+                                     placeholder="Enter Remarks"
+                                     formControlName="remarks">
+                                    </textarea>
+                                  </div>
+                            </div>
+                        </div>
+                     
+                        
+                     <div class="col text-center">
+                          <button type="button" class="btn btn-danger btn-round" style="background-color:#112048;" (click)="onFeeCollectSave()">Collect</button>
+                          <button type="button"  class="btn btn-danger btn-round"  style="background-color:#112048;" (click)="onCancelClick()">Cancel</button>
+                      </div>
+                    </form>
+                </div>
+              </div>
+        </div>
+    </div>
+</div>
+

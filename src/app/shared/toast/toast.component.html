@@ -1,0 +1,70 @@
+
+<div *ngIf="message.show" class="toast-backdrop">
+</div>
+<div *ngIf="message.show && message.type != 'startmsg' && message.type != 'endmsg' && message.type != 'profile_alert' && message.type !='profilecompletion_alert'"  class="alert" [ngClass]="'alert-' + message.type" role="alert">
+  <div  *ngIf = "message.type == 'success'">
+    <img src="../../assets/success.png" class="successimage">
+  </div>
+  <div *ngIf = "message.type == 'danger'">
+    <img src="../../assets/danger.png" class="successimage">
+  </div>
+  <div class="contentstyle" >
+    {{message.body}}
+  </div>
+  <div  class="footstyle"  >
+    
+
+    <button type ="submit" mat-stroked-button color="primary" (click) = "hideToast()" >Close</button>
+  </div>
+</div>
+
+<div *ngIf="message.show && message.type == 'startmsg'"  class="alert1"  role="alert">
+  
+  <div class="contentstyle1" [innerHTML]="message.body">
+    
+  </div>
+  <div  class="footstyle" >
+    
+
+    <button type ="submit" mat-stroked-button color="primary" (click) = "hideToast()" class="startbutton" >Start</button>
+  </div>
+</div>
+<div *ngIf="message.show && message.type == 'endmsg'"  class="alert2"  role="alert">
+  <div  *ngIf = "message.type == 'endmsg'">
+    <img src="../../assets/success.png" class="successimage1">
+  </div>
+  <div class="contentstyle1" [innerHTML]="message.body">
+    
+  </div>
+  <div  class="footstyle" >
+    
+
+    <button type ="submit" mat-stroked-button color="primary" (click) = "hideToast()" class="startbutton1" >Close</button>
+  </div>
+</div>
+<div *ngIf="message.show && message.type == 'profile_alert'"  class="alert3"  role="alert">
+  <div  *ngIf = "message.type == 'profile_alert'">
+    <img src="../../assets/idea1image.png" class="ideaimage1">
+  </div>
+  <div class="contentideastyle1" [innerHTML]="message.body">
+    
+  </div>
+  <div  class="footideastyle" >
+    
+
+    <button type ="submit" mat-stroked-button color="primary" (click) = "hideToast()" class="startbutton1" >Skip</button>
+  </div>
+</div>
+<div *ngIf="message.show && message.type == 'profilecompletion_alert'"  class="alert4"  role="alert">
+  <!-- <div  *ngIf = "message.type == 'profile_alert'">
+    <img src="../../assets/idea1image.jpg" class="ideaimage1">
+  </div> -->
+  <div class="contentstyle1" [innerHTML]="message.body">
+    
+  </div>
+  <div  class="footstyle" >
+    
+
+    <button type ="submit" mat-stroked-button color="primary" (click) = "hideToast()" class="startbutton1" >Close</button>
+  </div>
+</div>

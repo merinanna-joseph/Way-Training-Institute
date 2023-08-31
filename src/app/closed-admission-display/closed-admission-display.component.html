@@ -1,0 +1,161 @@
+
+<app-toast [message]="toast.message"></app-toast>
+<div class="panel-header panel-header-sm">
+  <h4 style="color: white;margin-top: -40px;margin-left: 30px;">
+    {{auth.currentUser.firstName | titlecase}} {{auth.currentUser.lastName | titlecase}} <span *ngIf="auth.isAdmin"> - Admin</span>
+  </h4>
+</div>
+<div class="main-content">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-header">
+          <div class="row">
+            <div class="col-md-8"  style="padding-top: 16px;">
+                <h4 class="card-title">Inactive Candidates</h4>
+            </div>
+            <!-- <div class="col-md-4">
+              <button type="button"  style="background-color:#112048;" class="btn btn-round blue-ink" (click)="createAdmissionform()" >Add Admission Form</button>
+
+            </div> -->
+          </div>
+        </div>
+        <div class="card-body" >
+          <div >
+            <table class="table">
+              <thead class=" text-primary">
+                <th width="2%"  class="text-center blue-link-heading">
+
+                </th>
+                <th width="6%" class="text-left blue-link-heading">
+                  Reg. No.
+                </th>
+                  <th width="6%"  class="text-left blue-link-heading">
+                    Tally Id
+                  </th>
+                  <th width="14%" class="text-left blue-link-heading ">
+                    Name
+                 </th>
+                  <th width="10%" class="text-left blue-link-heading">
+                    Closed On
+                  </th>
+                  <th width="10%" class="text-left blue-link-heading">
+                    Closed Type  
+                  </th>
+
+                  <th width="20%" class="text-left blue-link-heading">
+                    Remarks
+                  </th>
+
+              </thead>
+               <tr  *ngFor="let student of students;let i = index;" style="font-size: 12px;">
+                <td width="2%" class="text-left">
+                  <p style="cursor: pointer;" data-toggle="tooltip"
+                  data-placement="top"
+                  title="{{student.disablitity_status}}">
+                  <i class="fa fa-wheelchair" *ngIf="student.disablitity_status == 'Differently Abled'"style="font-size:12px;"></i>
+                  </p>
+
+
+
+              </td>
+                <td  width="10%" class="text-left">
+                  <p style="cursor: pointer;" data-toggle="tooltip"
+                  data-placement="top"
+                  title="{{student.university_register_number}}">
+                  {{student.university_register_number}}
+                  </p>
+                  </td>
+                <td width="10%" class="text-left" >
+                  <p style="cursor: pointer;" data-toggle="tooltip"
+                  data-placement="top"
+                  title="{{student.tally_ID}}">
+                  {{student.tally_ID}}
+                  </p>
+                </td>
+               <td width="14%" class="text-left">
+                <b> <a (click)="onViewClick(student)" style="cursor: pointer;" data-toggle="tooltip"
+                  data-placement="top"
+                  title="{{student.firstName | titlecase}} {{student.lastName | titlecase}}" style="color:blue;cursor: pointer;">
+                  {{student.firstName | titlecase}} {{ (student.firstName.length + student.lastName.length>18)? (student.lastName | titlecase | slice:0:8) + '..':(student.lastName  | titlecase) }}
+                </a><br></b>
+               </td>
+               <td  width="10%" class="text-left">
+                <p style="cursor: pointer;" data-toggle="tooltip"
+                data-placement="top"
+                title="{{student.closingOn | date}}">
+                {{student.closingOn | date}}
+                </p>
+
+               </td>
+               <td  width="10%" class="text-left">
+                 <p data-toggle="tooltip"style="cursor: pointer;"
+                 data-placement="top"
+                 title="{{student.closingType}}">
+                  {{student.closingType}}
+                 </p>
+
+               </td>
+
+               <td  width="20%" class="text-left">
+                <p style="cursor: pointer;" data-toggle="tooltip"
+                data-placement="top"
+                title="{{student.closingRemark}}">
+                {{ (student.closingRemark.length>18)? (student.closingRemark | slice:0:40) + '..':(student.closingRemark) }}
+                </p>
+
+               </td>
+               <td width="5%" class="text-right">
+                <button type="button" class="btn btn-neutral blue-link-heading" style="cursor: no-drop;"
+                data-toggle="tooltip" data-placement="top" title="deletion for testing purpose"
+                 (click)="deleteStaff(student._id)"
+               data-toggle="modal" data-target="#deleteSubmittedAdmissionform">
+               <i class="fa fa-trash" aria-hidden="true" style="font-size: medium;color:transparent;cursor: no-drop;"></i>
+              </button>
+               </td>
+
+               </tr>
+         </table>
+          </div>
+        </div>
+
+
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+
+
+<!-- Delete closed admission form -->
+<div class="modal fade" id="deleteSubmittedAdmissionform" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title " id="exampleModalLabel" >Delete Submitted Admission Form</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <img src="../../assets/danger.png" class="successimage">
+        </div>
+        <div class="row">
+          <p class="contentstyle" > Are you sure you want to delete form?
+          </p>
+
+        </div>
+
+
+      </div>
+      <div style="text-align: center;">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal"  id="submittedadmissionDeleteModalCloseBtn">Cancel</button>
+        <button type="button" class="btn" style="background:#112048;"  (click)="onAdmissionDelete()" >Delete</button>
+
+      </div>
+    </div>
+  </div>
+</div>

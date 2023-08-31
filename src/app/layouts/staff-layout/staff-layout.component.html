@@ -1,0 +1,22 @@
+<div class="wrapper">
+    <div class="sidebar" data-color="timesblue" *ngIf="auth.isStaff && auth.isAccountStaff">
+        <app-sidebar-accountandstaff></app-sidebar-accountandstaff>
+    </div>
+    <div class="sidebar" data-color="timesblue" *ngIf="auth.isStaff && !auth.isAccountStaff">
+        <app-sidebar-staff></app-sidebar-staff>
+    </div>
+    <div class="sidebar" data-color="timesblue" *ngIf="!auth.isStaff && auth.isAccountStaff">
+        <app-sidebar-accountstaff></app-sidebar-accountstaff>
+    </div>
+    <div class="sidebar" data-color="timesblue" *ngIf="auth.isTeacher">
+        <app-sidebar-teacher></app-sidebar-teacher>
+    </div>
+    <div class="sidebar" data-color="timesblue" *ngIf="auth.isStudent">
+        <app-sidebar-student></app-sidebar-student>
+    </div>
+    <div class="main-panel">
+        <app-navbar></app-navbar>
+        <router-outlet></router-outlet>
+        <app-footer></app-footer>
+    </div>
+</div>

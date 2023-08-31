@@ -1,0 +1,168 @@
+
+  a {
+    text-decoration: none;
+    display: inline-block;
+    padding: 8px 16px;
+  }
+  
+  a:hover {
+    background-color: #ddd;
+    color: black;
+  }
+  .previous {
+    background-color: #f1f1f1;
+    color: black;
+  }
+  
+  .next {
+    background-color: #112048;
+    color: white;
+  }
+  
+  .round {
+    border-radius: 50%;
+  } 
+.colored-image {
+    background-image: linear-gradient(to right, #e6e9ddd2, #e6e9ddd2),
+    /* url("http://localhost:3000/assets/img/profile.png"); */
+    /* url("http://206.189.140.241:4200/assets/img/profile.png"); */
+    url("https://admintimes.com/assets/img/profile.png");
+
+    background-blend-mode: overlay;
+    background-size: contain;
+    width: 200px;
+    height: 200px;
+  
+  }
+  .list {
+    display: none;
+  }
+  .node:hover .close {
+    display:inline-flex
+  }
+  
+  table, th, td {
+      border: 1px solid  #ced4da;
+      border-collapse: collapse;
+    }
+    th, td {
+      padding: 10px;
+    }
+    .collage {
+      cursor:pointer;
+      width:35mm;
+      height:35mm;
+      background: #fcf9f9;
+      border: rgb(20, 19, 19);
+      float: right;
+  
+    }
+    input[type="file"]{
+      visibility: hidden;
+      }
+      .fileinput{
+        visibility: hidden;
+      }
+      /* .custom-file-upload {
+        border: 1px solid #ccc;
+        display: inline-block;
+        padding: 3px 12px;
+        cursor: pointer;
+        border-radius: 10px;
+        width: 200px;
+        text-align: center;
+        background-color: white;
+        color:darkgray;
+        font-style: normal;
+  
+    }
+    .doc{
+      padding: 5px;
+    } */
+  .custom-file-upload
+  {
+        border: 1px solid #ccc;
+        display: inline-block;
+        padding: 3px 12px;
+        cursor: pointer;
+        border-radius: 10px;
+        width: 200px;
+        text-align: center;
+        background-color: white;
+        color:darkgray;
+        font-style: normal;
+        margin-left: 5px;
+        margin-top: 5px;
+  
+  }
+  pdf-viewer {
+    display: block;
+    height: 100vh;
+  }
+  .row .col-md-12 .thumbnail{
+    display: inline-block;
+    width: 350px;
+    position:relative;
+  }
+  img {
+     max-height: 100%;
+     max-width: 100%;
+  }
+  .input-group .form-control:not(:first-child):not(:last-child), .input-group-btn:not(:first-child):not(:last-child) {
+    border-radius: 0px !important;
+  }
+  .blue-ink
+  {
+  background: #112048;
+  }
+  .blue-link-heading
+  {
+  color:#112048;
+  
+  }
+  html, body, h1, h2, h3, h4, p, img { margin: 0;} /* margin reset*/
+  h1{font-size: 18pt; font-weight: 500; margin-bottom: 0.5cm;}
+  h2{font-size: 16pt; font-weight: 500;}
+  p{font-size: 12pt;}
+  
+  .items-group {
+    border-style: solid;
+    border-color: black;
+    border-width: 1pt 1pt 1pt 1pt;
+    border-radius: 5pt;
+    padding: 3pt 3pt 3pt 3pt;
+    margin: 9pt 0 9pt 0;
+  }
+  
+  .logotipo {
+    width: 6cm;
+    height: 4cm;
+    margin: -0.5cm;
+  }
+  
+  .label { font-weight: 500;}
+  
+  .disclaimer, .address p {
+    font-size: 10pt;
+  }
+  
+  .signature-field {
+    padding-bottom: 24pt;
+    border-bottom: solid black 1pt;
+  }
+  
+  
+  
+  @media print {
+    .noprint { display: none; }
+  }
+  
+  img {
+    -webkit-print-color-adjust: exact;
+  }
+  .node:hover .close {
+    display:inline-flex
+  }
+  .linehoverstyle:hover{
+    background-color: #cad2e9;
+  }

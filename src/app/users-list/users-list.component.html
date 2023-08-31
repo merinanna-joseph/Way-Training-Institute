@@ -1,0 +1,423 @@
+<app-toast [message]="toast.message"></app-toast>
+<div class="panel-header panel-header-sm">
+  <h4 style="color: white;margin-top: -40px;margin-left: 30px;">{{auth.currentUser.firstName | titlecase}} {{auth.currentUser.lastName | titlecase}} - Admin</h4>
+
+</div>
+<div class="main-content">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-header">
+            <div class="row">
+                <div class="col text-left"  style="padding-top: 16px;">
+                    <h4 class="card-title">Staff Management</h4>
+                </div>
+                <div class="col text-right">
+                  <button type="button" class="btn btn-danger btn-round blue-ink"
+                   (click)="clickToExport()"><i class="now-ui-icons arrows-1_cloud-download-93"
+                    style="font-weight: bold;"></i></button>
+                  <!-- <button type="button" class="btn btn-danger btn-round" (click)="clickToExport()">Export</button> -->
+                    <button type="button" class="btn btn-round blue-ink" data-toggle="modal"
+                     data-target="#modalOnAddStaff">Add Staff</button>
+                     <button type="button" class="btn btn-round blue-ink" data-toggle="modal"
+                     data-target="#modalOnAddSenter">Add Centers</button>
+                </div>
+            </div>
+
+        </div>
+        <div class="card-body">
+          <div class="table-responsive">
+            <table class="table">
+              <thead class=" text-primary">
+                <th width="5%" class="text-center blue-link-heading">
+                      Sno
+                </th>
+                <!-- <th>
+                  Course <i class="fa fa-sort-asc" aria-hidden="true" *ngIf="!isSortByCourse" (click)="sortByCourse()"></i>
+                  <i class="fa fa-sort-desc" aria-hidden="true" *ngIf="isSortByCourse" (click)="sortByCourse()"></i>
+                 </th> -->
+                <th width="20%" class="text-center blue-link-heading">
+                  Name <i class="fa fa-sort-asc" aria-hidden="true" *ngIf="!isSortByName" (click)="sortByName()"></i>
+                  <i class="fa fa-sort-desc" aria-hidden="true" *ngIf="isSortByName" (click)="sortByName()"></i>
+                </th>
+                <th width="20%" class="text-center blue-link-heading" >
+                  Email <i class="fa fa-sort-asc" aria-hidden="true" *ngIf="!isSortByEmail" (click)="sortByEmail()"></i>
+                  <i class="fa fa-sort-desc" aria-hidden="true" *ngIf="isSortByEmail" (click)="sortByEmail()"></i>
+                </th>
+                <th width="20%" class="text-center blue-link-heading">
+                  Mobile
+                  <i class="fa fa-sort-asc" aria-hidden="true" *ngIf="!isSortByMobile" (click)="sortByMobile()"></i>
+                  <i class="fa fa-sort-desc" aria-hidden="true" *ngIf="isSortByMobile" (click)="sortByMobile()"></i>
+
+                </th>
+                <th width="20%" class="text-center blue-link-heading">
+                  Roles
+                  <!-- <i class="fa fa-sort-asc" aria-hidden="true" *ngIf="!isSortByMobile" (click)="sortByMobile()"></i>
+                  <i class="fa fa-sort-desc" aria-hidden="true" *ngIf="isSortByMobile" (click)="sortByMobile()"></i> -->
+
+                </th>
+                <th width="20%" class="text-center blue-link-heading">
+                 Actions
+
+                </th>
+
+              </thead>
+              <tbody>
+                <tr *ngFor="let user of users;let i = index;">
+                   <td width="5%" class="text-center">
+                       {{i+1}}
+                   </td>
+                  <td width="20%" class="text-center">
+                    {{user.firstName}} {{user.lastName}}
+                  </td>
+                  <td  width="20%" class="text-center">
+                    {{user.email}}
+                  </td>
+                  <td  width="20%" class="text-center">
+                    {{user.mobile}}
+                  </td>
+                  <td  width="20%" class="text-center">
+                    <div  *ngFor="let role of user.roles;let j = index;">
+                      <span *ngIf="role == 'staff'">Lead Staff</span>
+                      <span *ngIf="role == 'account_staff'">Account Staff</span>
+                      <span *ngIf="role == 'teacher'">Teacher</span>
+
+                    </div>
+
+
+                  </td>
+                  <td width="20%"  class="text-center">
+                      <button type="button" class="btn btn-neutral blue-link-heading"
+                      data-toggle="tooltip" data-placement="top" title="Edit" (click)="editStaff(user._id)"
+                      data-toggle="modal" data-target="#exampleModalEditStaff">
+                      <i class="fa fa-pencil" style="font-size: medium;"></i>
+                    </button>
+
+                     <button type="button" class="btn btn-neutral blue-link-heading"
+                      data-toggle="tooltip" data-placement="top" title="Deactivate"
+                       (click)="deleteStaff(user._id)"
+                     data-toggle="modal" data-target="#exampleModalDeleteStaff">
+                     <i class="fa fa-trash" aria-hidden="true" style="font-size: medium;"></i>
+                    </button>
+
+                  </td>
+
+                </tr>
+              </tbody>
+            </table>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- Add staff modal -->
+<div class="modal fade" id="modalOnAddStaff" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel" >Create Staff</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+          <form   [formGroup]="addUserForm" #userDetails="ngForm">
+              <div class="row">
+                  <div class="col-md-6 pr-1">
+                  <div class="form-group">
+                      <label>First Name</label>
+                      <input  type="text" class="form-control"
+                      [ngClass]="{ 'is-invalid': submitted && f.firstname.errors }"
+                       placeholder="Enter First Name" formControlName="firstname">
+                       <div *ngIf="submitted && f.firstname.errors" class="invalid-feedback">
+                        <div *ngIf="f.firstname.errors.required">First Name is required</div>
+                      </div>
+                     </div>
+                  </div>
+                  <div class="col-md-6 pl-1">
+                  <div class="form-group">
+                      <label>Last Name</label>
+                      <input [ngClass]="{ 'is-invalid': submitted && f.lastname.errors }"
+                       type="text" class="form-control" placeholder="Last Name" formControlName="lastname">
+                      <div *ngIf="submitted && f.lastname.errors" class="invalid-feedback">
+                        <div *ngIf="f.lastname.errors.required">Last Name is required</div>
+                      </div>
+                    </div>
+                  </div>
+              </div>
+          <div class="row">
+             <div class="col-md-6 pr-1">
+              <div class="form-group">
+                  <label for="email">Email</label>
+                  <input name="email" id="email"
+                  type="email" class="form-control"
+                   placeholder="Enter Email" formControlName="email"
+                  [ngClass]="{ 'is-invalid': submitted && f.email.errors }">
+                  <div *ngIf="submitted && f.email.errors" class="invalid-feedback">
+                    <div *ngIf="f.email.errors.required">Email is required</div>
+                    <!-- <div *ngIf="f.email.errors.email">Email must be a valid email address</div> -->
+                </div>
+
+              </div>
+              </div>
+              <div class="col-md-6 pl-1">
+                  <div class="form-group">
+                  <label>Mobile</label>
+                  <input type="text" class="form-control"
+                   placeholder="Enter Mobile Number"
+                   formControlName="mobile"  [ngClass]="{ 'is-invalid': submitted && f.mobile.errors }">
+                   <div *ngIf="submitted && f.mobile.errors" class="invalid-feedback">
+                    <div *ngIf="f.mobile.errors.required">Mobile is required</div>
+                    <!-- <div *ngIf="f.mobile.errors.minlength">Mobile must be 10 digits</div> -->
+                  </div>
+
+              </div>
+              </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6 pr-1">
+             <div class="form-group">
+                 <label for="email">Password</label>
+                 <input name="password" id="password" type="password"
+                  class="form-control" placeholder="Enter Password"
+                   formControlName="password" [ngClass]="{ 'is-invalid': submitted && f.password.errors }">
+                   <div *ngIf="submitted && f.password.errors" class="invalid-feedback">
+                    <div *ngIf="f.password.errors.required">Password is required</div>
+                  </div>
+
+             </div>
+             </div>
+             <div class="col-md-6 pr-1">
+              <div class="form-group">
+                <label>Staff Role</label>
+
+                <div class="checkbox">
+                  <label  *ngFor="let list of xyzlist">
+                    <input formControlName="roles" type="checkbox"
+                    value="{{list.value}}" (change)="onCheckboxChange(list,$event)">&nbsp;{{list.label}}&nbsp;&nbsp;&nbsp;&nbsp;</label>
+                </div>
+               <!-- <div *ngIf="submitted && f.staff_role.errors" class="invalid-feedback">
+                <div *ngIf="f.source.errors.required">Source is required</div>
+               </div> -->
+
+              </div>
+              </div>
+            </div>
+        </form>
+      </div>
+      <div style="text-align: center;">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" id="staffSaveModalCloseBtn">Cancel</button>
+        <button type="button" class="btn  blue-ink" (click)="onUserSave()" >Save</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Edit staff modal -->
+<div class="modal fade" id="exampleModalEditStaff" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel" >Edit Staff</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+          <form [formGroup]="editUserForm"  #leadDetails="ngForm">
+              <div class="row">
+                  <div class="col-md-6 pr-1">
+                  <div class="form-group">
+                      <label>First Name</label>
+                      <input type="text"  class="form-control"
+                       placeholder="Enter First Name"
+                       [ngClass]="{ 'is-invalid': editstaffsubmitted && esf.firstname.errors }"
+                       [(ngModel)]="staff.firstName" formControlName="firstname">
+                       <div *ngIf="editstaffsubmitted && esf.firstname.errors" class="invalid-feedback">
+                        <div *ngIf="esf.firstname.errors.required">First Name is required</div>
+                      </div>
+
+                  </div>
+                   </div>
+                  <div class="col-md-6 pl-1">
+                  <div class="form-group">
+                      <label>Last Name</label>
+                      <input type="text" class="form-control"  placeholder="Last Name"
+                      [ngClass]="{ 'is-invalid': editstaffsubmitted && esf.lastname.errors }"
+                      [(ngModel)]="staff.lastName" formControlName="lastname">
+                       <div *ngIf="editstaffsubmitted && esf.lastname.errors" class="invalid-feedback">
+                        <div *ngIf="esf.lastname.errors.required">Last Name is required</div>
+                      </div>
+
+                  </div>
+                  </div>
+              </div>
+          <div class="row">
+
+              <div class="col-md-6 pr-1">
+              <div class="form-group">
+                  <label for="email">Email</label>
+                  <input readonly name="email" id="email" type="email"
+                  [ngClass]="{ 'is-invalid': editstaffsubmitted && esf.email.errors }"
+                   class="form-control" placeholder="Enter Email"
+                    [(ngModel)]="staff.email" formControlName="email">
+                    <div *ngIf="editstaffsubmitted && esf.email.errors" class="invalid-feedback">
+                      <div *ngIf="esf.email.errors.required">Email Name is required</div>
+                    </div>
+
+              </div>
+              </div>
+              <div class="col-md-6 pl-1">
+                  <div class="form-group">
+                  <label>Mobile</label>
+                  <input type="text" class="form-control"
+                  [ngClass]="{ 'is-invalid': editstaffsubmitted && esf.mobile.errors }"
+                   placeholder="Enter Mobile Number"
+                   [(ngModel)]="staff.mobile"  formControlName="mobile">
+                   <div *ngIf="editstaffsubmitted && esf.mobile.errors" class="invalid-feedback">
+                    <div *ngIf="esf.mobile.errors.required">Mobile Name is required</div>
+                  </div>
+                  </div>
+
+              </div>
+
+          </div>
+
+          <div class="row">
+
+            <div class="col-md-6 pr-1">
+              <div class="form-group">
+                <label>Staff Role</label>
+
+                <div class="checkbox">
+                  <label  *ngFor="let list of xyzlist">
+                    <input formControlName="roles"   type="checkbox" value="{{list.value}}"
+                     (change)="onCheckboxChangeedit(list,$event)" [checked]="checked(list.value)" >&nbsp;{{list.label}}&nbsp;&nbsp;&nbsp;&nbsp;</label>
+                </div>
+               <!-- <div *ngIf="submitted && f.staff_role.errors" class="invalid-feedback">
+                <div *ngIf="f.source.errors.required">Source is required</div>
+               </div> -->
+
+              </div>
+            </div>
+
+
+        </div>
+
+                 </form>
+      </div>
+      <div style="text-align: center;">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal"  id="staffUpdateModalCloseBtn">Cancel</button>
+        <button type="button" class="btn blue-ink"  (click)="onStaffUpdate(staff)">Update</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- deactivate staff modal -->
+<div class="modal fade" id="exampleModalDeleteStaff" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title " id="exampleModalLabel" >Deactivate Staff</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <img src="../../assets/danger.png" class="successimage">
+        </div>
+        <div class="row">
+          <p class="contentstyle" *ngIf="!isNotDeleted"> Are you sure you want to deactivate ?
+          </p>
+          <p class="contentstyle1 blue-link-heading" *ngIf="isNotDeleted"> Cannot deactivate since there are inprogress leads.
+          </p>
+        </div>
+
+
+      </div>
+      <div style="text-align: center;">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal"  id="staffDeleteModalCloseBtn">Cancel</button>
+        <button type="button" class="btn" style="background:#112048;"  (click)="onStaffDelete(staff)" [disabled]="isNotDeleted">Deactivate</button>
+
+      </div>
+    </div>
+  </div>
+</div>
+<!-- print staff table -->
+<table class="table" id="tblData" style="display: none;">
+  <thead class=" text-primary">
+      <th>
+          Sno
+      </th>
+    <th>
+      Name
+    </th>
+    <th>
+      Email
+    </th>
+    <th>
+      Mobile
+    </th>
+
+  </thead>
+  <tbody>
+    <tr *ngFor="let user of users;let i = index;">
+       <td>
+           {{i+1}}
+       </td>
+      <td>
+        {{user.firstName}} {{user.lastName}}
+      </td>
+      <td>
+        {{user.email}}
+      </td>
+      <td>
+        {{user.mobile}}
+      </td>
+
+    </tr>
+  </tbody>
+</table>
+
+<!-- Add centers modal -->
+<div class="modal fade" id="modalOnAddSenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel" >Create Centre</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+          <form   [formGroup]="addCenterForm" #centerDetails="ngForm">
+              <div class="row">
+                  <div class="col-md-12 pr-1">
+                  <div class="form-group">
+                      <label>Centre Name</label>
+                      <input  type="text" class="form-control"
+                      [ngClass]="{ 'is-invalid': centersubmitted && c.center.errors }"
+                       placeholder="Enter Centre Name" formControlName="center">
+                       <div *ngIf="centersubmitted && c.center.errors" class="invalid-feedback">
+                        <div *ngIf="c.center.errors.required">Centre Name is required</div>
+                      </div>
+                     </div>
+                  </div>
+               
+              </div>
+       
+        </form>
+      </div>
+      <div style="text-align: center;">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" id="centerSaveModalCloseBtn">Cancel</button>
+        <button type="button" class="btn  blue-ink" (click)="onCenterSave()" >Save</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+

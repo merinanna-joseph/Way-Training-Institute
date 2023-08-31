@@ -1,0 +1,177 @@
+<!-- <app-toast [message]="toast.message"></app-toast> -->
+<div class="panel-header panel-header-md">
+
+    <h4 style="color: white;margin-top: -40px;margin-left: 30px;">{{auth.currentUser.firstName | titlecase}} {{auth.currentUser.lastName | titlecase}} - Admin</h4>
+
+    <div class="row" style="color: white;">
+      <div class="col-lg-4 col-md-4 col-sm-12  text-center" >
+        <a  class="previous round" *ngIf="showPrevious" (click)="previous()" style="cursor: pointer;">&#8249;</a>
+        {{filter_year[selectedIndex]}}
+        <a  class="next round" *ngIf="showNext" (click)="next()" style="cursor: pointer;">&#8250;</a>
+      </div>
+      
+        <div class="col-lg-4 col-md-4 col-sm-12 text-center"  (click) = "viewBalance(filter_year[selectedIndex])" >
+          <button type="button" *ngIf="showBalanceFees" class="btn btn-outline-success"style="padding:11px 18px;background-color:#112048;">
+            Outstanding Fees</button>
+            <button type="button" *ngIf="!showBalanceFees" class="btn btn-outline-success"style="padding:11px 18px;">
+              Outstanding Fees</button>
+        </div>
+        <div class="col-lg-4 col-md-4 col-sm-12 text-center">
+          <button type="button" *ngIf="showCollectedFees" class="btn btn-outline-success"style="padding:11px 25px;background-color:#112048;"  (click) = "viewCollectedFees(filter_year[selectedIndex])" >
+            Collected Fees</button>
+            <button type="button" *ngIf="!showCollectedFees" class="btn btn-outline-success"style="padding:11px 25px;"  (click) = "viewCollectedFees(filter_year[selectedIndex])" >
+              Collected Fees</button>
+        </div>
+     
+    </div>
+
+</div>
+<div class="main-content">
+<div class ="row" >
+  <!-- new code -->
+  <div class="col-lg-4 col-md-6 col-sm-6" *ngFor="let x of total_students_count_array;let i = index;">
+    <div class="card card-stats" (click)="onCardClick(i,x._id)" >
+      <div class="card-header card-header-warning card-header-icon">
+        <!-- <div class="card-icon">
+          <i class="material-icons">content_copy</i>
+        </div> -->
+
+        <div class="row">
+
+          <div class="col-lg-12 col-md-12 col-sm-12">
+            <p class="card-category text-center">Total Students - {{x._id}}&nbsp;<span class="fa fa-question-circle" data-toggle="tooltip"  data-placement="top" title="Total active students of centres - Abu-Dhabi & Ajman"></span></p>
+
+            <h3 class="card-title text-center" style="font-size:1.8em;">{{x.count}}
+              <!-- <small>GB</small> -->
+            </h3>
+
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-lg-12 col-md-12 col-sm-12" *ngIf="showBalanceFees" >
+            <p class="card-category text-center">Outstanding Fees&nbsp;<span class="fa fa-question-circle" data-toggle="tooltip"  data-placement="top" title="Total outstanding fees in centres - Abu-Dhabi & Ajman"></span></p>
+            <span *ngFor="let y of to_pay_balance_fee_allCenters;let j = index;">
+              <!-- {{x._id}},{{to_pay_balance_fee_allCenters[i].center}} <br> -->
+              <h3 class="card-title text-center" *ngIf="x._id == y.center">
+                            
+
+                {{y.balance | currency: " ":"symbol":"3.0"}} <span style="font-size: small;">AED</span>
+                  <!-- <small>GB</small> -->
+                </h3>
+
+            </span>
+           
+          </div>
+        </div>
+          <div class="row" *ngIf="showCollectedFees">
+          <div class="col-lg-12 col-md-12 col-sm-12">
+            <p class="card-category text-center">Fees Collected &nbsp;<span class="fa fa-question-circle" data-toggle="tooltip"  data-placement="top" title="Total fees collected from centres - Abu-Dhabi & Ajman"></span></p>
+            <span *ngFor="let z of allcenters_total_currentyear_paid_count;let k = index;">
+              <h3 class="card-title  text-center"  *ngIf="x._id == z.center" style="font-size:1.8em;">
+                {{z.paid | currency: " ":"symbol":"3.0"}} <span style="font-size: small;">AED</span>
+                <!-- <small>GB</small> -->
+              </h3>
+            </span>
+
+            
+          </div>
+        </div>
+
+        <!-- <div class="row">
+          <div class="col-lg-6 col-md-6 col-sm-6 text-left"  (click) = "viewTotalBalanceFees(filter_year[selectedIndex])" >
+            <button type="button" *ngIf="showTotalBalanceFees" class="btn btn-outline-success"style="padding:11px 18px;background-color:#112048;">
+              Outstanding Fees</button>
+              <button type="button" *ngIf="!showTotalBalanceFees" class="btn btn-outline-success"style="padding:11px 18px;">
+                Outstanding Fees</button>
+          </div>
+          <div class="col-lg-6 col-md-6 col-sm-6 text-right">
+            <button type="button" *ngIf="showTotalCollectedFees" class="btn btn-outline-success"style="padding:11px 25px;background-color:#112048;"  (click) = "viewTotalCollectedFees()" >
+              Collected Fees</button>
+              <button type="button" *ngIf="!showTotalCollectedFees" class="btn btn-outline-success"style="padding:11px 25px;"  (click) = "viewTotalCollectedFees()" >
+                Collected Fees</button>
+          </div>
+        </div> -->
+
+
+
+      </div>
+      <div class="card-footer">
+        <div class="stats">
+          <!-- <i class="material-icons text-danger">warning</i> -->
+        </div>
+      </div>
+    </div>
+  </div>
+ 
+</div>
+ 
+
+  <div class="row" >
+    <div class="col-md-4">
+      <div class="card">
+        <div class="card-header">
+          <div class="row">
+              <div class="col-md-8"  style="padding-top: 8px;">
+                  <h6 class="card-title" style="color: rgb(96, 56, 243);">ALL CENTERS</h6>
+              </div>
+             
+          </div>
+      </div>
+        <div class="card-body" *ngIf="pieDisplay">
+
+            <canvas baseChart
+            [data]="pieChartData"
+            [labels]="pieChartLabels"
+            [chartType]="pieChartType"
+            (chartHover)="chartHovered($event)"
+            (chartClick)="chartClicked($event)" height = "250" weight="250"></canvas>
+
+
+        </div>
+
+      </div>
+      <div>
+
+      </div>
+    </div>
+    <div class="col-md-8" >
+      <div class="card">
+        <div class="card-header">
+          <div class="row">
+              <div class="col-md-8"  style="padding-top: 8px;">
+                  <h6 class="card-title" style="color: rgb(96, 56, 243);">{{graph_centername}}</h6>
+              </div>
+              
+          </div>
+      </div>
+        <div class="card-body" >
+          <div >
+            <canvas baseChart id="bigDashboardChart"
+                [datasets]="lineBigDashboardChartData"
+                [labels]="lineBigDashboardChartLabels1"
+                 [colors]="lineBigDashboardChartColors"
+                [options]="lineBigDashboardChartOptions"
+                [chartType]="lineBigDashboardChartType"
+                (chartHover)="chartHovered($event)"
+                (chartClick)="chartClicked($event)" width="1016"
+                height="250"></canvas>
+
+
+          
+          </div>
+        </div>
+
+      </div>
+    </div>
+    
+  </div>
+
+</div>
+
+
+
+
+
+
+

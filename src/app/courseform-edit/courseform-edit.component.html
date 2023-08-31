@@ -1,0 +1,316 @@
+<app-toast [message]="toast.message"></app-toast>
+<div class="panel-header panel-header-sm">
+    <h4 style="color: white;margin-top: -40px;margin-left: 30px;">
+      {{auth.currentUser.firstName | titlecase}} {{auth.currentUser.lastName | titlecase}} <span *ngIf="auth.isAdmin"> - Admin</span>
+      </h4>
+  </div>
+  <div class="main-content">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-header">
+              <div class="row">
+                  <div class="col-md-8"  style="padding-top: 16px;">
+                      <h4 class="card-title"> Course Management</h4>
+                  </div>
+                  <div class="col-md-4">
+                    <button type="button" class="btn btn-danger btn-round"  style="background-color:#112048;" (click)="onBackClick()">back</button>
+                  </div>
+              </div>
+          </div>
+
+          <div class="card-body" >
+            <div class="pb-5">
+                <form [formGroup]="addCourseForm">
+                    <div class="row">
+                      <div class="col-md-6 pr-5 pl-5">
+                        <div class="form-group">
+                          <label>Course Name</label>
+
+                          <input class="form-control" [ngModel] = "singleCourse.name" formControlName="coursename" readonly>
+                          <div *ngIf="submitted && f.coursename.errors" class="invalid-feedback">
+                            <div *ngIf="f.coursename.errors.required">Course Name is required</div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-3 pr-5 pl-5">
+                        <div class="form-group">
+                          <label>Duration</label>
+                          <input class="form-control" [ngModel] = "singleCourse.durationInYear" formControlName="durationInYear" readonly>
+
+                           <div *ngIf="submitted && f.durationInYear.errors" class="invalid-feedback">
+                            <div *ngIf="f.durationInYear.errors.required">Year required</div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-3 pr-5 pl-5">
+                        <div class="form-group">
+                           <label>Month</label>
+                           <input class="form-control" [ngModel] = "singleCourse.durationInMonths" formControlName="durationInMonths" readonly>
+
+                           <div *ngIf="submitted && f.durationInMonths.errors" class="invalid-feedback">
+                            <div *ngIf="f.durationInMonths.errors.required">Month required</div>
+                          </div>
+                        </div>
+                      </div>
+
+                    </div>
+                    <div class="row">
+                        <!-- <div class="col-md-6 pr-5 pl-5" *ngIf="!cBBA">
+                          <div class="form-group">
+                            <label>Branch</label>
+                            <select class="form-control" [ngClass]="{ 'is-invalid': submitted && f.branch.errors }"
+                            placeholder="Enter Branch" formControlName="branch">
+                             <option value="" selected="true">--Select Branch--</option>
+                             <option *ngFor="let x of branchArray" value="{{x}}">{{x}}</option>
+                            </select>
+
+                             <div *ngIf="submitted && f.branch.errors" class="invalid-feedback">
+                              <div *ngIf="f.branch.errors.required">Branch is required</div>
+                            </div>
+                          </div>
+                        </div> -->
+                        <div class="col-md-6 pr-5 pl-5">
+                          <div class="form-group">
+                            <label>Branch</label>
+
+                            <input class="form-control" [ngModel]="singleCourse.branch" formControlName="branch" readonly>
+                             <div *ngIf="submitted && f.branch.errors" class="invalid-feedback">
+                              <div *ngIf="f.branch.errors.required">Branch is required</div>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="col-md-6 pr-5 pl-5" *ngIf="singleCourse.boardOrUniversity">
+                          <div class="form-group">
+                              <div class="row">
+                                  <div class="col-md-6">
+                                    <label>Board or University</label>
+                                  </div>
+
+                              </div>
+                              <input class="form-control" [ngModel]="singleCourse.boardOrUniversity.boardoruniveristy" formControlName="board" readonly>
+
+                          </div>
+                        </div>
+                      </div>
+                    <div class="row">
+
+                        <div class="col-md-4 pr-1 pl-5">
+                          <div class="form-group">
+                            <label>Course Type</label><br>
+                            <div class="row  pt-2">
+
+                              <div class="col-md-12 pr-1">
+                                <div class="form-group">
+                                  <input type="radio"  [checked] = "singleCourse.courseType"
+                                  formControlName="courseType"> {{singleCourse.courseType}}
+                                   <div *ngIf="submitted && f.courseType.errors" class="invalid-feedback">
+                                    <div *ngIf="f.courseType.errors.required">Course Type is required</div>
+                                  </div>
+                                  </div>
+
+                              </div>
+
+                            </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 pr-5 pl-5">
+                          <div class="form-group">
+                            <label>Starting Year</label>
+                            <input type="month" class="form-control" [ngModel]="course.startYear" [ngClass]="{ 'is-invalid': submitted && f.startYear.errors }"
+                            placeholder="Enter Start Year" formControlName="startYear" (change)="onStartYear($event)">
+                            <div *ngIf="submitted && f.startYear.errors" class="invalid-feedback">
+                              <div *ngIf="f.startYear.errors.required">Start Year is required</div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-md-4 pr-5 pl-5">
+                          <div class="form-group">
+                            <label>Ending Year</label>
+                            <input type="month" [ngModel]="course.endYear"  class="form-control" [ngClass]="{ 'is-invalid': submitted && f.endYear.errors }"
+                            placeholder="Enter End Year" formControlName="endYear">
+                             <div *ngIf="submitted && f.endYear.errors" class="invalid-feedback">
+                              <div *ngIf="f.endYear.errors.required">End Year is required</div>
+                            </div>
+                          </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                    
+                      <div class="col-md-4 pr-1 pl-5">
+                        <div class="form-group">
+                            <label>Centre Name</label>
+                            <select 
+                            class="form-control" formControlName="centers"
+                            [value]="singleCourse.centers"
+
+                    (change)="onCentersSelection($event.target)"
+                            [ngClass]="{ 'is-invalid': submitted && f.centers.errors }">
+                            <option *ngIf="singleCourse.centers" value="" hidden selected="true">{{singleCourse.centers}}
+                           </option>
+        
+                             <!-- <option  *ngIf="!singleCourse.centers" value="" selected="true">--Select Center--</option> -->
+                             <option *ngFor="let x of centers" value="{{x.center}}">{{x.center}}</option>
+                            </select>
+                            <div *ngIf="submitted && f.centers.errors" class="invalid-feedback">
+                              <div *ngIf="f.centers.errors.required">Select Centre</div>
+                            </div>
+        
+        
+                         </div>
+                    </div>
+        
+                      
+        
+        
+                    </div>
+                 <!-- <div class="col text-center">
+                      <button type="button" class="btn btn-danger btn-round" style="background-color:#112048;" (click)="onCourseSave()" [disabled]="showTable">Submit</button>
+                      <button type="button" *ngIf="!showtbl" class="btn btn-danger btn-round"  style="background-color:#112048;" (click)="show()" [disabled]="showTable">Cancel</button>
+
+                  </div> -->
+                </form>
+            </div>
+          </div>
+           <div class="row" >
+            <div class="col-md-8"  style="padding: 16px 33px;margin-top: -56px;">
+              <label style="font-size:20px;color: black;">Fee Allocation - {{course.name}}</label>
+            </div>
+          </div>
+          <div class="row" *ngIf="showtbl && singleCourse.feeId">
+            <div class="col-md-12">
+              <div class="card-body" >
+                <form >
+
+                    <table >
+                      <tbody>
+                        <tr>
+                           <th></th>
+                           <th>Registration Fee</th>
+                           <th>Coaching Fee</th>
+                           <th>Exam Fee</th>
+                           <th>Convocation Fee</th>
+                           <th>Attestation Fee</th>
+                           <th>Equalency Fee</th>
+                           <th>Other Fee</th>
+                           <th>Total Fee</th>
+                        </tr>
+                       <tr  *ngFor="let group of Fees; let i=index;">
+                          <td>
+                                <input type="text"
+                                name="years" [value] = "Fees[i].year"
+                                #years
+                                 class="form-control"
+                                readonly>
+
+                          </td>
+                          <td>
+                              <input  type="number"
+                              class="form-control"
+                      [value]="Fees[i].registration_fee"
+                               placeholder="registration"
+                               (keyup)="getTotal(i,$event,0)">
+
+                         </td>
+                         <td>
+                              <input type="number"
+                               class="form-control"
+                              name="coaching_fee"
+                              [value]="Fees[i].coaching_fee"
+
+                               placeholder="coaching"
+                               (keyup)="getTotal(i,$event,1)">
+
+                         </td>
+                         <td>
+
+                              <input type="number"
+                               class="form-control"
+                               [value]="Fees[i].exam_fee"
+
+                              placeholder="exam"
+                              (keyup)="getTotal(i,$event,2)">
+
+                         </td>
+                         <td>
+
+                              <input type="number"
+                              class="form-control"
+                               [value]="Fees[i].convocation_fee"
+
+                               placeholder="convocation"
+                               (keyup)="getTotal(i,$event,3)">
+
+                        </td>
+                        <td >
+
+                              <input type="number"
+                               class="form-control"
+                               [value]="Fees[i].attestation_fee"
+
+                               placeholder="attestation"
+                               (keyup)="getTotal(i,$event,4)">
+
+                        </td>
+                        <td >
+
+                              <input type="number"
+                              class="form-control"
+                               [value]="Fees[i].equalency_fee"
+
+                               placeholder="equalency"
+                               (keyup)="getTotal(i,$event,5)">
+
+                        </td>
+                        <td >
+
+                              <input type="number"
+                               class="form-control"
+                               [value]="Fees[i].other_fee"
+
+                               placeholder="others"
+                               (keyup)="getTotal(i,$event,6)">
+
+                        </td>
+                        <td >
+
+                              <input type="number"
+                               class="form-control"
+                               placeholder="total"
+                               [value]="Fees[i].total_fee"
+
+                               >
+
+                        </td>
+                     </tr>
+                     </tbody>
+                    </table>
+
+               <div >
+                    <p class="text-right"
+                    style="padding-right:80px;
+                    padding-top:40px;">
+                      Total Amount:{{total_Amount}}
+                    </p>
+               </div>
+                <button
+                 type="button"
+                  class="btn btn-round blue-ink"
+                  style="background-color:#112048;
+                  margin-right:10px;float: right;"
+                  (click)="onCourseSave()" >
+                  Save
+                </button>
+              </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+

@@ -1,0 +1,119 @@
+<app-toast [message]="toast.message"></app-toast>
+
+<div *ngIf="message.show" class="toast-backdrop">
+</div>
+
+
+<div *ngIf="message.show && message.type == 'contact_alert'"  class="alert"  role="alert">
+
+  <div class="container">
+    <div class="row justify-content-center ">
+      <div class="col-lg-8">
+
+        <div class="card bg-gradient-secondary shadow">
+          <h4 class="mb-1">Latest Open Event</h4>
+
+          <div class="card-body p-lg-5">
+            <form  [formGroup]="addStatusForm" #profileDetails="ngForm" >
+              <div class="form-group mt-2">
+                <div class="row">
+                  <div class="col-md-6 text-left" >
+                    <p style="font-size: 15px;">{{message.eventDate | date : 'MMM d, y, hh:mm a'}}</p>
+                    <div *ngIf="!call_event_status_checked">
+                      <input   type="checkbox" (change)="getEventStatusChange($event.target,message.eventId)"
+                      formControlName="status" [value]="call_event_status.closed"
+                     [ngClass]="{ 'is-invalid': latestEventsubmitted && cf.status.errors }">
+                     &nbsp;
+                     <label for="closed"> Closed</label><br>
+                     <div *ngIf="latestEventsubmitted && cf.status.errors" class="invalid-feedback">
+                      <div *ngIf="cf.status.errors.required">Status  required</div>
+                    </div>
+                    </div>
+                  
+                      <div *ngIf="call_event_status_checked"  >
+                        <input type="checkbox" checked disabled>
+                      
+                       
+                        &nbsp;
+                      <label for="closed"> Closed</label><br>
+                      </div>
+                     
+                     <div *ngIf="latestEventsubmitted && cf.status.errors" class="invalid-feedback">
+                      <div *ngIf="cf.status.errors.required">Status  required</div>
+                    </div>
+                  </div>
+                  <div class="col-md-6 text-left" >
+                    <label for="type" class="text-left">Type: </label>{{message.eventtype}}<br>
+                    <label for="createdby" class="text-right">Created By: </label> {{message.eventusername}} <br>
+                  </div>
+                </div>
+              </div>
+             <div class="form-group mb-3">
+                <textarea  rows="4" cols="80" class="form-control"
+                formControlName="remarks"
+                 placeholder="Enter Remarks" (change)="OneventremarkChange($event.target)"
+                 [ngClass]="{ 'is-invalid': latestEventsubmitted && cf.remarks.errors }" ></textarea>
+                 <div *ngIf="latestEventsubmitted && cf.remarks.errors" class="invalid-feedback">
+                  <div *ngIf="cf.remarks.errors.required">Remarks required</div>
+                </div>
+              </div>
+              <div class="text-center">
+                <button type ="submit" class="btn btn-secondary buttonStyle" (click) = "hideToast()"id="mobbutton" >Cancel</button>
+
+                &nbsp;
+                <button type="button" class="btn btn-primary"  (click)="OneventStatusStaffChange()"style="background-color:#112048;">Save</button>
+
+
+
+              </div>
+
+            </form>
+            <!-- <p class="mt-0 text-muted">Please help us with the below form. We will reach out to you soon.</p> -->
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel" >Change Event Status</h5>
+
+      </div>
+      <div class="modal-body">
+        <p>ppppppppppppp</p>
+        <form [formGroup]="addStatusForm" #changeStatusDetails="ngForm">
+          <div class="row">
+              <div class="col-md-12"  >
+                <div class="form-group">
+                    <label>Remarks</label>
+                    <textarea rows="4" cols="80" class="form-control"
+                    [ngClass]="{ 'is-invalid': changeLeadStatus && changeStatus.remarks.errors }"
+                     formControlName="remarks"
+                     placeholder="Enter Remarks" (change)="OneventremarkChange($event.target)"></textarea>
+                     <div *ngIf="changeLeadStatus && changeStatus.remarks.errors" class="invalid-feedback">
+                      <div *ngIf="changeStatus.remarks.errors.required">Remarks  required</div>
+                    </div>
+
+                </div>
+                </div>
+
+          </div>
+
+
+      </form>
+
+      </div>
+      <div style="text-align: center;">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal"  id="eventStatusStaffModalCloseBtn"  (click)="closeEventStatus()">Cancel</button>
+        <button type="button" class="btn btn-primary" (click)="OneventStatusStaffChange()"style="background-color:#112048;" >Save</button>
+      </div>
+    </div>
+  </div> -->
+</div>
+
+
+

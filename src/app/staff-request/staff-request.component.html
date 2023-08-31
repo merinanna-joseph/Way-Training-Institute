@@ -1,0 +1,79 @@
+<app-toast [message]="toast.message"></app-toast>
+<div class="panel-header panel-header-sm">
+  <h4 style="color: white;margin-top: -40px;margin-left: 30px;">{{auth.currentUser.firstName | titlecase}} {{auth.currentUser.lastName | titlecase}}</h4>
+
+</div>
+<div class="main-content">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-header">
+            <div class="row">
+                <div class="col text-left"  style="padding-top: 16px;">
+                    <h4 class="card-title"> LEAD REQUEST MANAGEMENT</h4>
+               </div>
+               <div class="col text-right">
+                    <!-- <button type="button" class="btn btn-danger btn-round" data-toggle="modal" data-target="#exampleModal">Create Lead</button> -->
+                    <button type="button" class="btn btn-danger btn-round" (click)="onBackClick()"  style="background-color:#112048;">Back</button>
+
+                  </div>
+            </div>
+          </div>
+        <div class="card-body">
+          <div class="table-responsive">
+            <table class="table">
+              <thead class=" text-primary">
+                  <th  style="color:#112048;">
+                      Sno
+                  </th>
+             <th style="color:#112048;">
+               Lead Name
+             </th>  
+                <th style="color:#112048;">
+                  Assigned By
+                </th>
+                <th style="color:#112048;">
+                  Assigned On
+                </th>
+               
+              </thead>
+              <tbody>
+                <tr *ngFor="let lead of leadDetails1;let i = index;">
+                   <td>
+                       {{i+1}}
+                   </td>
+                   <td >
+                    {{lead.leadId.firstName}}  {{lead.leadId.lastName}}
+                  </td>
+                  <td >
+                    {{lead.assignedBy.firstName}}  {{lead.assignedBy.lastName}}
+                  </td>
+                  
+                  <td>
+                    {{lead.assignedOn | date}}
+                  </td>
+                 
+                 
+                  <td>
+                    <button type="button" class="btn btn-danger btn-round" (click)="acceptLeadRequest(lead)"  style="background-color:#112048;">Accept</button>
+
+                  </td>
+                  <td>
+                    <button type="button" class="btn btn-danger btn-round"  (click)="rejectLeadRequest(lead)"  style="background-color:#112048;">Reject</button>
+
+                  </td>
+                 
+                  <!-- <td>
+                    <button (click)="editLeadStaff(lead._id)" class="btn btn-danger btn-round" data-toggle="modal" data-target="#exampleModalEditStaffLead" >Edit</button>
+                  </td> -->
+                </tr>
+              </tbody>
+            </table>
+         </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+ 

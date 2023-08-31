@@ -1,0 +1,819 @@
+
+
+<app-toast [message]="toast.message"></app-toast>
+<div class="panel-header panel-header-sm">
+    <h4 style="color: white;margin-top: -40px;margin-left: 30px;">
+      {{auth.currentUser.firstName | titlecase}} {{auth.currentUser.lastName | titlecase}} <span *ngIf="auth.isAdmin"> - Admin</span>
+    </h4>
+  </div>
+  <div class="main-content">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-header">
+            <div class="row">
+              <div class="col-md-12" style="padding-top:9px;padding-bottom: 20px;">
+                <div class="row">
+
+                  <div class="col-md-3" *ngIf="feeFlow.studentId">
+
+                      <img
+                      *ngIf="feeFlow.studentId.studentDocuments.profilephoto"
+                      [src]="feeFlow.studentId.studentDocuments.profilephoto"
+                      class="colored-image"
+                      style="height: 35mm; width: 35mm"
+                    />
+                    <img
+                    *ngIf="!feeFlow.studentId.studentDocuments.profilephoto"
+
+                    class="colored-image"
+                    style="height: 35mm; width: 35mm"
+                  />
+                  </div>
+                  <div  class="vr">
+                  </div>
+                  <div class="col-md-4" *ngIf="feeFlow.studentId">
+                    <div style="font-size:16px;" >
+                    <b> <a  style="color:blue;"target="_blank"  (click)="onViewClick(feeFlow.studentId)"
+                        *ngIf="feeFlow.studentId.firstName && feeFlow.studentId.lastName">
+                      {{feeFlow.studentId.firstName | titlecase}} {{feeFlow.studentId.lastName | titlecase}}</a></b>
+                  </div>
+                   <div  style="font-size:14px;text-align: left;" >{{feeFlow.studentId.studentCourse[0].course_name | titlecase}}&nbsp;
+                    ({{feeFlow.studentId.studentCourse[0].course_type | titlecase}}) <span *ngIf="feeFlow.studentId.studentCourse[0].course_branch">- {{feeFlow.studentId.studentCourse[0].course_branch | titlecase}}</span>
+                  </div>
+                  <div  style="font-size:12px;text-align: left;" >{{feeFlow.studentId.centers | titlecase}}&nbsp;
+                  </div>
+                  <div style="font-size:12px;" *ngIf="feeFlow.studentId"><label>Mobile</label> : {{feeFlow.studentId.contact.mobilenumber}}</div>
+
+                  <div style="font-size:12px;" ><label>Intake</label> : {{feeFlow.studentId.intake | date: "MMM-yyyy" | titlecase}}</div>
+
+                    <!-- <div style="font-size:12px;margin-top: 10px;" *ngIf="feeFlow.studentId"><i class="now-ui-icons ui-1_email-85"></i> : {{feeFlow.studentId.email}}</div> -->
+                    <div style="font-size:12px;" ><label>Reg No.</label> : {{feeFlow.studentId.university_register_number}}</div>
+                    <div style="font-size:12px;" ><label>Tally ID&nbsp;</label>  :&nbsp;{{feeFlow.studentId.tally_ID}}</div>
+
+
+                  </div>
+                  <div class="col-md-1" class="vr">
+                  </div>
+                   <div class="col-md-4" *ngIf="feeFlow.studentId">
+                    <!-- <div style="font-size:14px;" ><label>Previous Course&nbsp;</label>  :&nbsp;{{feeFlow.studentId.education_qualification.last_Completed_Course}}</div> -->
+
+                    <!-- <h6>
+                      <a style="margin-top: -20px;cursor: pointer;"
+                      data-toggle="tooltip" data-placement="top" title="Close Admission"
+                       data-toggle="modal" data-target="#closeAdmissionModal" >
+                     CLOSE ADMISSION
+                    </a>
+                    </h6> -->
+                    <form [formGroup]="closeAdmissionForm" #closeAdmissionDetails="ngForm">
+                      <div class="row" >
+                        <div class="col-md-12" >
+                          <div class="form-group" >
+                            <!-- <label>Closing Type</label> -->
+                                  <select class="form-control" id="closingTypeStyle"
+                                           aria-label="Default select example"
+                                           formControlName="closingType"
+                                          (change)="onClosingTypeChange()" >
+                                          <option value="" selected="true">--Select Closing Type--</option>
+
+                                           <option *ngFor="let x of closingType" value="{{x}}">{{x}}</option>
+                                  </select>
+
+                            <!-- <div *ngIf="certificateSubmitted && c.year.errors" class="invalid-feedback">
+                              <div *ngIf="c.year.errors.required">Year is required</div>
+                            </div> -->
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="row" *ngIf="closingAdmission">
+                        <div class="col-md-12" *ngIf="admissionClosingType == 'Transferred'" >
+                          <div class="form-group">
+                            <label>Transfer Date</label>
+                            <input type="date" class="form-control" id="closingTypeStyle"formControlName="transfer_date"
+                                            [ngModel] ="currentDate | date:'yyyy-MM-dd'"   min="{{firstDayOfMonth | date:'yyyy-MM-dd'}}"
+                                            (change)="onTransferDateChange()"  placeholder="Enter date"
+
+                                              >
+
+
+                            <!-- <div *ngIf="certificateSubmitted && c.year.errors" class="invalid-feedback">
+                              <div *ngIf="c.year.errors.required">Year is required</div>
+                            </div> -->
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="row" *ngIf="closingAdmission">
+                        <div class="col-md-6" *ngIf="admissionClosingType == 'Dropped Out'" >
+                          <div class="form-group">
+                            <label>Dropped Date</label>
+                            <input type="date" class="form-control" id="closingTypeStyle"
+                            formControlName="drop_out_date"   (change)="onDropOutDateChange()"
+                                              placeholder="Enter date" >
+
+
+                            <!-- <div *ngIf="certificateSubmitted && c.year.errors" class="invalid-feedback">
+                              <div *ngIf="c.year.errors.required">Year is required</div>
+                            </div> -->
+                          </div>
+                        </div>
+                        <div class="col-md-6" *ngIf="admissionClosingType == 'Dropped Out'" >
+                          <div class="form-group">
+                            <label>Drop Out Confirm Date</label>
+                            <input type="date" class="form-control" id="closingTypeStyle"
+                            formControlName="drop_out_confirm_date"   (change)="onDropOutDateChange()"
+                                              placeholder="Enter date" >
+
+
+                            <!-- <div *ngIf="certificateSubmitted && c.year.errors" class="invalid-feedback">
+                              <div *ngIf="c.year.errors.required">Year is required</div>
+                            </div> -->
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row" *ngIf="closingAdmission">
+                        <div class="col-md-12 pr-1" >
+                          <div class="form-group">
+                              <!-- <label>Remarks</label> -->
+                              <input  class="form-control" type="text"
+
+                               formControlName="closingremark" id="remarkstyle"id="closingTypeStyle"
+                               placeholder="Enter Remarks" >
+                              <div *ngIf="submitted && f.remarks.errors" class="invalid-feedback">
+                                <div *ngIf="f.remarks.errors.required">Remarks is required</div>
+                              </div>
+                            </div>
+                        </div>
+                      </div>
+                      <div class="row" *ngIf="admissionClosingType == 'Dropped Out'">
+                        <div class="col-md-5" >
+                          <label>Do You Want to Pay?</label>
+
+                        </div>
+
+                        <!-- <div class="col-md-4" >
+                          <div class="form-group">
+                              <input  type="checkbox" [checked]="dropout_confirmYES"
+                              formControlName="drop_out_confirm"
+                              (change)="onDropOutConfirmYES($event)"
+                               placeholder="Enter Remarks" >&nbsp;Yes
+
+
+                            </div>
+                        </div> -->
+                        <div class="col-md-3" >
+                          <div class="form-group">
+                              <!-- <label>Remarks</label> -->
+
+
+                               <input  type="checkbox" [checked]="dropout_confirmNO"
+                               (change)="onDropOutConfirmNO($event)"
+                               data-toggle="modal" data-target="#closingConfirmModal"
+                               formControlName="drop_out_confirm"
+                               placeholder="Enter Remarks" >&nbsp;No
+
+                            </div>
+                        </div>
+                      </div>
+                    </form>
+
+                  </div>
+                </div>
+              </div>
+
+            </div>
+
+
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+
+    <div class="row">
+      <div class="col-md-12">
+       <div class="card">
+
+        <div class="card-body">
+          <div class="row">
+            <div class="col-md-12">
+              <div class="card">
+                  <div class="card-header">
+                      <div class="row">
+                          <div class="col-md-8"  >
+                              <h4 class="card-title"> Collect Fees</h4>
+                          </div>
+                          <div class="col-md-4" >
+                              Balance/Total fees: &nbsp;<b>{{total_balance_fees_per_year | currency:' ':'symbol':'3.0'}}/{{total_fees_per_year | currency:' ':'symbol':'3.0'}} AED</b>
+                          </div>
+                      </div>
+                  </div>
+                  <div class="card-body">
+                      <div class="pb-5">
+                          <form [formGroup]="addCollectFeeForm">
+                              <div class="row">
+                                <!-- <div class="col-md-4 pr-1">
+                                  <div class="form-group">
+                                    <label>Year</label>
+
+                                          <select class="form-control"
+                                                   aria-label="Default select example" [ngModel]="allYears[changed_year_index]"
+
+                                                  (change)="onYearChange($event.target)" formControlName="fee_year" >
+                                                   <option *ngFor="let x of allYears" value="{{x}}">{{x}}</option>
+                                          </select>
+
+                                    <div *ngIf="submitted && f.fee_year.errors" class="invalid-feedback">
+                                      <div *ngIf="f.fee_year.errors.required">fee_year is required</div>
+                                    </div>
+                                  </div>
+                                </div> -->
+                                <div class="col-md-6 pr-1">
+                                  <div class="form-group">
+                                    <label>Payment Mode</label>
+                                    <select class="form-control"
+                                    (change)="getPaymentMode($event.target)"
+                                     aria-label="Default select example"
+                                      formControlName="payment_mode"
+                                       [ngClass]="{ 'is-invalid': submitted && f.payment_mode.errors}">
+                                       <option value="" [selected]="true">Select Payment Mode</option>
+                                      <option *ngFor="let x of payment_mode" value="{{x}}">{{x}}</option>
+                                   </select>
+                                   <div *ngIf="submitted && f.payment_mode.errors" class="invalid-feedback">
+                                    <div *ngIf="f.payment_mode.errors.required">Payment Mode is required</div>
+                                   </div>
+                                  </div>
+                                </div>
+                                <div class="col-md-6 pl-1">
+                                  <div class="form-group">
+                                    <label>Remitted Date</label>
+                                    <input type="date" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.remitted_date.errors }"
+                                    [ngModel] ="currentDate | date:'yyyy-MM-dd'"  max="{{currentDate |date:'yyyy-MM-dd'}}"
+                                      placeholder="Enter date" formControlName="remitted_date">
+                                    <div *ngIf="submitted && f.remitted_date.errors" class="invalid-feedback">
+                                      <div *ngIf="f.remitted_date.errors.required">Remitted Date is required</div>
+                                    </div>
+                                  </div>
+                                </div>
+
+                              </div>
+                              <hr>
+                              <h6>Course Fees</h6>
+                              <hr>
+                              <div class="row">
+                                <div class="col-md-3 pr-1">
+
+                                  <div class="form-group">
+                                    <div class="row">
+                                      <div class="col-md-12 text left pr-1" >
+                                        <label >
+                                          Fee Amount - (<span style="color: rgb(94, 123, 219);">{{total_fee_bind}}
+                                            <span style="color: rgb(15, 15, 15);"> / </span>
+                                            {{total_fees}}</span>)
+                                          </label>
+                                        </div>
+
+                                    </div>
+                                    <input type="number" class="form-control"  [ngClass]="{ 'is-invalid': submitted && f.totalAmount.errors }"
+                                     (keyup)="getCourseTotal()"
+                                     placeholder="Enter Registration" formControlName="totalAmount">
+                                     <div *ngIf="submitted && f.totalAmount.errors" class="invalid-feedback">
+                                      <div *ngIf="f.totalAmount.errors.required"> Fee is required</div>
+                                    </div>
+                                  </div>
+                                </div>
+                                <!-- <div class="col-md-3 pr-1">
+
+                                  <div class="form-group">
+                                    <div class="row">
+                                      <div class="col-md-12 text left pr-1" *ngIf="feeFlow_collection_array[this.array_index]">
+                                        <label >
+                                          Registration Amount - (<span style="color: rgb(94, 123, 219);">{{registration_form_bind}}
+                                            <span style="color: rgb(15, 15, 15);"> / </span>
+                                            {{feeFlow_collection_array[this.array_index].registration_fee_total}}</span>)
+                                          </label>
+                                        </div>
+
+                                    </div>
+                                    <input type="number" class="form-control"  [ngClass]="{ 'is-invalid': submitted && f.registrationAmount.errors }"
+                                     (keyup)="getCourseTotal()"
+                                     placeholder="Enter Registration" formControlName="registrationAmount">
+                                     <div *ngIf="submitted && f.registrationAmount.errors" class="invalid-feedback">
+                                      <div *ngIf="f.registrationAmount.errors.required">Registration Fee is required</div>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div class="col-md-3 pr-1" >
+                                  <div class="form-group">
+                                    <div class="row">
+                                      <div class="col-md-12 text left pr-1" *ngIf="feeFlow_collection_array[this.array_index]">
+                                        <label>Coaching Amount - (<span style="color: rgb(94, 123, 219);">{{coaching_form_bind}}<span style="color: rgb(15, 15, 15);"> / </span>{{feeFlow_collection_array[this.array_index].coaching_fee_total}}</span>)</label></div>
+
+                                    </div>
+                                    <input type="number" class="form-control"
+                                    [ngClass]="{ 'is-invalid': submitted && f.coachingAmount.errors }" (keyup)="getCourseTotal()"
+                                     placeholder="Enter Coaching" formControlName="coachingAmount">
+                                     <div *ngIf="submitted && f.coachingAmount.errors" class="invalid-feedback">
+                                      <div *ngIf="f.coachingAmount.errors.required">Coaching Fee is required</div>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div class="col-md-3 pr-1">
+                                  <div class="form-group">
+                                    <div class="row">
+                                      <div class="col-md-12 text left pr-1" *ngIf="feeFlow_collection_array[this.array_index]">
+                                        <label>Exam Amount - (<span style="color: rgb(94, 123, 219);">{{exam_form_bind}}<span style="color: rgb(15, 15, 15);"> / </span>{{feeFlow_collection_array[this.array_index].exam_fee_total}}</span>)</label></div>
+
+                                    </div>
+                                    <input type="number" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.examAmount.errors }"
+                                     (keyup)="getCourseTotal()"
+                                     placeholder="Enter Exam" formControlName="examAmount">
+                                     <div *ngIf="submitted && f.examAmount.errors" class="invalid-feedback">
+                                      <div *ngIf="f.examAmount.errors.required">Exam Fee is required</div>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div class="col-md-3 pl-1">
+                                  <div class="form-group">
+                                    <div class="row">
+                                      <div class="col-md-12 text left pr-1" *ngIf="feeFlow_collection_array[this.array_index]">
+                                        <label>Convocation Amount - (<span style="color: rgb(94, 123, 219);">{{convocation_form_bind}}<span style="color: rgb(15, 15, 15);"> / </span>{{feeFlow_collection_array[this.array_index].convocation_fee_total}}</span>)</label></div>
+
+                                    </div>
+                                    <input type="number" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.convocationAmount.errors }"
+                                    (keyup)="getCourseTotal()"
+                                     placeholder="Enter Convocation" formControlName="convocationAmount">
+                                     <div *ngIf="submitted && f.convocationAmount.errors" class="invalid-feedback">
+                                      <div *ngIf="f.convocationAmount.errors.required">Convocation Fee is required</div>
+                                    </div>
+                                  </div>
+                                </div> -->
+
+                              </div>
+                              <!-- <div class="row">
+
+                                <div class="col-md-3 pr-1">
+                                  <div class="form-group">
+                                    <div class="row">
+                                      <div class="col-md-12 text left pr-1" *ngIf="feeFlow_collection_array[this.array_index]">
+                                        <label>Attestation Amount - (<span style="color: rgb(94, 123, 219);">{{attestation_form_bind}}<span style="color: rgb(15, 15, 15);"> / </span>{{feeFlow_collection_array[this.array_index].attestation_fee_total}}</span>)</label></div>
+
+                                    </div>
+                                    <input type="number" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.attestationAmount.errors }"
+                                    (keyup)="getCourseTotal()"
+                                     placeholder="Enter Attestation" formControlName="attestationAmount">
+                                     <div *ngIf="submitted && f.attestationAmount.errors" class="invalid-feedback">
+                                      <div *ngIf="f.attestationAmount.errors.required">Attestation Fee is required</div>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div class="col-md-3 pr-1">
+                                  <div class="form-group">
+                                    <div class="row">
+                                      <div class="col-md-12 text left pr-1" *ngIf="feeFlow_collection_array[this.array_index]">
+                                        <label>Equalency Amount - (<span style="color: rgb(94, 123, 219);">{{equalency_form_bind}}<span style="color: rgb(15, 15, 15);"> / </span>{{feeFlow_collection_array[this.array_index].equalency_fee_total}}</span>)</label></div>
+
+                                    </div>
+                                    <input type="number" class="form-control"[ngClass]="{ 'is-invalid': submitted && f.equalencyAmount.errors }"
+                                     (keyup)="getCourseTotal()"
+                                     placeholder="Enter Equalency" formControlName="equalencyAmount">
+                                     <div *ngIf="submitted && f.equalencyAmount.errors" class="invalid-feedback">
+                                      <div *ngIf="f.equalencyAmount.errors.required">Equalency Fee is required</div>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div class="col-md-3 pr-1">
+                                  <div class="form-group">
+                                    <div class="row">
+                                      <div class="col-md-12 text left pr-1" *ngIf="feeFlow_collection_array[this.array_index]">
+                                        <label>Other Amount - (<span style="color: rgb(94, 123, 219);">{{others_form_bind}}<span style="color: rgb(15, 15, 15);"> / </span>{{feeFlow_collection_array[this.array_index].other_fee_total}}</span>)</label></div>
+
+                                    </div>
+                                    <input type="number" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.otherAmount.errors }"
+                                     (keyup)="getCourseTotal()"
+                                     placeholder="Enter Other Fees" formControlName="otherAmount">
+                                     <div *ngIf="submitted && f.otherAmount.errors" class="invalid-feedback">
+                                      <div *ngIf="f.otherAmount.errors.required">Other Fee is required</div>
+                                    </div>
+                                  </div>
+                                </div>
+
+                                </div> -->
+                              <hr>
+                              <h6>Other Fees</h6>
+                              <hr>
+                              <div class="row">
+                                <div class="col-md-3 pr-1">
+                                  <div class="form-group">
+                                    <label>Miscellaneous Amount</label>
+                                    <input  type="number" class="form-control" (keyup)="getRemittedTotal()"
+                                     placeholder="Enter Miscellaneous Amount" formControlName="miscellaneousAmount">
+                                  </div>
+                                </div>
+
+                            
+                              <div class="col-md-3 pl-1" *ngIf="previous_year_arrear_form_bind > 0">
+                                <div class="form-group">
+                                  <div class="row">
+                                    <div class="col-md-12 text left pr-1"><label>Previous Year Arrear - (<span style="color: rgb(94, 123, 219);">{{previous_year_arrear_form_bind}}<span style="color: rgb(15, 15, 15);"> / </span>{{feeFlow_collection_array[this.array_index].previous_year_arrear}}</span>)</label></div>
+
+                                  </div>
+
+                                  <input  type="number" class="form-control" (keyup)="getRemittedTotal()"
+                                  placeholder="Enter Previous Year Arrear Amount" formControlName="previous_year_arrearAmount" >
+                                </div>
+                              </div>
+                              </div>
+                              <label *ngIf="transportation_required">Transportation Required Months</label>
+                              <div class="row" *ngIf="transportation_required">
+
+                                <div class="col-md-2" *ngFor="let collectionflow of collectionFlow_transport_display_month_list;let i = index;">
+                                  <div class="form-group">
+                                    <label>
+
+                                        <input type="radio" [checked]="collectionflow.isRequired" value="{{collectionflow.month}}"
+                                        [disabled]="collectionflow.isPaid || !collectionflow.isRequired"/>
+                                        {{allMonthNames[collectionflow.month - 1]}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                        <span *ngIf="!xyz[i]">
+                                          <input type="checkbox" [checked]="collectionflow.isPaid"
+
+                                          disabled/>&nbsp;Paid?
+                                        </span>
+                                        <span *ngIf="xyz[i]">
+                                          <input type="checkbox"
+                                          (change)="onTransportMonthSelection(collectionflow.month,$event)"
+                                          />&nbsp;Paid?
+                                        </span>
+                                         </label>
+                                </div>
+                                </div>
+                              </div>
+
+
+
+                              <div class="row" *ngIf="transportation_required">
+
+                              <div class="col-md-3 pr-1" >
+                                <div class="form-group">
+                                  <label>Transportation Amount</label>
+                                  <input  type="number" class="form-control" (keyup)="getRemittedTotal()"
+                                  placeholder="Enter Trasportion Amount" formControlName="transportAmount">
+                                </div>
+                              </div>
+
+                              </div>
+                              <hr>
+                              <h6>Total Fees</h6>
+                              <hr>
+                              <div class="row">
+
+                              <div class="col-md-3 pr-1">
+                                <div class="form-group">
+                                  <label>Total Course Amount</label>
+                                  <input class="form-control" [ngModel] = "total_course_fees"
+                                   formControlName="cooursetotalAmount" readonly>
+                                </div>
+                              </div>
+                              <div class="col-md-3 pr-1">
+                                <div class="form-group">
+                                  <label>Total Remitted Amount</label>
+                                  <input class="form-control" [ngModel] = "total_paid_fees"
+                                  formControlName="remittedtotalAmount" readonly>
+                                </div>
+                              </div>
+                              <div class="col-md-4 pl-1" *ngIf="closingAdmission">
+                                <div class="form-group">
+                                  <label>Balance/Discount Amount</label>
+                                  <input class="form-control" [ngModel] = "studentTotalDiscount"formControlName="discountAmount"
+                                style="color:red;"  readonly >
+                                  <span><label><i>!Balance/Discount amount is taken as not paid.</i></label></span>
+                                </div>
+                              </div>
+
+                              </div>
+                              <div class="row">
+                                  <div class="col-md-12 pr-1">
+                                      <div class="form-group">
+                                          <label>Remarks</label>
+                                          <textarea   class="form-control" id="remarkstyle" [ngClass]="{ 'is-invalid': submitted && f.remarks.errors }"
+                                           placeholder="Enter Remarks"
+                                           formControlName="remarks">
+                                          </textarea>
+                                          <div *ngIf="submitted && f.remarks.errors" class="invalid-feedback">
+                                            <div *ngIf="f.remarks.errors.required">Remarks is required</div>
+                                          </div>
+                                        </div>
+                                  </div>
+                              </div>
+
+
+                           <div class="col text-center">
+                               <button type="button" *ngIf="closingAdmission" class="btn btn-danger btn-round" style="background-color:#112048;" data-toggle="modal" data-target="#closingConfirmModal">Collect</button>
+                                <button type="button" *ngIf="!closingAdmission" class="btn btn-danger btn-round" style="background-color:#112048;" [disabled]="clicked" (click)="clicked = true;onFeeCollectSave();">Collect</button>
+                                <button type="button"  class="btn btn-danger btn-round"  style="background-color:#112048;" (click)="onCancelClick()">Cancel</button>
+                            </div>
+                          </form>
+                      </div>
+                    </div>
+              </div>
+          </div>
+         </div>
+
+           <div >
+            
+       
+           </div>
+       </div>
+
+      </div>
+    </div>
+ </div>
+
+
+
+
+
+  <div id="print-section" style="display: none;">
+  <div class="row">
+    <table >
+      <tbody>
+        <tr>
+          <th width="60%" style="text-align: left;color:#112048;">
+            <img src="../assets/favicon.jpeg" alt="..." width="50" height="50">
+            </th>
+            <th width="100%" style="text-align: center;font-size: 20px;color:#112048;">TIMES EDUCATION</th>
+        </tr>
+
+
+     </tbody>
+    </table>
+  </div>
+  <hr>
+  <div class="row">
+    <table >
+      <tbody>
+        <tr>
+          <td width="60%" style="text-align: left;font-size: 12px;color:#adb1b8;">BILLING TO</td>
+          <td width="50%" style="text-align: left;font-size: 12px;color:#adb1b8;"> BILLING ADDRESS</td>
+        </tr>
+       <tr>
+         <td width="60%" style="text-align: left;">
+
+            {{invoice_studentname  | titlecase}}
+            <br>
+            {{invoice_contact}}
+
+
+
+      </td>
+         <td width="50%" style="text-align: left;">
+          {{invoice_address | titlecase}}
+        </td>
+
+       </tr>
+       <tr>
+        <td width="60%" style="text-align: left;font-size: 12px;color:#adb1b8;">ISSUE DATE</td>
+        <td width="40%" style="text-align: left;font-size: 12px;color:#adb1b8;">ACADEMIC YEAR</td>
+
+       </tr>
+       <tr>
+        <td width="60%" style="text-align: left;">
+          {{invoiced_fee.remittedDate | date}}
+
+
+      </td>
+        <td width="40%" style="text-align: left;">
+          <p >{{invoiced_fee.year}}</p>
+        </td>
+
+      </tr>
+      <tr>
+        <td width="60%" style="text-align: left;font-size: 12px;color:#adb1b8;">REG. NO.</td>
+        <td width="40%" style="text-align: left;font-size: 12px;color:#adb1b8;"> TALLY ID</td>
+
+       </tr>
+       <tr>
+        <td width="60%" style="text-align: left;">
+
+        {{invoice_regno}}
+      </td>
+        <td width="40%" style="text-align: left;">
+          <p >{{invoice_tallyid}}</p>
+        </td>
+
+      </tr>
+      <tr>
+        <td width="60%" style="text-align: left;font-size: 12px;color:#adb1b8;">UNIVERSITY</td>
+        <td width="40%" style="text-align: left;font-size: 12px;color:#adb1b8;">COURSE DETAILS</td>
+
+       </tr>
+      <tr>
+        <td width="60%" style="text-align: left;">
+
+        {{invoice_university  | titlecase}}
+      </td>
+        <td width="40%" style="text-align: left;">
+          <p >{{invoice_course  | titlecase}}</p>
+        </td>
+
+      </tr>
+      <tr>
+        <td width="60%" style="text-align: left;font-size: 12px;color:#adb1b8;">TOTAL FEE</td>
+        <td width="40%" style="text-align: left;font-size: 12px;color:#adb1b8;">BALANCE FEE</td>
+
+       </tr>
+       <tr>
+        <td width="60%" style="text-align: left;">
+
+        {{invoiced_fee.total_fee}}
+      </td>
+        <td width="40%" style="text-align: left;">
+          <p >{{invoiced_fee.balance_fee}}</p>
+        </td>
+
+      </tr>
+     </tbody>
+    </table>
+
+</div>
+  <hr>
+
+  <div class="row" class="doNotPrint">
+
+    <table >
+      <tbody>
+
+        <tr >
+          <td width="70%" style="text-align: left;font-size: 16px;">DESCRIPTION</td>
+          <td width="80%" style="text-align: right;font-size: 16px;"> AMOUNT  (AED)</td>
+
+         </tr>
+
+        <!-- <tr>
+          <th width="80%" style="text-align: left;font-size: 14px;color:#adb1b8;">Registration</th>
+          <td width="20%" style="text-align: right;font-size: 14px;"> {{invoiced_fee.registration_fee | currency:' ':'symbol':'3.0'}}</td>
+
+        </tr> -->
+        <!-- <tr>
+          <th width="80%" style="text-align: left;font-size: 14px;color:#adb1b8;">Coaching</th>
+          <td width="20%" style="text-align: right;font-size: 14px;"> {{invoiced_fee.coaching_fee | currency:' ':'symbol':'3.0'}}</td>
+
+        </tr> -->
+        <!-- <tr>
+          <th width="80%" style="text-align: left;font-size: 14px;color:#adb1b8;">Exam</th>
+          <td width="20%" style="text-align: right;font-size: 14px;"> {{invoiced_fee.exam_fee | currency:' ':'symbol':'3.0'}}</td>
+
+        </tr> -->
+        <!-- <tr>
+          <th width="80%" style="text-align: left;font-size: 14px;color:#adb1b8;">Convocation</th>
+          <td width="20%" style="text-align: right;font-size: 14px;"> {{invoiced_fee.convocation_fee | currency:' ':'symbol':'3.0'}}</td>
+
+        </tr> -->
+        <!-- <tr>
+          <th width="80%" style="text-align: left;font-size: 14px;color:#adb1b8;">Attestation</th>
+          <td width="20%" style="text-align: right;font-size: 14px;"> {{invoiced_fee.attestation_fee | currency:' ':'symbol':'3.0'}}</td>
+
+        </tr>
+        <tr>
+          <th width="80%" style="text-align: left;font-size: 14px;color:#adb1b8;">Equalency</th>
+          <td width="20%" style="text-align: right;font-size: 14px;"> {{invoiced_fee.equalency_fee | currency:' ':'symbol':'3.0'}}</td>
+
+        </tr>
+        <tr>
+          <th width="80%" style="text-align: left;font-size: 14px;color:#adb1b8;">Other</th>
+          <td width="20%" style="text-align: right;font-size: 14px;"> {{invoiced_fee.other_fee | currency:' ':'symbol':'3.0'}}</td>
+
+        </tr> -->
+
+        <tr>
+          <th width="80%" style="text-align: left;font-size: 14px;color:#adb1b8;">Total Paid Fee</th>
+          <td width="20%" style="text-align: right;font-size: 14px;"> {{invoiced_fee.total_course_fee | currency:' ':'symbol':'3.0'}}</td>
+
+        </tr>
+
+        <tr>
+          <th width="80%" style="text-align: left;font-size: 14px;color:#adb1b8;">Miscellaneous Fee</th>
+          <td width="20%" style="text-align: right;font-size: 14px;"> {{invoiced_fee.miscellaneous_fee | currency:' ':'symbol':'3.0'}}</td>
+
+        </tr>
+        <!-- <tr>
+          <th width="80%" style="text-align: left;font-size: 14px;color:#adb1b8;">Transport Fee</th>
+          <td width="20%" style="text-align: right;font-size: 14px;"> {{invoiced_fee.transport_fee | currency:' ':'symbol':'3.0'}}</td>
+
+        </tr> -->
+        <!-- <tr>
+          <th width="80%" style="text-align: left;font-size: 14px;color:#adb1b8;">Previous Year Arrear</th>
+          <td width="20%" style="text-align: right;font-size: 14px;"> {{invoiced_fee.previousyear_arrear | currency:' ':'symbol':'3.0'}}</td>
+
+        </tr> -->
+
+
+
+     </tbody>
+    </table>
+    <hr>
+    <div class="row">
+      <table >
+        <tbody>
+          <tr>
+            <th width="60%" style="text-align: left;font-size: 20px;color:#adb1b8;">Total Remitted Fee</th>
+            <td width="30%" style="text-align: right;font-size: 20px;"> {{invoiced_fee.total_remitted_fee | currency:' ':'symbol':'3.0'}} AED By {{invoiced_fee.paymentMode}}
+              <!-- {{total_fees_per_year | currency:' ':'symbol':'3.0'}} AED -->
+            </td>
+
+          </tr>
+
+       </tbody>
+      </table>
+
+  </div>
+    <hr>
+  </div>
+
+  <div class="row" style="margin-top: 50px;">
+    <table >
+      <tbody>
+        <!-- <tr>
+          <td width="60%" style="text-align: left;font-size: 12px;color:#adb1b8;">BILLING TO</td>
+          <td width="20%" style="text-align: left;font-size: 12px;color:#adb1b8;"> BILLING ADDRESS</td>
+        </tr> -->
+        <tr>
+          <th width="60%" style="text-align: left;font-size: 14px;color:black;">{{invoice_staff | titlecase}}</th>
+          <td width="20%" style="text-align: right;font-size: 14px;color:#adb1b8;"> Authorised signatory
+<!-- {{total_fees_per_year | currency:' ':'symbol':'3.0'}} AED -->
+          </td>
+
+        </tr>
+
+     </tbody>
+    </table>
+
+</div>
+<div class="row" style="margin-top: 30px;">
+  <table >
+    <tbody>
+
+      <tr>
+        <th width="60%" style="text-align: left;font-size: 14px;color:#adb1b8;">Seal</th>
+        <td width="50%" style="text-align: right;font-size: 14px;">
+          <!-- {{total_fees_per_year | currency:' ':'symbol':'3.0'}} AED -->
+        </td>
+
+      </tr>
+   </tbody>
+  </table>
+
+</div>
+ <footer style="position: fixed;bottom: 0;width: 100%;">
+  <hr>
+  <div style="overflow: hidden;">
+    <p style="float: left;font-size:10px;">Office 2104, ADCP Tower - A Behind City Seasons Electra Street Abu Dhabi United Arab Emirates</p>
+    <p style="float: right;font-size:10px;">info@timeseducation.com;+971 55 2269 076</p>
+</div>
+
+  </footer>
+</div>
+
+
+<!-- id="print-section" -->
+
+
+
+
+
+
+
+<!-- are you sure modal -->
+<div class="modal fade" id="closingConfirmModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title " id="exampleModalLabel" >Close Admission</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <img src="../../assets/danger.png" class="successimage">
+        </div>
+        <div class="row">
+          <p class="contentstyle" > Are you sure you want to Close this admission ?
+          </p>
+
+        </div>
+
+
+      </div>
+      <div style="text-align: center;">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal"  id="admissioncloseModalCloseBtn">Cancel</button>
+        <button type="button" *ngIf="!dropout_confirmNO" class="btn" style="background:#112048;" [disabled]="clicked"  (click)="clicked = true;onFeeCollectSave();" >Collect</button>
+        <button type="button" *ngIf="dropout_confirmNO" class="btn" style="background:#112048;" [disabled]="clicked"  (click)="clicked = true;onFeeCollectSave();" >Collect</button>
+
+
+      </div>
+    </div>
+  </div>
+</div>

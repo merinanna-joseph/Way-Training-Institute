@@ -1,0 +1,1769 @@
+<app-toast [message]="toast.message"></app-toast>
+
+<div class="panel-header panel-header-sm">
+  <div class="row">
+    <div class="col-md-6">
+      <h4 style="color: white; margin-top: -40px; margin-left: 30px">
+        {{ auth.currentUser.firstName | titlecase }}
+        {{ auth.currentUser.lastName | titlecase }}
+        <span *ngIf="auth.isAdmin"> - Admin</span>
+        <!-- <p *ngIf="totalRemittedfee>0" style="float:right ; font-weight: bold;
+          ">TOTAL REMITTED AMOUNT: {{totalRemittedfee}}</p> -->
+
+
+      </h4>
+
+    </div>
+
+  </div>
+
+  <div >
+ </div>
+
+</div>
+
+<div class="main-content">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-header">
+          <div class="row">
+            <div class="col-md-2"></div>
+            <div class="col-md-4" *ngIf="modeOfReport">
+              <select class="form-control" (change)="onClickReport($event)">
+                <option value="" selected="true" disabled hidden>
+                  {{ modeOfReport }}
+                </option>
+                <option *ngFor="let s of reportsarray" value="{{ s }}">
+                  {{ s }}
+                </option>
+              </select>
+            </div>
+            <div class="col-md-4" *ngIf="!modeOfReport">
+              <select class="form-control" (change)="onClickReport($event)">
+                <option value="">Select Report</option>
+                <option
+                  *ngFor="let s of reportsarray"
+                  value="{{ s }}"
+                  selected="selected"
+                >
+                  {{ s }}
+                </option>
+              </select>
+            </div>
+           <div class="col-md-6" style="float:right;padding-left:250px;font-size:15px; ">
+           <span  *ngIf="invoice_report&&totalRemittedfee>0">Total remitted amount : </span> <span *ngIf="invoice_report&&totalRemittedfee>0" style="font-weight:bold;font-size:15px">{{totalRemittedfee|currency: " ":"symbol":"3.0"}} AED</span>
+           <span *ngIf="commutation_report&&totalRemittedfeeoftrasnport>0">Total remitted amount : </span><span *ngIf="commutation_report&&totalRemittedfeeoftrasnport>0" style="font-weight:bold;font-size:15px">{{totalRemittedfeeoftrasnport|currency: " ":"symbol":"3.0"}} AED</span>
+
+          </div>
+          </div>
+          <div *ngIf="invoice_report">
+            <div class="row">
+              <div class="col-md-8" style="padding-top: 16px">
+                <div class="row">
+                  <div class="col-md-4">
+                    <h4 class="card-title">Invoice List</h4>
+
+                    <!-- ({{filtered_invoices_count}}) -->
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-4 text-right">
+                <button
+                  type="button"
+                  style="
+                    font-size: 18px;
+                    padding: 6px 8px;
+                    background-color: #112048;
+                  "
+                  class="btn btn-round blue-ink"
+                  (click)="clickToExport()"
+                >
+                  <i
+                    class="now-ui-icons arrows-1_cloud-download-93"
+                    style="font-weight: bold"
+                  ></i>
+                </button>
+              </div>
+            </div>
+            <form [formGroup]="dateForm" #dateDetails="ngForm">
+              <div class="row">
+                <div class="col-md-4">
+                  <div class="form-group">
+                    <label>Start Date</label>
+                    <input
+                      type="date"
+                      class="form-control"
+                      formControlName="startDate"
+                      [ngModel]="startDate"
+                      [ngClass]="{
+                        'is-invalid': datesubmitted && d.startDate.errors
+                      }"
+                    />
+                    <div
+                      *ngIf="datesubmitted && d.startDate.errors"
+                      class="invalid-feedback"
+                    >
+                      <div *ngIf="d.startDate.errors.required">
+                        Start date is required
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
+                <div class="col-md-4">
+                  <div class="form-group">
+                    <label>End Date</label>
+                    <input
+                      type="date"
+                      class="form-control"
+                      formControlName="endDate"
+                      [ngModel]="endDate"
+                      [ngClass]="{
+                        'is-invalid': datesubmitted && d.startDate.errors
+                      }"
+                    />
+                    <div
+                      *ngIf="datesubmitted && d.endDate.errors"
+                      class="invalid-feedback"
+                    >
+                      <div *ngIf="d.endDate.errors.required">
+                        End date is required
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+            </form>
+            <form [formGroup]="filterForm" #filterDetails="ngForm">
+              <div class="row">
+                <div class="col-md-2" *ngIf="sortPaymentmode">
+                  <label>Payment Mode</label>
+                  <select
+                    class="form-control"
+                    formControlName="sort_paymentmode"
+                    (change)="getPaymentMode($event)"
+                    aria-label="Default select example"
+                    [ngModel]="sortPaymentmode"
+                    [ngClass]="{
+                      'is-invalid': submitted && f.sort_paymentmode.errors
+                    }"
+                  >
+                  <option value="" disabled selected>
+                    --Select Payment Mode--
+                  </option>
+                  <option  value='ALL'  >ALL</option>
+                    <option *ngFor="let x of payment_mode" value="{{ x }}">
+                      {{ x }}
+                    </option>
+                  </select>
+                </div>
+                <div class="col-md-2" *ngIf="!sortPaymentmode">
+                  <label>Payment Mode</label>
+                  <select
+                    class="form-control"
+                    (change)="getPaymentMode($event)"
+                    aria-label="Default select example"
+                    formControlName="sort_paymentmode"
+                    [ngClass]="{
+                      'is-invalid': submitted && f.sort_paymentmode.errors
+                    }"
+                  >
+                  <option value="" disabled selected>
+                    --Select Payment Mode--
+                  </option>
+                  <option  value='ALL'  >ALL</option>
+                    <option *ngFor="let x of payment_mode" value="{{ x }}">
+                      {{ x }}
+                    </option>
+                  </select>
+                </div>
+
+                <div class="col-md-2" *ngIf="sortIntake">
+                  <div class="form-group">
+                    <label>Intake</label>
+                    <input
+                      type="month"
+                      formControlName="sort_intake"
+                      [ngModel]="sortIntake"
+                      (change)="getSortIntake($event)"
+                      id="intakeStyle"
+                      class="form-control"
+                      placeholder="Enter intake"
+                      [ngClass]="{
+                        'is-invalid': submitted && f.sort_intake.errors
+                      }"
+                    />
+
+                    <div
+                      *ngIf="submitted && f.sort_intake.errors"
+                      class="invalid-feedback"
+                    >
+                      <div *ngIf="f.sort_intake.errors.required">
+                        Intake is required
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-2" *ngIf="!sortIntake">
+                  <div class="form-group">
+                    <label>Intake</label>
+                    <input
+                      type="month"
+                      formControlName="sort_intake"
+                      (change)="getSortIntake($event)"
+                      class="form-control"
+                      placeholder="Enter intake"
+                      id="intakeStyle"
+                      [ngClass]="{
+                        'is-invalid': submitted && f.sort_intake.errors
+                      }"
+                    />
+
+                    <div
+                      *ngIf="submitted && f.sort_intake.errors"
+                      class="invalid-feedback"
+                    >
+                      <div *ngIf="f.sort_intake.errors.required">
+                        Intake is required
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-3" *ngIf="sortUniversity">
+                  <label>University</label>
+                  <select
+                    class="form-control"
+                    (change)="getSortUniversity($event)"
+                    [ngModel]="sortUniversity"
+                    formControlName="sort_university"
+                  >
+                    <option value="" disabled selected>
+                      --Select University--
+                    </option>
+                    <option  value='ALL'  >ALL</option>
+                    <option
+                      *ngFor="let x of allUniversities"
+                      value="{{ x.boardoruniveristy }}"
+                    >
+                      {{ x.boardoruniveristy }}
+                    </option>
+                  </select>
+                </div>
+                <div class="col-md-3" *ngIf="!sortUniversity">
+                  <label>University</label>
+                  <select
+                    class="form-control"
+                    (change)="getSortUniversity($event)"
+                    formControlName="sort_university"
+                  >
+                    <option value="" disabled selected>
+                      --Select University--
+                    </option>
+                    <option  value='ALL'  >ALL</option>
+                    <option
+                      *ngFor="let x of allUniversities"
+                      value="{{ x.boardoruniveristy }}"
+                    >
+                      {{ x.boardoruniveristy }}
+                    </option>
+                  </select>
+                </div>
+                <div class="col-md-3" *ngIf="courseName">
+                  <label>Course</label>
+                  <select
+                    class="form-control"
+                    (change)="getSortCourse($event)"
+                    formControlName="sort_course"
+
+                  >
+                    <option value="" selected hidden>{{ courseName }}</option>
+                    <option value='' disabled  selected>--Select Course--</option>
+                    <option  value='ALL'  >ALL</option>
+                    <option *ngFor="let x of allCourses" value="{{ x._id }}">
+                      {{ x.name }}
+                      <span *ngIf="x.branch"
+                        >- ({{ x.branch | titlecase }}) -
+                      </span>
+                      <span *ngIf="!x.branch"> - </span>
+                      {{ x.courseType | titlecase }}
+                    </option>
+                  </select>
+                </div>
+                <div class="col-md-3" *ngIf="!courseName">
+                  <label>Course </label>
+                  <select
+                    class="form-control"
+                    (change)="getSortCourse($event)"
+                    formControlName="sort_course"
+                  >
+                    <option value="" disabled selected>
+                      --Select Course--
+                    </option>
+                    <option  value='ALL'  >ALL</option>
+                    <option *ngFor="let x of allCourses" value="{{ x._id }}">
+                      {{ x.name }}
+                      <span *ngIf="x.branch"
+                        >- ({{ x.branch | titlecase }}) -
+                      </span>
+                      <span *ngIf="!x.branch"> - </span>
+                      {{ x.courseType | titlecase }}
+                    </option>
+                  </select>
+                </div>
+                <div class="col-md-1 text-left">
+                  <a
+                    data-toggle="tooltip"
+                    data-placement="top"
+                    title="Click to filter"
+                    (click)="onInvoiceFilterClick()"
+                    ><i
+                      class="fa fa-filter"
+                      aria-hidden="true"
+                      style="color: #112048 ; font-size: 30px; padding-top: 20px"
+                    ></i
+                  ></a>
+                </div>
+                <div class="col-md-1 text-left">
+                  <a
+                    data-toggle="tooltip"
+                    data-placement="top"
+                    title="Click to reset"
+                    (click)="onFilterClickInvoiceReport()"
+                  >
+                    <i
+                      class="fa fa-refresh"
+                      aria-hidden="true"
+                      style="color: #112048; font-size: 30px; padding-top: 20px"
+                    ></i
+                  ></a>
+                </div>
+              </div>
+            </form>
+            <!-- </div> -->
+            <div class="card-body" *ngIf="filtered_invoices.length>0">
+              <div class="table">
+                <table class="table">
+                  <thead class="text-primary" style="font-size: 14px">
+                    <!-- <th width="10%" class="text-left blue-link-heading" >
+                      Reg.No.<i *ngIf="!modeOfRegNO" class="fa fa-arrow-up" (click)="onSortClickRegisterNO()"></i>
+                      <i *ngIf="modeOfRegNO" class="fa fa-arrow-down" (click)="onSortClickNameRegisterNOreverse()"></i>
+                    </th> -->
+                    <th width="9%" class="text-left blue-link-heading">
+                      Tally Id<i *ngIf="!modeOfTallyId" class="fa fa-arrow-up" (click)="onSortClickTallyId()"></i>
+                      <i *ngIf="modeOfTallyId" class="fa fa-arrow-down" (click)="onSortClickTallyIdreverse()"></i>
+                    </th>
+                    <th width="15%" class="text-left blue-link-heading">
+                      Payment Mode<i *ngIf="!modeOfPaymentMode" class="fa fa-arrow-up"
+                       (click)="onSortClickPaymentMode()"></i>
+                      <i *ngIf="modeOfPaymentMode" class="fa fa-arrow-down"
+                       (click)="onSortClickPaymentModereverse()"></i>
+                    </th>
+
+                   <th width="20%" class="text-left blue-link-heading">
+                      Name<i *ngIf="!modeOfName" class="fa fa-arrow-up" (click)="onSortClickName()"></i>
+                      <i *ngIf="modeOfName" class="fa fa-arrow-down" (click)="onSortClickNameReverse()"></i>
+                    </th>
+                    <th width="13%" class="text-left blue-link-heading" >Centre<i *ngIf="!modeOfCenter" class="fa fa-arrow-up" (click)="onSortClickCenter()"></i>
+                      <i *ngIf="modeOfCenter" class="fa fa-arrow-down" (click)="onSortClickCenterReverse()"></i>
+                    </th>
+                    <th width="10%" class="text-left blue-link-heading">Academic year</th>
+                    <th width="10%" class="text-left blue-link-heading">Remitted date</th>
+                    <th width="8%" class="text-left blue-link-heading">
+                      Remitted fee(AED)
+                    </th>
+                    <th width="8%" class="text-left blue-link-heading">
+                      Balance fee(AED)
+                    </th>
+                    <th class="text-left blue-link-heading">Total fee(AED)</th>
+                  </thead>
+                  <tr
+                    *ngFor="let invoice of filtered_invoices; let i = index"
+                    style="font-size: 12px"
+                  >
+                  <!-- <td  *ngIf="invoice.studentId">
+                    {{ invoice.studentId.university_register_number }}
+                  </td> -->
+                  <td  *ngIf="invoice.studentId">
+                    {{ invoice.studentId.tally_ID }}
+                  </td>
+                  <td  *ngIf="invoice.paymentMode">
+                    {{ invoice.paymentMode}}
+                  </td>
+
+
+                    <td width="14%" class="text-left" *ngIf="invoice.studentId">
+                      <!-- {{
+                      invoice.studentId.firstName
+                    }} -->
+
+                      <b>
+                        <a
+                          (click)="onViewSubmitClick(invoice.studentId)"
+                          style="cursor: pointer"
+                          data-toggle="tooltip"
+                          data-placement="top"
+                          title="{{
+                            invoice.studentId.firstName | titlecase
+                          }} {{ invoice.studentId.lastName | titlecase }}"
+                          style="color: blue; cursor: pointer"
+                        >
+                          {{ invoice.studentId.firstName | titlecase }}
+                          {{
+                              invoice.studentId.lastName.length >
+                            4
+                              ? (invoice.studentId.lastName
+                                  | titlecase
+                                  | slice: 0:3) + ".."
+                              : (invoice.studentId.lastName | titlecase)
+                          }}
+                          </a
+                        ><br
+                      /></b>
+                    </td>
+
+                    <td *ngIf="invoice.studentId">
+                      {{ invoice.studentId.centers| titlecase }}
+                    </td>
+                    <td *ngIf="invoice.year">{{ invoice.year }}</td>
+                    <td *ngIf="invoice.remittedDate">
+                      {{ invoice.remittedDate | date }}
+                    </td>
+                    <td *ngIf="invoice.total_remitted_fee >=0">
+                      {{
+                        invoice.total_remitted_fee
+                          | currency: " ":"symbol":"3.0"
+                      }}
+                    </td>
+                    <td>
+                      {{
+                        invoice.balance_fee_per_year
+
+                      }}
+                    </td>
+                    <td *ngIf="invoice.total_fee_per_year">
+                      {{
+                        invoice.total_fee_per_year
+                          | currency: " ":"symbol":"3.0"
+                      }}
+                    </td>
+                  </tr>
+                </table>
+              </div>
+              <!-- <p *ngIf="totalRemittedfee>0" style="float:right ;  font-weight: bold;
+                ">Total remitted amount: {{totalRemittedfee}}AED</p> -->
+
+            </div>
+          </div>
+
+          <div *ngIf="bookandcertificate_report">
+            <div class="row">
+              <div class="col-md-8" style="padding-top: 16px">
+                <div class="row">
+                  <div class="col-md-8">
+                    <h4 class="card-title" *ngIf="statusofbook">Book List</h4>
+                    <h4 class="card-title" *ngIf="statusofcertificate">
+                      Certificate List
+                    </h4>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-4 text-right">
+                <button
+                  type="button"
+                  style="
+                    font-size: 18px;
+                    padding: 6px 8px;
+                    background-color: #112048;
+                  "
+                  class="btn btn-round blue-ink"
+                  (click)="clickToExportbookandreport()"
+                >
+                  <i
+                    class="now-ui-icons arrows-1_cloud-download-93"
+                    style="font-weight: bold"
+                  ></i>
+                </button>
+              </div>
+            </div>
+
+            <form [formGroup]="filterFormbc" #filterDetails="ngForm">
+              <div class="row">
+                <div class="col-md-2" *ngIf="sortReportsbc">
+                  <label>Types</label>
+                  <select
+                    class="form-control"
+                    formControlName="sort_typebc"
+                    (change)="getSortReporttype($event)"
+                    aria-label="Default select example"
+                    [ngModel]="sortReportsbc"
+                    [ngClass]="{
+                      'is-invalid': submitted && f.sort_paymentmode.errors
+                    }"
+                  >
+                  <option value="" disabled selected>
+                    --Select Type--
+                  </option>
+
+                    <option *ngFor="let x of book_report_types" value="{{ x }}">
+                      {{ x }}
+                    </option>
+                  </select>
+                </div>
+                <div class="col-md-2" *ngIf="!sortReportsbc">
+                  <label>Types</label>
+                  <select
+                    class="form-control"
+                    formControlName="sort_typebc"
+                    (change)="getSortReporttype($event)"
+                    aria-label="Default select example"
+                    [ngClass]="{
+                      'is-invalid': submitted && f.sort_paymentmode.errors
+                    }"
+                  >
+                  <option value="" disabled selected>
+                    --Select Type--
+                  </option>
+
+
+                    <option *ngFor="let x of book_report_types" value="{{ x }}">
+                      {{ x }}
+                    </option>
+                  </select>
+                </div>
+                <div class="col-md-2" *ngIf="sortIntakebc">
+                  <div class="form-group">
+                    <label>Intake</label>
+                    <input
+                      type="month"
+                      formControlName="sort_intakebc"
+                      [ngModel]="sortIntakebc"
+                      (change)="getSortIntakebc($event)"
+                      id="intakeStyle"
+                      class="form-control"
+                      placeholder="Enter intake"
+                      [ngClass]="{
+                        'is-invalid': submitted && f.sort_intake.errors
+                      }"
+                    />
+                    <div
+                      *ngIf="submitted && f.sort_intake.errors"
+                      class="invalid-feedback"
+                    >
+                      <div *ngIf="f.sort_intake.errors.required">
+                        Intake is required
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-2" *ngIf="!sortIntakebc">
+                  <div class="form-group">
+                    <label>Intake</label>
+                    <input
+                      type="month"
+                      formControlName="sort_intakebc"
+                      (change)="getSortIntakebc($event)"
+                      class="form-control"
+                      placeholder="Enter intake"
+                      id="intakeStyle"
+                      [ngClass]="{
+                         'is-invalid': submitted && f.sort_intake.errors
+                      }"
+                    />
+
+                    <div
+                      *ngIf="submitted && f.sort_intake.errors"
+                      class="invalid-feedback"
+                    >
+                      <div *ngIf="f.sort_intake.errors.required">
+                        Intake is required
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-3" *ngIf="sortUniversitybc">
+                  <label>University</label>
+                  <select
+                    class="form-control"
+                    (change)="getSortUniversitybc($event)"
+                    [ngModel]="sortUniversitybc"
+                    formControlName="sort_universitybc"
+                  >
+                    <option value="" disabled selected>
+                      --Select University--
+                    </option>
+                    <option  value='ALL'  >ALL</option>
+                    <option
+                      *ngFor="let x of allUniversities"
+                      value="{{ x.boardoruniveristy }}"
+                    >
+                      {{ x.boardoruniveristy }}
+                    </option>
+                  </select>
+                </div>
+                <div class="col-md-3" *ngIf="!sortUniversitybc">
+                  <label>University</label>
+                  <select
+                    class="form-control"
+                    (change)="getSortUniversitybc($event)"
+                    formControlName="sort_universitybc"
+                  >
+                    <option value="" disabled selected>
+                      --Select University--
+                    </option>
+                    <option  value='ALL'  >ALL</option>
+                    <option
+                      *ngFor="let x of allUniversities"
+                      value="{{ x.boardoruniveristy }}"
+                    >
+                      {{ x.boardoruniveristy }}
+                    </option>
+                  </select>
+                </div>
+                <div class="col-md-3" *ngIf="courseNamebc">
+                  <label>Course</label>
+                  <select
+                    class="form-control"
+                    (change)="getSortCoursebc($event)"
+                    formControlName="sort_coursebc"
+                  >
+                    <option value="" disabled hidden selected>
+                      {{ courseNamebc }}
+                    </option>
+                    <option value="" disabled selected>
+                      --Select Course--
+                    </option>
+                    <option  value='ALL'  >ALL</option>
+                    <option *ngFor="let x of allCourses" value="{{ x._id }}">
+                      {{ x.name }}
+                      <span *ngIf="x.branch"
+                        >- ({{ x.branch | titlecase }}) -
+                      </span>
+                      <span *ngIf="!x.branch"> - </span>
+                      {{ x.courseType | titlecase }}
+                    </option>
+                  </select>
+                </div>
+                <div class="col-md-3" *ngIf="!courseNamebc">
+                  <label>Course</label>
+                  <select
+                    class="form-control"
+                    (change)="getSortCoursebc($event)"
+                    formControlName="sort_coursebc"
+                  >
+                    <option value="" disabled selected>
+                      --Select Course--
+                    </option>
+                    <option  value='ALL'  >ALL</option>
+                    <option *ngFor="let x of allCourses" value="{{ x._id }}">
+                      {{ x.name }}
+                      <span *ngIf="x.branch"
+                        >- ({{ x.branch | titlecase }}) -
+                      </span>
+                      <span *ngIf="!x.branch"> - </span>
+                      {{ x.courseType | titlecase }}
+                    </option>
+                  </select>
+                </div>
+                <div class="col-md-1 text-left">
+                  <a
+                    data-toggle="tooltip"
+                    data-placement="top"
+                    title="Click to filter"
+                    (click)="onBookandcertsFilterClick()"
+                    ><i
+                      class="fa fa-filter"
+                      aria-hidden="true"
+                      style="color: #112048; font-size: 30px; padding-top: 20px"
+                    ></i
+                  ></a>
+                </div>
+                <div class="col-md-1 text-left">
+                  <a
+                    data-toggle="tooltip"
+                    data-placement="top"
+                    title="Click to reset"
+                    (click)="onFilterClickBookandCertsReport()"
+                  >
+                    <i
+                      class="fa fa-refresh"
+                      aria-hidden="true"
+                      style="color: #112048; font-size: 30px; padding-top: 20px"
+                    ></i
+                  ></a>
+                </div>
+              </div>
+            </form>
+            <!-- </div> -->
+            <div class="card-body" *ngIf="filtered_reports.length>0">
+              <div class="table" id="">
+                <table class="table">
+                  <thead class="text-primary" style="font-size: 14px">
+                    <th
+                      class="text-left blue-link-heading"
+                      width="15%"
+                    >
+                      Reg.No.<i *ngIf="!modeOfRegNObc" class="fa fa-arrow-up" (click)="onSortClickRegisterNObc()"></i>
+                      <i *ngIf="modeOfRegNObc" class="fa fa-arrow-down" (click)="onSortClickNameRegisterNOreversebc()"></i>
+                    </th>
+                    <th
+                    class="text-left blue-link-heading"
+                    width="15%"
+                  >
+                    Tally Id<i *ngIf="!modeOfTallyIdbc" class="fa fa-arrow-up" (click)="onSortClickTallyIdbc()"></i>
+                    <i *ngIf="modeOfTallyIdbc" class="fa fa-arrow-down" (click)="onSortClickTallyIdreversebc()"></i>   </th>
+
+                    <th
+                      class="text-left blue-link-heading"
+                      width="25%"
+                    >
+                      Name<i *ngIf="!modeOfNamebc" class="fa fa-arrow-up" (click)="onSortClickNamebc()"></i>
+                      <i *ngIf="modeOfNamebc" class="fa fa-arrow-down" (click)="onSortClickNameReversebc()"></i>
+                    </th>
+                    <th
+                    class="text-left blue-link-heading"
+                    width="20%"
+                  >
+                    Centre<i *ngIf="!modeOfCenterbc" class="fa fa-arrow-up" (click)="onSortClickCenterbc()"></i>
+                    <i *ngIf="modeOfCenterbc" class="fa fa-arrow-down" (click)="onSortClickCenterReversebc()"></i>
+
+                  </th>
+
+                    <th
+                      class="text-left blue-link-heading"
+                      style="width: 150px"
+                    >
+                      Collected On
+                    </th>
+                  </thead>
+                  <tr *ngFor="let m of filtered_reports" style="font-size:13px;">
+                    <td>{{ m.regno }}</td>
+                    <td >
+                      {{m.studentId.tally_ID }}
+                    </td>
+
+                    <td>
+                      <b><a  (click)="onViewSubmitClick(m.studentId)"
+                        style="color: blue; cursor: pointer"
+                        data-toggle="tooltip"
+                        data-placement="top"
+                        title="{{
+                          m.name|titlecase
+                        }}"
+                      >
+                      {{
+                        m.name.length >
+                      30
+                        ? (m.name
+                            | titlecase
+                            | slice: 0:29) + ".."
+                        : (m.name | titlecase)
+                    }}
+
+                      </a></b>
+                    </td>
+
+                    <td>{{ m.center|titlecase }}</td>
+
+
+                    <td  >{{ m.collectedOn | date }}</td>
+                  </tr>
+                </table>
+              </div>
+            </div>
+          </div>
+          <div *ngIf="commutation_report">
+            <div class="row">
+              <div class="col-md-8" style="padding-top: 16px">
+                <div class="row">
+                  <div class="col-md-4">
+                    <h4 class="card-title">Commutation List</h4>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-4 text-right">
+                <button
+                  type="button"
+                  style="
+                    font-size: 18px;
+                    padding: 6px 8px;
+                    background-color: #112048;
+                  "
+                  class="btn btn-round blue-ink"
+                  (click)="clickToExportcommutationreport()"
+                >
+                  <i
+                    class="now-ui-icons arrows-1_cloud-download-93"
+                    style="font-weight: bold"
+                  >
+                  </i>
+                </button>
+              </div>
+            </div>
+            <form [formGroup]="dateFormts" #dateDetails="ngForm">
+              <div class="row">
+                <div class="col-md-4">
+                  <div class="form-group">
+                    <label>Start Date</label>
+                    <input
+                      type="date"
+                      class="form-control"
+                      formControlName="startDatets"
+                      [ngModel]="startDatets"
+                      [ngClass]="{
+                        'is-invalid': datestsubmitted && ts.startDatets.errors
+                      }"
+                    />
+                    <div
+                      *ngIf="datestsubmitted && ts.startDatets.errors"
+                      class="invalid-feedback"
+                    >
+                      <div *ngIf="ts.startDatets.errors.required">
+                        Start date is required
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="form-group">
+                    <label>End Date</label>
+                    <input
+                      type="date"
+                      class="form-control"
+                      formControlName="endDatets"
+                      [ngModel]="endDatets"
+                      [ngClass]="{
+                        'is-invalid': datestsubmitted && ts.endDatets.errors
+                      }"
+                    />
+                    <div
+                      *ngIf="datestsubmitted && ts.endDatets.errors"
+                      class="invalid-feedback"
+                    >
+                      <div *ngIf="ts.endDatets.errors.required">
+                        End date is required
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-2">
+                </div>
+              </div>
+            </form>
+            <form [formGroup]="filterFormts" #filterDetails="ngForm">
+              <div class="row" *ngIf="showFilterOptionsts">
+                <div class="col-md-2" *ngIf="sortPaymentmodets">
+                  <label>Payment Mode</label>
+                  <select
+                    class="form-control"
+                    formControlName="sort_paymentmodets"
+                    (change)="getPaymentModets($event)"
+                    aria-label="Default select example"
+                    [ngModel]="sortPaymentmodets"
+                    [ngClass]="{
+                      'is-invalid': submitted && f.sort_paymentmode.errors
+                    }"
+                  >
+                  <option value="" disabled selected>
+                    --Select Payment Mode--
+                  </option>
+                  <option  value='ALL'  >ALL</option>
+                    <option *ngFor="let x of payment_mode" value="{{ x }}">
+                      {{ x }}
+                    </option>
+                  </select>
+                </div>
+                <div class="col-md-2" *ngIf="!sortPaymentmodets">
+                  <label>Payment Mode</label>
+                  <select
+                    class="form-control"
+                    (change)="getPaymentModets($event)"
+                    aria-label="Default select example"
+                    formControlName="sort_paymentmodets"
+                    [ngClass]="{
+                      'is-invalid': submitted && f.sort_paymentmode.errors
+                    }"
+                  >
+                  <option value="" disabled selected>
+                      --Select Payment Mode--
+                    </option>
+                    <option  value='ALL'  >ALL</option>
+                    <option *ngFor="let x of payment_mode" value="{{ x }}">
+                      {{ x }}
+                    </option>
+                  </select>
+                </div>
+
+                <div class="col-md-2" *ngIf="sortIntakets">
+                    <div class="form-group">
+                    <label>Intake</label>
+                    <input
+                      type="month"
+                      formControlName="sort_intakets"
+                      [ngModel]="sortIntakets"
+                      (change)="getSortIntakets($event)"
+                      id="intakeStyle"
+                      class="form-control"
+                      placeholder="Enter intake"
+                      [ngClass]="{
+                        'is-invalid': submitted && f.sort_intake.errors
+                      }"
+                    />
+
+                    <div
+                      *ngIf="submitted && f.sort_intake.errors"
+                      class="invalid-feedback"
+                    >
+                      <div *ngIf="f.sort_intake.errors.required">
+                        Intake is required
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-2" *ngIf="!sortIntakets">
+                  <div class="form-group">
+                    <label>Intake</label>
+                    <input
+                      type="month"
+                      formControlName="sort_intakets"
+                      (change)="getSortIntakets($event)"
+                      class="form-control"
+                      placeholder="Enter intake"
+                      id="intakeStyle"
+                      [ngClass]="{
+                        'is-invalid': submitted && f.sort_intake.errors
+                      }"
+                    />
+
+                    <div
+                      *ngIf="submitted && f.sort_intake.errors"
+                      class="invalid-feedback"
+                    >
+                      <div *ngIf="f.sort_intake.errors.required">
+                        Intake is required
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-3" *ngIf="sortUniversityts">
+                  <label>University</label>
+                  <select
+                    class="form-control"
+                    (change)="getSortUniversityts($event)"
+                    [ngModel]="sortUniversityts"
+                    formControlName="sort_universityts"
+                  >
+                    <option value="" disabled selected>
+                      --Select University--
+                    </option>
+                    <option  value='ALL'  >ALL</option>
+                    <option
+                      *ngFor="let x of allUniversities"
+                      value="{{ x.boardoruniveristy }}"
+                    >
+                      {{ x.boardoruniveristy }}
+                    </option>
+                  </select>
+                </div>
+                <div class="col-md-3" *ngIf="!sortUniversityts">
+                  <label>University</label>
+                  <select
+                    class="form-control"
+                    (change)="getSortUniversityts($event)"
+                    formControlName="sort_universityts"
+                  >
+                    <option value="" disabled selected>
+                      --Select University--
+                    </option>
+                    <option  value='ALL'  >ALL</option>
+                    <option
+                      *ngFor="let x of allUniversities"
+                      value="{{ x.boardoruniveristy }}"
+                    >
+                      {{ x.boardoruniveristy }}
+                    </option>
+                  </select>
+                </div>
+                <div class="col-md-3" *ngIf="courseNamets">
+                  <label>Course</label>
+                  <select
+                    class="form-control"
+                    (change)="getSortCoursets($event)"
+                    formControlName="sort_coursets"
+                  >
+                    <option value="" disabled hidden selected>
+                      {{ courseNamets }}
+                    </option>
+                    <option value='' disabled  selected>--Select Course--</option>
+                        <option  value='ALL'  >ALL</option>
+                    <option *ngFor="let x of allCourses" value="{{ x._id }}">
+                      {{ x.name }}
+                      <span *ngIf="x.branch"
+                        >- ({{ x.branch | titlecase }}) -
+                      </span>
+                      <span *ngIf="!x.branch"> - </span>
+                      {{ x.courseType | titlecase }}
+                    </option>
+                  </select>
+                </div>
+                <div class="col-md-3" *ngIf="!courseNamets">
+                  <label>Course</label>
+                  <select
+                    class="form-control"
+                    (change)="getSortCoursets($event)"
+                    formControlName="sort_coursets"
+                  >
+                    <option value="" disabled selected>
+                      --Select Course--
+                    </option>
+                    <option  value='ALL'  >ALL</option>
+                    <option *ngFor="let x of allCourses" value="{{ x._id }}">
+                      {{ x.name }}
+                      <span *ngIf="x.branch"
+                        >- ({{ x.branch | titlecase }}) -
+                      </span>
+                      <span *ngIf="!x.branch"> - </span>
+                      {{ x.courseType | titlecase }}
+                    </option>
+                  </select>
+                </div>
+                <div class="col-md-1 text-left">
+                  <a
+                    data-toggle="tooltip"
+                    data-placement="top"
+                    title="Click to filter"
+                    (click)="onTansportFilterClick()"
+                    ><i
+                      class="fa fa-filter"
+                      aria-hidden="true"
+                      style="color: #112048; font-size: 30px; padding-top: 20px"
+                    ></i
+                  ></a>
+                </div>
+                <div class="col-md-1 text-left">
+                  <a
+                    data-toggle="tooltip"
+                    data-placement="top"
+                    title="Click to reset"
+                    (click)="onFilterClickTransportReport()"
+                  >
+                    <i
+                      class="fa fa-refresh"
+                      aria-hidden="true"
+                      style="color: #112048; font-size: 30px; padding-top: 20px"
+                    ></i
+                  ></a>
+                </div>
+              </div>
+            </form>
+            <div class="card-body" *ngIf="filtered_invoicests" >
+              <div class="table" id="">
+                <table class="table" >
+                  <thead class="text-primary" style="font-size: 14px"  >
+                    <!-- <th width="10%" class="text-left blue-link-heading">
+                      Reg.No.<i *ngIf="!modeOfRegNOts" class="fa fa-arrow-up" (click)="onSortClickRegisterNOts()"></i>
+                      <i *ngIf="modeOfRegNOts" class="fa fa-arrow-down" (click)="onSortClickNameRegisterNOreversets()">
+                        </i>
+                    </th> -->
+                    <th width="10%" class="text-left blue-link-heading">
+                      Tally Id<i *ngIf="!modeOfTallyIdts" class="fa fa-arrow-up" (click)="onSortClickTallyIdts()"></i>
+                      <i *ngIf="modeOfTallyIdts" class="fa fa-arrow-down" (click)="onSortClickTallyIdreversets()"></i>
+                    </th>
+                    <th width="10%" class="text-left blue-link-heading">
+                      Payment Mode<i *ngIf="!modeOfPaymentModets" class="fa fa-arrow-up" (click)="onSortClickPaymentModets()"></i>
+                      <i *ngIf="modeOfPaymentModets" class="fa fa-arrow-down" (click)="onSortClickPaymentModereversets()"></i>
+                    </th>
+
+                    <th width="18%" class="text-left blue-link-heading">
+                      Name<i *ngIf="!modeOfNamets" class="fa fa-arrow-up" (click)="onSortClickNamets()"></i>
+                      <i *ngIf="modeOfNamets" class="fa fa-arrow-down" (click)="onSortClickNameReversets()"></i>
+                    </th>
+                    <th width="15%" class="text-left blue-link-heading"
+                    >Center<i   *ngIf="!modeOfCenterts" class="fa fa-arrow-up" (click)="onSortClickCenterts()"></i>
+                    <i *ngIf="modeOfCenterts" class="fa fa-arrow-down" (click)="onSortClickCenterReversets()"></i></th>
+                    <th class="text-left blue-link-heading">Academic year</th>
+                    <th class="text-left blue-link-heading">Remitted date</th>
+                    <th class="text-left blue-link-heading">
+                        Commutation fee(AED)
+                    </th>
+                  </thead>
+                  <tr
+                    *ngFor="let invoice of filtered_invoicests; let i = index"
+                    style="font-size: 12px"
+                  >
+                  <!-- <td  *ngIf="invoice.studentId">
+                    {{ invoice.studentId.university_register_number }}
+                  </td> -->
+                  <td  *ngIf="invoice.studentId">
+                    {{ invoice.studentId.tally_ID }}
+                  </td>
+                  <td  *ngIf="invoice">
+                    {{ invoice.paymentMode}}
+                  </td>
+
+                    <td width="14%" class="text-left">
+                      <b>
+                        <a
+                            (click)="onViewSubmitClick(invoice.studentId)"
+                          style="cursor: pointer"
+                          data-toggle="tooltip"
+                          data-placement="top"
+                          title="{{
+                            invoice.studentId.firstName | titlecase
+                          }} {{ invoice.studentId.lastName | titlecase }}"
+                          style="color: blue; cursor: pointer"
+                        >
+                          {{ invoice.studentId.firstName | titlecase }}
+                          {{
+                              invoice.studentId.lastName.length >
+                            4
+                              ? (invoice.studentId.lastName
+                                  | titlecase
+                                  | slice: 0:4) + ".."
+                              : (invoice.studentId.lastName | titlecase)
+                          }} </a
+                        ><br
+                      /></b>
+                    </td>
+
+                    <td>{{ invoice.studentId.centers | titlecase }}</td>
+                    <td>{{ invoice.year }}</td>
+                    <td>{{ invoice.remittedDate | date }}</td>
+                    <td>
+                      {{ invoice.transport_fee | currency: " ":"symbol":"3.0" }}
+                    </td>
+                  </tr>
+                </table>
+                <!-- <p  style="float:right ;  font-weight: bold;
+                  ">TOTAL REMITTED AMOUNT: {{totalRemittedfeeoftrasnport}}AED</p> -->
+
+              </div>
+
+
+            </div>
+          </div>
+
+          <!-- <div *ngIf="">
+            <div class="row">
+              <div class="col-md-8" style="padding-top: 16px">
+                <div class="row">
+                  <div class="col-md-4">
+                    <h4 class="card-title">Certificate List</h4>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-4 text-right">
+                <button
+                  type="button"
+                  style="
+                    font-size: 18px;
+                    padding: 6px 8px;
+                    background-color: #112048;
+                  "
+                  class="btn btn-round blue-ink"
+                  (click)="clickToExport()"
+                >
+                  <i
+                    class="now-ui-icons arrows-1_cloud-download-93"
+                    style="font-weight: bold"
+                  ></i>
+                </button>
+              </div>
+            </div>
+
+            <div class="table">
+              <table class="table">
+                <thead class="text-primary" style="font-size: 14px">
+                  <th class="text-left blue-link-heading">Reg. No.</th>
+
+                  <th class="text-left blue-link-heading">Name</th>
+                  <th class="text-left blue-link-heading">Collected On</th>
+                  <th class="text-left blue-link-heading">Remarks</th>
+                </thead>
+                <tr *ngFor="let m of certificates">
+                  <td>{{ m.studentId.university_register_number }}</td>
+                  <td>
+                    {{ m.studentId.firstName }} {{ m.studentId.lastName }}
+                  </td>
+                  <td>{{ m.collectedOn | date }}</td>
+                  <td>{{ m.remarks }}</td>
+                </tr>
+              </table>
+            </div>
+          </div> -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- print excel table -->
+  <!-- <table class="table" id="tblData" style="display:block">
+    <thead class="text-primary" style="font-size: 14px">
+      <th>Reg. No.</th>
+      <th>Tally Id</th>
+
+      <th>Name</th>
+      <th>Payment Mode</th>
+      <th>Academic year</th>
+      <th>Remitted Date</th>
+      <th>Remarks</th>
+      <th>Paid registration fee</th>
+      <th>Paid coaching fee</th>
+      <th>Paid exam fee</th>
+      <th>Paid convocation fee</th>
+      <th>Paid attestation fee</th>
+      <th>Paid equalency fee</th>
+      <th>Paid other fee</th>
+      <th>Paid miscellaneous fee</th>
+      <th>Paid transport fee</th>
+      <th>Total course fee</th>
+      <th>Total remitted fee</th>
+      <th>Balance fee(Academic yr)</th>
+      <th>Total fee(Academic yr)</th>
+      <th>Email</th>
+      <th>Mob No.</th>
+      <th>Res No.</th>
+      <th>Centre Name</th>
+      <th>Intake</th>
+      <th>University/Board Name</th>
+
+      <th>Course Name</th>
+    </thead>
+    <tr
+      *ngFor="let invoice of filtered_invoices; let i = index"
+      style="font-size: 12px"
+    >
+      <td *ngIf="invoice.studentId">
+        {{ invoice.studentId.university_register_number }}
+      </td>
+      <td *ngIf="invoice.studentId">
+        {{ invoice.studentId.tally_ID }}
+      </td>
+      <td *ngIf="invoice.studentId">
+        {{ invoice.studentId.firstName | titlecase }}
+        {{
+          invoice.studentId.firstName.length +
+            invoice.studentId.lastName.length >
+          18
+            ? (invoice.studentId.lastName | titlecase | slice: 0:8) + ".."
+            : (invoice.studentId.lastName | titlecase)
+        }}
+      </td>
+      <td *ngIf="invoice.paymentMode">
+        {{ invoice.paymentMode }}
+      </td>
+      <td *ngIf="invoice.year">
+        {{ invoice.year }}
+      </td>
+      <td *ngIf="invoice.remittedDate">
+        {{ invoice.remittedDate | date }}
+      </td>
+      <td *ngIf="invoice.remarks">{{ invoice.remarks }}</td>
+      <td *ngIf="invoice.registration_fee">
+        {{ invoice.registration_fee | currency: " ":"symbol":"3.0" }} AED
+      </td>
+      <td *ngIf="invoice.coaching_fee">
+        {{ invoice.coaching_fee | currency: " ":"symbol":"3.0" }} AED
+      </td>
+      <td *ngIf="invoice.exam_fee">
+        {{ invoice.exam_fee | currency: " ":"symbol":"3.0" }} AED
+      </td>
+      <td *ngIf="invoice.convocation_fee">
+        {{ invoice.convocation_fee | currency: " ":"symbol":"3.0" }} AED
+      </td>
+      <td *ngIf="invoice.attestation_fee">
+        {{ invoice.attestation_fee | currency: " ":"symbol":"3.0" }} AED
+      </td>
+      <td *ngIf="invoice.equalency_fee">
+        {{ invoice.equalency_fee | currency: " ":"symbol":"3.0" }} AED
+      </td>
+      <td *ngIf="invoice.other_fee">
+        {{ invoice.other_fee | currency: " ":"symbol":"3.0" }} AED
+      </td>
+      <td *ngIf="invoice.miscellaneous_fee">
+        {{ invoice.miscellaneous_fee | currency: " ":"symbol":"3.0" }} AED
+      </td>
+      <td *ngIf="invoice.transport_fee">
+        {{ invoice.transport_fee | currency: " ":"symbol":"3.0" }} AED
+      </td>
+      <td>{{ invoice.total_course_fee | currency: " ":"symbol":"3.0" }} AED</td>
+      <td>
+        {{ invoice.total_remitted_fee | currency: " ":"symbol":"3.0" }} AED
+      </td>
+      <td>
+        {{ invoice.balance_fee_per_year | currency: " ":"symbol":"3.0" }} AED
+      </td>
+      <td>
+        {{ invoice.total_fee_per_year | currency: " ":"symbol":"3.0" }} AED
+      </td>
+      <td *ngIf="invoice.studentId">
+        {{ invoice.studentId.email }}
+      </td>
+
+      <td *ngIf="invoice.studentId">
+        {{ invoice.studentId.contact.mobilenumber }}
+      </td>
+      <td *ngIf="invoice.studentId">
+        {{ invoice.studentId.contact.residencenumber }}
+      </td>
+
+      <td *ngIf="invoice.studentId">
+        {{ invoice.studentId.centers }}
+      </td>
+      <td *ngIf="invoice.studentId">
+        {{ invoice.studentId.intake | date: "MMM-yyyy" }}
+      </td>
+      <td *ngIf="invoice.studentId">
+        {{ invoice.studentId.studentCourse[0].boardOrUniversity | titlecase }}
+      </td>
+
+      <td *ngIf="invoice.studentId">
+        {{ invoice.studentId.studentCourse[0].course_name }}
+        <span *ngIf="invoice.studentId.studentCourse[0].course_branch">
+          -
+          {{
+            invoice.studentId.studentCourse[0].course_branch | titlecase
+          }}</span
+        >
+        - {{ invoice.studentId.studentCourse[0].course_type | titlecase }}
+        <span *ngIf="invoice.studentId.subject_list.length > 0">
+          <b>Subject List</b>
+          {{ invoice.studentId.subject_list }},
+        </span>
+      </td>
+
+
+    </tr>
+  </table> -->
+  <table class="table" id="tblData" style="display:none">
+    <thead class="text-primary" style="font-size: 14px">
+      <th>Reg. No.</th>
+      <th>Tally Id</th>
+
+      <th>Name</th>
+      <th>Payment Mode</th>
+      <th>Academic year</th>
+      <th>Remitted Date</th>
+      <th>Remarks</th>
+      <th>Paid registration fee</th>
+      <th>Paid coaching fee</th>
+      <th>Paid exam fee</th>
+      <th>Paid convocation fee</th>
+      <th>Paid attestation fee</th>
+      <th>Paid equalency fee</th>
+      <th>Paid other fee</th>
+      <th>Paid miscellaneous fee</th>
+      <th>Paid transport fee</th>
+      <th>Total course fee</th>
+      <th>Total remitted fee</th>
+      <th>Balance fee(Academic yr)</th>
+      <th>Total fee(Academic yr)</th>
+      <th>Email</th>
+      <th>Mob No.</th>
+      <th>Res No.</th>
+      <th>Centre Name</th>
+      <th>Intake</th>
+      <th>University/Board Name</th>
+
+      <th>Course Name</th>
+    </thead>
+    <tr
+      *ngFor="let invoice of filtered_invoices; let i = index"
+      style="font-size: 12px"
+    >
+      <td *ngIf="invoice.studentId">
+        {{ invoice.studentId.university_register_number }}
+      </td>
+      <td *ngIf="invoice.studentId">
+        {{ invoice.studentId.tally_ID }}
+      </td>
+      <td *ngIf="invoice.studentId">
+        {{ invoice.studentId.firstName | titlecase }}
+        {{
+          invoice.studentId.firstName.length +
+            invoice.studentId.lastName.length >
+          18
+            ? (invoice.studentId.lastName | titlecase | slice: 0:8) + ".."
+            : (invoice.studentId.lastName | titlecase)
+        }}
+      </td>
+      <td *ngIf="invoice">
+        {{ invoice.paymentMode }}
+      </td>
+      <td *ngIf="invoice">
+        {{ invoice.year }}
+      </td>
+      <td *ngIf="invoice" >
+        {{ invoice.remittedDate | date }}
+      </td>
+      <td>{{ invoice.remarks }}</td>
+      <td>{{ invoice.registration_fee | currency: " ":"symbol":"3.0" }} AED</td>
+      <td>{{ invoice.coaching_fee | currency: " ":"symbol":"3.0" }} AED</td>
+      <td>{{ invoice.exam_fee | currency: " ":"symbol":"3.0" }} AED</td>
+      <td>{{ invoice.convocation_fee | currency: " ":"symbol":"3.0" }} AED</td>
+      <td>{{ invoice.attestation_fee | currency: " ":"symbol":"3.0" }} AED</td>
+      <td>{{ invoice.equalency_fee | currency: " ":"symbol":"3.0" }} AED</td>
+      <td>{{ invoice.other_fee | currency: " ":"symbol":"3.0" }} AED</td>
+      <td>
+        {{ invoice.miscellaneous_fee | currency: " ":"symbol":"3.0" }} AED
+      </td>
+      <td>{{ invoice.transport_fee | currency: " ":"symbol":"3.0" }} AED</td>
+      <td>{{ invoice.total_course_fee | currency: " ":"symbol":"3.0" }} AED</td>
+      <td>
+        {{ invoice.total_remitted_fee | currency: " ":"symbol":"3.0" }} AED
+      </td>
+      <td>
+        {{ invoice.balance_fee_per_year | currency: " ":"symbol":"3.0" }} AED
+      </td>
+      <td>
+        {{ invoice.total_fee_per_year | currency: " ":"symbol":"3.0" }} AED
+      </td>
+      <td *ngIf="invoice.studentId">
+        {{ invoice.studentId.email }}
+      </td>
+
+      <td *ngIf="invoice.studentId">
+        {{ invoice.studentId.contact.mobilenumber }}
+      </td>
+      <td *ngIf="invoice.studentId">
+        {{ invoice.studentId.contact.residencenumber }}
+      </td>
+
+      <td *ngIf="invoice.studentId">
+        {{ invoice.studentId.centers }}
+      </td>
+      <td *ngIf="invoice.studentId">
+        {{ invoice.studentId.intake | date: "MMM-yyyy" }}
+      </td>
+      <td *ngIf="invoice.studentId">
+        {{ invoice.studentId.studentCourse[0].boardOrUniversity | titlecase }}
+      </td>
+
+      <td *ngIf="invoice.studentId">
+        {{ invoice.studentId.studentCourse[0].course_name }}
+        <span *ngIf="invoice.studentId.studentCourse[0].course_branch">
+          -
+          {{
+            invoice.studentId.studentCourse[0].course_branch | titlecase
+          }}</span
+        >
+        - {{ invoice.studentId.studentCourse[0].course_type | titlecase }}
+        <span *ngIf="invoice.studentId.subject_list.length > 0">
+          <b>Subject List</b>
+          {{ invoice.studentId.subject_list }},
+        </span>
+      </td>
+
+
+    </tr>
+  </table>
+
+  <!-- <table class="table" id="tblDataofcommutation" style="display:none" >
+    <thead class="text-primary" style="font-size: 14px">
+      <th>Reg. No.</th>
+      <th>Tally Id</th>
+
+      <th>Name</th>
+      <th>Payment Mode</th>
+      <th>Academic year</th>
+      <th>Remitted Date</th>
+      <th>Remarks</th>
+      <th>Paid registration fee</th>
+      <th>Paid coaching fee</th>
+      <th>Paid exam fee</th>
+      <th>Paid convocation fee</th>
+      <th>Paid attestation fee</th>
+      <th>Paid equalency fee</th>
+      <th>Paid other fee</th>
+      <th>Paid miscellaneous fee</th>
+      <th>Paid transport fee</th>
+      <th>Total course fee</th>
+      <th>Total remitted fee</th>
+      <th>Balance fee(Academic yr)</th>
+      <th>Total fee(Academic yr)</th>
+      <th>Email</th>
+      <th>Mob No.</th>
+      <th>Res No.</th>
+      <th>Centre Name</th>
+      <th>Intake</th>
+      <th>University/Board Name</th>
+
+      <th>Course Name</th>
+    </thead>
+    <tr
+      *ngFor="let invoice of filtered_invoicests; let i = index"
+      style="font-size: 12px"
+    >
+      <td>
+        {{ invoice.studentId.university_register_number }}
+      </td>
+      <td>
+        {{ invoice.studentId.tally_ID }}
+      </td>
+      <td>
+        {{ invoice.studentId.firstName | titlecase }}
+        {{
+          invoice.studentId.firstName.length +
+            invoice.studentId.lastName.length >
+          18
+            ? (invoice.studentId.lastName | titlecase | slice: 0:8) + ".."
+            : (invoice.studentId.lastName | titlecase)
+        }}
+      </td>
+      <td>
+        {{ invoice.paymentMode }}
+      </td>
+      <td>
+        {{ invoice.year }}
+      </td>
+      <td>
+        {{ invoice.remittedDate | date }}
+      </td>
+      <td>{{ invoice.remarks }}</td>
+      <td>{{ invoice.registration_fee | currency: " ":"symbol":"3.0" }} AED</td>
+      <td>{{ invoice.coaching_fee | currency: " ":"symbol":"3.0" }} AED</td>
+      <td>{{ invoice.exam_fee | currency: " ":"symbol":"3.0" }} AED</td>
+      <td>{{ invoice.convocation_fee | currency: " ":"symbol":"3.0" }} AED</td>
+      <td>{{ invoice.attestation_fee | currency: " ":"symbol":"3.0" }} AED</td>
+      <td>{{ invoice.equalency_fee | currency: " ":"symbol":"3.0" }} AED</td>
+      <td>{{ invoice.other_fee | currency: " ":"symbol":"3.0" }} AED</td>
+      <td>
+        {{ invoice.miscellaneous_fee | currency: " ":"symbol":"3.0" }} AED
+      </td>
+      <td>{{ invoice.transport_fee | currency: " ":"symbol":"3.0" }} AED</td>
+      <td>{{ invoice.total_course_fee | currency: " ":"symbol":"3.0" }} AED</td>
+      <td>
+        {{ invoice.total_remitted_fee | currency: " ":"symbol":"3.0" }} AED
+      </td>
+      <td>
+        {{ invoice.balance_fee_per_year | currency: " ":"symbol":"3.0" }} AED
+      </td>
+      <td>
+        {{ invoice.total_fee_per_year | currency: " ":"symbol":"3.0" }} AED
+      </td>
+      <td>
+        {{ invoice.studentId.email }}
+      </td>
+
+      <td>
+        {{ invoice.studentId.contact.mobilenumber }}
+      </td>
+      <td>
+        {{ invoice.studentId.contact.residencenumber }}
+      </td>
+
+      <td>
+        {{ invoice.studentId.centers }}
+      </td>
+      <td>
+        {{ invoice.studentId.intake | date: "MMM-yyyy" }}
+      </td>
+      <td *ngIf="invoice.studentId.studentCourse[0]">
+        {{ invoice.studentId.studentCourse[0].boardOrUniversity | titlecase }}
+      </td>
+
+      <td *ngIf="invoice.studentId.studentCourse[0]">
+        {{ invoice.studentId.studentCourse[0].course_name }}
+        <span *ngIf="invoice.studentId.studentCourse[0].course_branch">
+          -
+          {{
+            invoice.studentId.studentCourse[0].course_branch | titlecase
+          }}</span
+        >
+        - {{ invoice.studentId.studentCourse[0].course_type | titlecase }}
+        <span *ngIf="invoice.studentId.subject_list.length > 0">
+          <b>Subject List</b>
+          {{ invoice.studentId.subject_list }},
+        </span>
+      </td>
+
+
+    </tr>
+  </table> -->
+
+  <!-- print excel table commutation -->
+  <table class="table" id="tblDataofcommutation" style="display:none" >
+    <thead class="text-primary" style="font-size: 14px">
+      <th>Reg. No.</th>
+      <th>Tally Id</th>
+
+      <th>Name</th>
+      <th>Payment Mode</th>
+      <th>Academic year</th>
+      <th>Remitted Date</th>
+      <th>Remarks</th>
+      <th>Paid registration fee</th>
+      <th>Paid coaching fee</th>
+      <th>Paid exam fee</th>
+      <th>Paid convocation fee</th>
+      <th>Paid attestation fee</th>
+      <th>Paid equalency fee</th>
+      <th>Paid other fee</th>
+      <th>Paid miscellaneous fee</th>
+      <th>Paid transport fee</th>
+      <th>Total course fee</th>
+      <th>Total remitted fee</th>
+      <th>Balance fee(Academic yr)</th>
+      <th>Total fee(Academic yr)</th>
+      <th>Email</th>
+      <th>Mob No.</th>
+      <th>Res No.</th>
+      <th>Centre Name</th>
+      <th>Intake</th>
+      <th>University/Board Name</th>
+
+      <th>Course Name</th>
+    </thead>
+    <tr
+      *ngFor="let invoice of filtered_invoicests; let i = index"
+      style="font-size: 12px"
+    >
+      <td>
+        {{ invoice.studentId.university_register_number }}
+      </td>
+      <td>
+        {{ invoice.studentId.tally_ID }}
+      </td>
+      <td>
+        {{ invoice.studentId.firstName | titlecase }}
+        {{
+          invoice.studentId.firstName.length +
+            invoice.studentId.lastName.length >
+          18
+            ? (invoice.studentId.lastName | titlecase | slice: 0:8) + ".."
+            : (invoice.studentId.lastName | titlecase)
+        }}
+      </td>
+      <td>
+        {{ invoice.paymentMode }}
+      </td>
+      <td>
+        {{ invoice.year }}
+      </td>
+      <td>
+        {{ invoice.remittedDate | date }}
+      </td>
+      <td>{{ invoice.remarks }}</td>
+      <td>{{ invoice.registration_fee | currency: " ":"symbol":"3.0" }} AED</td>
+      <td>{{ invoice.coaching_fee | currency: " ":"symbol":"3.0" }} AED</td>
+      <td>{{ invoice.exam_fee | currency: " ":"symbol":"3.0" }} AED</td>
+      <td>{{ invoice.convocation_fee | currency: " ":"symbol":"3.0" }} AED</td>
+      <td>{{ invoice.attestation_fee | currency: " ":"symbol":"3.0" }} AED</td>
+      <td>{{ invoice.equalency_fee | currency: " ":"symbol":"3.0" }} AED</td>
+      <td>{{ invoice.other_fee | currency: " ":"symbol":"3.0" }} AED</td>
+      <td>
+        {{ invoice.miscellaneous_fee | currency: " ":"symbol":"3.0" }} AED
+      </td>
+      <td>{{ invoice.transport_fee | currency: " ":"symbol":"3.0" }} AED</td>
+      <td>{{ invoice.total_course_fee | currency: " ":"symbol":"3.0" }} AED</td>
+      <td>
+        {{ invoice.total_remitted_fee | currency: " ":"symbol":"3.0" }} AED
+      </td>
+      <td>
+        {{ invoice.balance_fee_per_year | currency: " ":"symbol":"3.0" }} AED
+      </td>
+      <td>
+        {{ invoice.total_fee_per_year | currency: " ":"symbol":"3.0" }} AED
+      </td>
+      <td>
+        {{ invoice.studentId.email }}
+      </td>
+
+      <td>
+        {{ invoice.studentId.contact.mobilenumber }}
+      </td>
+      <td>
+        {{ invoice.studentId.contact.residencenumber }}
+      </td>
+
+      <td>
+        {{ invoice.studentId.centers }}
+      </td>
+      <td>
+        {{ invoice.studentId.intake | date: "MMM-yyyy" }}
+      </td>
+      <td *ngIf="invoice.studentId.studentCourse[0]">
+        {{ invoice.studentId.studentCourse[0].boardOrUniversity | titlecase }}
+      </td>
+
+      <td *ngIf="invoice.studentId.studentCourse[0]">
+        {{ invoice.studentId.studentCourse[0].course_name }}
+        <span *ngIf="invoice.studentId.studentCourse[0].course_branch">
+          -
+          {{
+            invoice.studentId.studentCourse[0].course_branch | titlecase
+          }}</span
+        >
+        - {{ invoice.studentId.studentCourse[0].course_type | titlecase }}
+        <span *ngIf="invoice.studentId.subject_list.length > 0">
+          <b>Subject List</b>
+          {{ invoice.studentId.subject_list }},
+        </span>
+      </td>
+
+
+    </tr>
+  </table>
+
+  <!-- print excel table book and certificate -->
+  <table class="table" id="tblDataofbooksandcertificate" style="display: none">
+    <thead class="text-primary" style="font-size: 14px">
+      <th>Reg. No.</th>
+      <th>Tally Id</th>
+      <th class="text-left blue-link-heading" style="width: 200px">Name</th>
+      <th class="text-left blue-link-heading" style="width: 150px">
+        Collected On
+      </th>
+      <th class="text-left blue-link-heading">Remarks</th>
+
+      <th>Email</th>
+      <th>Mob No.</th>
+      <th>Centre Name</th>
+      <th>Intake</th>
+      <th>University/Board Name</th>
+
+      <th>Course Name</th>
+    </thead>
+    <tr
+      *ngFor="let m of filtered_reports; let i = index"
+      style="font-size: 12px"
+    >
+      <td>
+        {{ m.regno }}
+      </td>
+      <td>
+        {{ m.studentId.tally_ID }}
+      </td>
+      <td>{{ m.name }}</td>
+      <td>{{ m.collectedOn | date }}</td>
+      <td>{{ m.remarks }}</td>
+      <td>{{ m.studentId.email }}</td>
+      <td>
+        {{ m.studentId.contact.residencenumber }}
+      </td>
+
+      <td>
+        {{ m.studentId.centers }}
+      </td>
+      <td>
+        {{ m.studentId.intake | date: "MMM-yyyy" }}
+      </td>
+      <td *ngIf="m.studentId.studentCourse[0]">
+        {{ m.studentId.studentCourse[0].boardOrUniversity | titlecase }}
+      </td>
+
+      <td *ngIf="m.studentId.studentCourse[0]">
+        {{ m.studentId.studentCourse[0].course_name }}
+        <span *ngIf="m.studentId.studentCourse[0].course_branch">
+          - {{ m.studentId.studentCourse[0].course_branch | titlecase }}</span
+        >
+        - {{ m.studentId.studentCourse[0].course_type | titlecase }}
+        <span *ngIf="m.studentId.subject_list.length > 0">
+          <b>Subject List</b>
+          {{ m.studentId.subject_list }},
+        </span>
+      </td>
+    </tr>
+  </table>
+</div>
