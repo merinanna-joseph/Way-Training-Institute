@@ -1653,20 +1653,20 @@
      <td *ngIf="filtered_students[i].studentId.subject_list.length <= 0">
       ----
    </td>
-   <p *ngFor="let fee of filtered_students[i].fee_per_year;let j = index;">
-      <td *ngIf="filtered_students[i].fee_per_year[j].year == export_year[selectedIndex]">
-        {{filtered_students[i].fee_per_year[j].total_fee}}
+   <!-- <p *ngFor="let fee of filtered_students[i].fee_per_year;let j = index;"> -->
+      <td >
+        {{filtered_students[i].total_fee}}
 
       </td>
-      <td *ngIf="filtered_students[i].fee_per_year[j].year == export_year[selectedIndex]" >
-        {{filtered_students[i].fee_per_year[j].balance_fee}}
+      <td>
+        {{filtered_students[i].balance_fee}}
 
       </td>
-      <td *ngIf="filtered_students[i].fee_per_year[j].year == export_year[selectedIndex]">
-        {{filtered_students[i].fee_per_year[j].paid_fee}}
+      <td >
+        {{filtered_students[i].total_fee - filtered_students[i].balance_fee}} 
 
       </td>
-    </p>
+    <!-- </p> -->
 <td>
   {{filtered_students[i].studentId.remarks}}
  </td>

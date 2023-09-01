@@ -15,7 +15,7 @@ var storage = multer.diskStorage({
     
     if(req.params.type == 'studymaterials'){
       // const directory = `server/public/images/studymaterials/${req.params.studymaterialid}`
-      const directory = `timesdocument/studymaterials/${req.params.studymaterialid}`
+      const directory = `thewaydocument/studymaterials/${req.params.studymaterialid}`
       // const directory = `server/public/images/studymaterials/${req.params.studymaterialid}`
 
       console.log(directory,"direct",req.params.type);
@@ -26,7 +26,7 @@ var storage = multer.diskStorage({
       cb(null, directory)
     }else if(req.params.type == 'studentdocuments'){
       // const directory = `server/public/images/studentdocuments/${req.params.studentid}`
-      const directory = `timesdocument/studentdocuments/${req.params.studentid}`
+      const directory = `thewaydocument/studentdocuments/${req.params.studentid}`
 
       console.log(directory,"direct",req.params.type);
 
@@ -37,7 +37,7 @@ var storage = multer.diskStorage({
     }
     
     // cb(null,'server/public/images')
-    // cb(null, 'timesdocument');
+    // cb(null, 'thewaydocument');
 
   },
   filename:function(req,file,cb){

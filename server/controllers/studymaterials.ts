@@ -17,7 +17,7 @@ export default class StudymaterialCtrl extends BaseCtrl {
     try {
 
       // const path = req.body.path;
-      const path = 'timesdocument/studymaterials/'+req.body.id+'/' + req.body.name;
+      const path = 'thewaydocument/studymaterials/'+req.body.id+'/' + req.body.name;
 
       // const path ='server/public/images/studentdocuments/630f1859b53bdc4278e0c2e3/tree-736885__480.jpg-1662145055440.png'
     console.log(path,"   imgpath");

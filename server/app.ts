@@ -43,7 +43,7 @@ app.use(express.json());
 // app.use(express.urlencoded({ extended: false }));
 // app.use(express.static('server/public'))
 //use below codes
-app.use(express.static('timesdocument'));
+app.use(express.static('thewaydocument'));
 // app.use(express.static('studentdocuments'));
 
 // app.use("/images",  express.static(path.join("server/public/")));
