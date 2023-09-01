@@ -84,7 +84,7 @@ export default class CourseCtrl extends BaseCtrl {
 
   getCoursesByUniversityIdandCenter = async (req, res) => {
     try {
-      const obj = await this.model.find({ boardOrUniversity: req.params.boardoruniversityID,centers:req.params.centername });
+      const obj = await this.model.find({ boardOrUniversity: req.params.boardoruniversityID,centers:req.params.centername }).populate('boardOrUniversity');
       res.status(200).json(obj);
     } catch (err) {
       return res.status(500).json({ error: err.message });

@@ -92,6 +92,7 @@ export class StudentBooklibraryViewComponent implements OnInit {
               this.booklibraryid = data[0]._id;
               this.yrlen = Number(data[0].numberofyears);
               this.semlen = Number(data[0].semperyear);
+              this.getSubjectsofCourse(this.booklibraryid);
 
               // alert(this.yrlen)
 
@@ -104,6 +105,8 @@ export class StudentBooklibraryViewComponent implements OnInit {
               this.booklibraryid = data[0]._id;
               this.yrlen = Number(data[0].numberofyears);
               // alert(this.yrlen)
+              this.getSubjectsofCourse(this.booklibraryid);
+
 
             }
           )
@@ -164,11 +167,12 @@ export class StudentBooklibraryViewComponent implements OnInit {
     this.showSubjects = true;
     this.showMaterials = false;
     this.showFiles = false;
-    this.getSubjectsinYears(this.booklibraryid,this.selectYear,this.selectSemester)
+    // this.getSubjectsinYears(this.booklibraryid,this.selectYear,this.selectSemester)
 
   }
-  getSubjectsinYears(courseId,yearIndex,semIndex){
-    this.coursesubjectService.getCoursesubjectsByCourse(courseId,yearIndex,semIndex).subscribe(
+  getSubjectsofCourse(courseId){
+    // alert(courseId)
+    this.coursesubjectService.getCoursesubjectsByCourse(courseId).subscribe(
       subdata=>{
         this.studentCoursesubjects = [];
         this.studymaterialOf_singlesubject = [];
@@ -176,6 +180,12 @@ export class StudentBooklibraryViewComponent implements OnInit {
         for(var i=0;i<subdata.length;i++){
           this.studentCoursesubjects.push(subdata[i]);
   
+        }
+        if(this.studentCoursesubjects.length > 0){
+          this.showSubjects = true;
+        }else{
+          this.showSubjects = false;
+
         }
         console.log(this.studentCoursesubjects,"course subj")
       }

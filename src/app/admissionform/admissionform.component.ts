@@ -996,6 +996,39 @@ saved=false;
       if (this.addAdmissionForm.invalid) {
         return;
       }
+      if(this.s.firstname.value.toString().length <= 0){
+        this.toast.setMessage("First Name is required !!!", "danger");
+        return;
+      }
+      if(this.s.lastname.value.toString().length <= 0){
+        this.toast.setMessage("Last Name is required !!!", "danger");
+        return;
+      }
+      
+      if(this.s.centers.value.toString().length <= 0){
+        this.toast.setMessage("Center is required !!!", "danger");
+        return;
+      }
+      if(this.s.university.value.toString().length <= 0){
+        this.toast.setMessage("University is required !!!", "danger");
+        return;
+      }
+      if(!this.s.intake.value){
+        this.toast.setMessage("Intake is required !!!", "danger");
+        return;
+      }
+      if(this.s.branch.value.toString().length <= 0){
+        this.toast.setMessage("Course is required !!!", "danger");
+        return;
+      }
+      if(this.s.total_fee.value.toString().length <= 0){
+        this.toast.setMessage("Total fee is required !!!", "danger");
+        return;
+      }
+      if(this.s.trainer.value.toString().length <= 0){
+        this.toast.setMessage("Trainer is required !!!", "danger");
+        return;
+      }
     this.student.istemporarysaved = false;
     // this.student.studentFees = [];
     this.student.studentCourse = [];
@@ -1044,7 +1077,7 @@ saved=false;
     // }
     this.student.courseID = this.singleCourseandFees._id;
     // this.student.feeID = this.singleCourseandFees.feeId;
-    this.student.boardOrUniversityID = this.singleCourseandFees.boardOrUniversity;
+    this.student.boardOrUniversityID = this.singleCourseandFees.boardOrUniversity._id;
     this.student.studentCourse.push(
       {
         course_name : this.singleCourseandFees.name,
@@ -1527,7 +1560,7 @@ saved=false;
         // this.student.total_payable_fee_with_discount = this.singleCourseandFees.feeId.totalAmount - this.studentDiscount;
         this.student.courseID = this.singleCourseandFees._id;
         // this.student.feeID = this.singleCourseandFees.feeId;
-        this.student.boardOrUniversityID = this.singleCourseandFees.boardOrUniversity;
+        this.student.boardOrUniversityID = this.singleCourseandFees.boardOrUniversity._id;
         this.student.studentCourse.push(
           {
             course_name : this.singleCourseandFees.name,

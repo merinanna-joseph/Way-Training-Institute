@@ -6,7 +6,7 @@ export default class CoursesubjectCtrl extends BaseCtrl {
 
   getCoursesubjectsByCourse = async (req:any,res:any) => {
     try {
-      const docs = await this.model.find({ courseId : req.params.courseId ,yearIndex : req.params.yearIndex,semIndex : req.params.semIndex }).populate('courseId');
+      const docs = await this.model.find({ courseId : req.params.courseId }).populate('courseId');
       res.status(200).json(docs);
     } catch (err) {
       return res.status(400).json({ error: err.message });

@@ -5,11 +5,11 @@ const booklibrarySchema = new mongoose.Schema({
   branch:String,
   boardOrUniversity: { type: String, ref: 'BoardOrUniversity' },
   courseType:String,
-  numberofyears:String,
+  // numberofyears:String,
 //   feeId:{ type: String, ref: 'Fee' },
   coursenameId:{ type: String, ref: 'Coursename' },
   coursebranchId:{ type: String, ref: 'Branch' },
-  semperyear : String,
+  // semperyear : String,
 
 
   });

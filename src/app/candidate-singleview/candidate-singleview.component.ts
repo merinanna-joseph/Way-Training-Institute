@@ -1020,7 +1020,7 @@ this.feecollection.paid_fee = this.total_course_fees;
    this.invoice.total_course_fee = Number(this.f.cooursetotalAmount.value);
    this.invoice.total_remitted_fee = Number(this.f.remittedtotalAmount.value);
    this.invoice.total_fee = this.feeFlow.total_fee;
-       this.invoice.balance_fee =  this.feeFlow.balance_fee;
+       this.invoice.balance_fee =  this.feecollection.balance_fee;
    //   
   //  for(var j in this.allYears){
   //    if(this.invoice.year == this.allYears[j]){

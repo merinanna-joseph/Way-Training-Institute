@@ -1,10 +1,10 @@
 export class Coursesubject {
   _id?: string;
   courseId?:string;
-  feeId?:string;
+  // feeId?:string;
   subject?:string;
-  yearIndex?:string;
-  semIndex?:string;
+  // yearIndex?:string;
+  // semIndex?:string;
   // studyMaterials?: any[];
 
 

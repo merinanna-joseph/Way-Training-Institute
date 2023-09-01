@@ -93,7 +93,7 @@ export class StudentCoursedetailsComponent implements OnInit {
           // let student_data = data;
           //start
                  //course subjects getting start
-        this.coursesubjectService.getCoursesubjectsByCourse(this.student.courseID._id,year_index,semIndex).subscribe(
+        this.coursesubjectService.getCoursesubjectsByCourse(this.student.courseID._idx).subscribe(
           subdata=>{
             this.studentCoursesubjects = [];
             for(var i=0;i<subdata.length;i++){
@@ -366,7 +366,7 @@ export class StudentCoursedetailsComponent implements OnInit {
         //course subjects getting start
         let year_index = this.selectedIndex + 1;
         let semIndex = 2
-        this.coursesubjectService.getCoursesubjectsByCourse(this.student.courseID._id,year_index,semIndex).subscribe(
+        this.coursesubjectService.getCoursesubjectsByCourse(this.student.courseID._id).subscribe(
           subdata=>{
             this.studentCoursesubjects = [];
             this.studymaterialOf_singlesubject = [];
@@ -399,7 +399,7 @@ export class StudentCoursedetailsComponent implements OnInit {
 
      let year_index = this.selectedIndex + 1;
      let semIndex = 1;
-     this.coursesubjectService.getCoursesubjectsByCourse(this.student.courseID._id,year_index,semIndex).subscribe(
+     this.coursesubjectService.getCoursesubjectsByCourse(this.student.courseID._id).subscribe(
        subdata=>{
          this.studentCoursesubjects = [];
          this.studymaterialOf_singlesubject = [];

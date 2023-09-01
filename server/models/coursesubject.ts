@@ -2,10 +2,10 @@ import * as mongoose from 'mongoose';
 
 const couresesubjectSchema = new mongoose.Schema({
   courseId:{ type: String, ref: 'Booklibrary' },
-  feeId:{ type: String, ref: 'Fee' },
+  // feeId:{ type: String, ref: 'Fee' },
   subject:String,
-  yearIndex:String,
-  semIndex:String,
+  // yearIndex:String,
+  // semIndex:String,
 
   // studyMaterials : [],
 

@@ -21,7 +21,7 @@
           </div>
         </div>
         <!-- year display -->
-        <div class="card-body" >
+        <!-- <div class="card-body" >
             <div class="row">
                 
                 <div class="col-md-4"  *ngFor="let x of yearLength(yrlen);let i =index;" >
@@ -31,22 +31,21 @@
 
                 </div>
             </div>
-        </div>
+        </div> -->
           <!-- Semester display -->
-          <div class="card-body"  *ngIf="showSemesters">
+          <!-- <div class="card-body"  *ngIf="showSemesters">
             <div class="row">
                 
                 <div class="col-md-4" *ngFor="let x of semLength(semlen);let j =index;" >
                   <button type="button"  class="btn btn-danger"  (click)= "onSemesterClick(j+1)"style="background-color:#b2b8c7;color:#7e120e;height: 80px;"  data-toggle="tooltip"  data-placement="top" title="Click to view courses">
                   Sem {{j+1}} 
-                  <!-- {{selectYear}} -->
                 </button>
   
                 </div>
             </div>
-        </div>
-        <div class="card-body" *ngIf="showYearwiseTable" >
-            <h4>Year {{selectYear}} - Sem {{selectSemester}}'s Subject</h4>  
+        </div> -->
+        <div class="card-body"  >
+            <h4>Subjects</h4>  
            
            
                 <br>

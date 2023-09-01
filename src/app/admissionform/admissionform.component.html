@@ -1127,16 +1127,16 @@
                 <div class="form-group">
                     <label>University/Board Name</label>
                     <select class="form-control"
-                    class="form-control" formControlName="courseId"
+                    class="form-control" formControlName="university"
                     (change)="onUniversitySelection($event.target)"
-                    [ngClass]="{ 'is-invalid': submitted && s.courseId.errors }" >
+                    [ngClass]="{ 'is-invalid': submitted && s.university.errors }" >
                      <option value="" selected="true">--Select University--</option>
                      <option  *ngFor="let university of allUniversities " [value]="university._id" >
                         {{university.boardoruniveristy}}
                       </option>
                     </select>
-                    <div *ngIf="submitted && s.courseId.errors" class="invalid-feedback">
-                      <div *ngIf="s.courseId.errors.required">Select University</div>
+                    <div *ngIf="submitted && s.university.errors" class="invalid-feedback">
+                      <div *ngIf="s.university.errors.required">Select University</div>
                     </div>
 
 
@@ -1180,7 +1180,8 @@
                          --Select Course--</option> -->
                        <option  *ngFor="let course of allCourses;let i =index; " [value]="i" >
                           {{course.name}} <span *ngIf="course.branch">- ({{course.branch | titlecase}}) - </span>
-                          <span *ngIf="!course.branch"> - </span><span>{{course.courseType | titlecase}}</span>
+                          <span *ngIf="!course.branch"> - </span><span>{{course.courseType | titlecase}} </span>
+                          ( {{course.startYear}} - {{course.endYear}})
 
                         </option>
                       </select>
@@ -1523,9 +1524,9 @@
         </div>
        
          <div class="col text-center">
-              <button type="button" class="btn btn-danger btn-round"
+              <!-- <button type="button" class="btn btn-danger btn-round"
               style="background-color:#7e120e;"(click) = "onadmissionformSave()"
-              >Save</button>
+              >Save</button> -->
               <button type="button" class="btn btn-danger btn-round"
                style="background-color:#7e120e;" (click) = "onadmissionformSubmit()">Submit</button>
               <button type="button" class="btn btn-danger btn-round"

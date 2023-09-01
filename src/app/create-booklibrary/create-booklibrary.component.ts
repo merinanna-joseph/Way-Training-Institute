@@ -47,8 +47,8 @@ export class CreateBooklibraryComponent implements OnInit {
     branch: [''],
     board: ['',Validators.required],
     courseType: ['',Validators.required],
-    numberofyears: ['',Validators.required],
-    semperyear:['',Validators.required],
+    // numberofyears: ['',Validators.required],
+    // semperyear:['',Validators.required],
     // centers:['',Validators.required],
 
   });
@@ -133,8 +133,8 @@ this.branchService
 
     // this.course.name = this.selectedCoursename;
     // this.course.branch = this.selectedBranchname;
-    this.course.numberofyears = this.f.numberofyears.value;
-    this.course.semperyear = this.f.semperyear.value;
+    // this.course.numberofyears = this.f.numberofyears.value;
+    // this.course.semperyear = this.f.semperyear.value;
     this.course.boardOrUniversity = this.f.board.value;
     this.course.courseType = this.f.courseType.value;
     // console.log(this.course.coursebranchId,this.course.courseType,"gggg",this.course.boardOrUniversity,this.course.numberofyears,this.course.coursenameId)

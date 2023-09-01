@@ -1029,7 +1029,9 @@ export class CandidatemanagementComponent implements OnInit {
 
           if (month.length < 2) month = '0' + month;
 
+
           let convertedintake = [year, month].join('-');
+          alert(convertedintake + " "+ this.sortIntake)
           if (
             x.studentId.centers == this.sortCenter &&
             convertedintake == this.sortIntake

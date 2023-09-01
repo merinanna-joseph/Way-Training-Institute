@@ -4,10 +4,10 @@ export class Booklibrary {
     branch?:string;
     boardOrUniversity?:any;
     courseType?:string;
-    numberofyears?:string;
+    // numberofyears?:string;
     coursenameId?:any;
     coursebranchId?:any;
-    semperyear?: string;
+    // semperyear?: string;
   
   
   }

@@ -35,8 +35,8 @@ export class CourseSubjectService {
   //   return this.http.post<Coursesubject>('/api/student/uploads', data);
   // }
 
-  getCoursesubjectsByCourse(courseID,yearIndex,semIndex): Observable<Coursesubject[]> {
-    return this.http.get<Coursesubject[]>(`/api/coursesubjects/getCoursesubjectsByCourse/${courseID}/${yearIndex}/${semIndex}`);
+  getCoursesubjectsByCourse(courseID): Observable<Coursesubject[]> {
+    return this.http.get<Coursesubject[]>(`/api/coursesubjects/getCoursesubjectsByCourse/${courseID}`);
   }
 
 }

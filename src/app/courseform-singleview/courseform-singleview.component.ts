@@ -48,9 +48,9 @@ export class CourseformSingleviewComponent implements OnInit {
 
   coursesubjectModel : Coursesubject= {
     courseId: '',
-    feeId: '',
+    // feeId: '',
     subject: '',
-    yearIndex: ''
+    // yearIndex: ''
   };
   studymaterial_save : Studymaterial = {};
   editStudyMaterial : Studymaterial = {};
@@ -274,9 +274,9 @@ findDetails(data) {
     }
   }
 
-  this.coursesubjectModel.feeId=data.feeId._id;
+  // this.coursesubjectModel.feeId=data.feeId._id;
   this.coursesubjectModel.courseId=data._id;
-  this.coursesubjectModel.yearIndex=this.indexofYear;
+  // this.coursesubjectModel.yearIndex=this.indexofYear;
  
     // for(var i=0;i<data.feeId.feeStructure.length;i++){
      

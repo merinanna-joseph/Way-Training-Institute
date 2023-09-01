@@ -258,7 +258,7 @@ export default function setRoutes(app:any) {
   router.route('/coursesubject/:id').delete(coursesubjectCtrl.delete);
 
   router.route('/coursesubject/studymaterialsuploads').post([upload.array('files'),coursesubjectCtrl.uploadsFile]);
-  router.route('/coursesubjects/getCoursesubjectsByCourse/:courseId/:yearIndex/:semIndex').get(coursesubjectCtrl.getCoursesubjectsByCourse);
+  router.route('/coursesubjects/getCoursesubjectsByCourse/:courseId').get(coursesubjectCtrl.getCoursesubjectsByCourse);
 
 // subject_study materials
   // router.route('/coursename/:id').delete(coursenameCtrl.delete);

@@ -55,9 +55,9 @@ export class AddCourseSubjectMaterialsComponent implements OnInit {
 
   coursesubjectModel : Coursesubject= {
     courseId: '',
-    feeId: '',
+    // feeId: '',
     subject: '',
-    yearIndex: ''
+    // yearIndex: ''
   };
   studymaterial_save : Studymaterial = {};
   editStudyMaterial : Studymaterial = {};
@@ -137,9 +137,9 @@ export class AddCourseSubjectMaterialsComponent implements OnInit {
         data=>{
           
           this.singleBookLibrary = data[0];
-          this.yrlen = Number(this.singleBookLibrary.numberofyears);
-          this.semlen = Number(this.singleBookLibrary.semperyear);
-
+          // this.yrlen = Number(this.singleBookLibrary.numberofyears);
+          // this.semlen = Number(this.singleBookLibrary.semperyear);
+          this.getSubjectsofCourse(this.courseId);
           console.log(this.singleBookLibrary,"hhh");
         }
       );
@@ -153,7 +153,6 @@ export class AddCourseSubjectMaterialsComponent implements OnInit {
     this.showSubjects = false;
     this.showMaterials = false;
     this.showFiles = false;
-    // this.getSubjectsinYears(this.courseId,this.selectYear)
 
   }
   onSemesterClick(sem){
@@ -163,8 +162,11 @@ export class AddCourseSubjectMaterialsComponent implements OnInit {
     this.showSubjects = true;
     this.showMaterials = false;
     this.showFiles = false;
-    this.getSubjectsinYears(this.courseId,this.selectYear,this.selectSemester)
+    // this.getSubjectsinYears(this.courseId,this.selectYear,this.selectSemester)
 
+  }
+  viewSubjects(){
+    this.showSubjects =  true;
   }
   reload() {
     this.route.routeReuseStrategy.shouldReuseRoute = () => false;
@@ -183,8 +185,8 @@ saveSubject()
   if (this.addsubjectNameForm.invalid) {
     return;
   }
-  this.coursesubjectModel.yearIndex=this.selectYear;
-  this.coursesubjectModel.semIndex = this.selectSemester;
+  // this.coursesubjectModel.yearIndex=this.selectYear;
+  // this.coursesubjectModel.semIndex = this.selectSemester;
 
   this.coursesubjectModel.subject=this.coursesubject.subject.value;
   // console.log(this.coursesubjectModel,"modelllll")
@@ -588,8 +590,8 @@ getStudymaterials(subjectid,subjectname){
    
    
   }
-  getSubjectsinYears(courseId,yearIndex,semIndex){
-    this.coursesubjectService.getCoursesubjectsByCourse(courseId,yearIndex,semIndex).subscribe(
+  getSubjectsofCourse(courseId){
+    this.coursesubjectService.getCoursesubjectsByCourse(courseId).subscribe(
       subdata=>{
         this.studentCoursesubjects = [];
         this.studymaterials = [];
@@ -597,6 +599,12 @@ getStudymaterials(subjectid,subjectname){
         for(var i=0;i<subdata.length;i++){
           this.studentCoursesubjects.push(subdata[i]);
   
+        }
+        if(this.studentCoursesubjects.length > 0){
+          this.showSubjects = true;
+        }else{
+          this.showSubjects = false;
+
         }
         console.log(this.studentCoursesubjects,"course subj")
       }
@@ -739,7 +747,6 @@ getStudymaterials(subjectid,subjectname){
     )
   }
   editSubjectname(subject){
-    // alert(JSON.stringify(subject.feeId._id));
     this.editSubject = subject;
    
    

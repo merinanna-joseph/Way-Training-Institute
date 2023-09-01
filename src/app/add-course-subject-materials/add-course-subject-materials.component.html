@@ -21,7 +21,7 @@
           </div>
         </div>
         <!-- Year display -->
-        <div class="card-body" >
+        <!-- <div class="card-body" >
             <div class="row">
                 
                 <div class="col-md-4" *ngFor="let x of yearLength(yrlen);let i =index;" >
@@ -31,28 +31,32 @@
 
                 </div>
             </div>
-        </div>
+        </div> -->
         <!-- Semester display -->
-        <div class="card-body"  *ngIf="showSemesters">
+        <!-- <div class="card-body"  *ngIf="showSemesters">
           <div class="row">
               
               <div class="col-md-4" *ngFor="let x of semLength(semlen);let j =index;" >
                 <button type="button"  class="btn btn-danger"  (click)= "onSemesterClick(j+1)"style="background-color:#b2b8c7;color:#7e120e;height: 80px;"  data-toggle="tooltip"  data-placement="top" title="Click to view courses">
                 Sem {{j+1}} 
-                <!-- {{selectYear}} -->
+                
               </button>
 
               </div>
           </div>
-      </div>
-        <div class="card-body" *ngIf="showYearwiseTable" >
-            <h4>Year {{selectYear}} - Sem {{selectSemester}}'s Subject</h4>  
+      </div> -->
+        <div class="card-body" >
+            <h4> Subjects</h4>  
             <button type="button" class="btn btn-outline-success"  style="cursor: pointer;padding:11px 18px;background-color:#7e120e;" 
             data-toggle="tooltip" 
             data-placement="top" title="Click to add subjects"aria-hidden="true" data-toggle="modal"
-                        data-target="#addsubjectModal">Create Subject</button>
+                        data-target="#addsubjectModal" *ngIf="!showMaterials">Create Subject</button>
+
+                        <button type="button" class="btn btn-outline-success"  style="cursor: pointer;padding:11px 18px;background-color:#7e120e;" 
+            data-toggle="tooltip" 
+            data-placement="top" title="Click to view subjects" (click)="viewSubjects()" *ngIf="!showMaterials">View Subject</button>
                         <div class="col-lg-4 col-md-4 col-sm-12">
-                            <h6  *ngIf="whenclicked && material_length > 0 && showMaterials"style="color: black;"> 
+                            <h6  *ngIf="showMaterials"style="color: black;"> 
                               {{subjectname}}'s Study materials ({{material_length}})
                               
                             </h6>
