@@ -14,7 +14,8 @@ const app = express();
 app.use(compression());
 
 dotenv.config({ path: '.env' });
-app.set('port', (process.env.PORT || 3000));
+app.set('port', (process.env.PORT || 4100));
+//change to 4100 for adding in 206 and local 3000 and 4000 prod
 
 app.use(cors({
   origin: '*'

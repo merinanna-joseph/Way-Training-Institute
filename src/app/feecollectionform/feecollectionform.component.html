@@ -25,16 +25,13 @@
                           <div class="col-md-4 pr-1">
                             <div class="form-group">
                               <label>Year</label>
-                                    <select class="form-control"
+                                    <!-- <select class="form-control"
                                              aria-label="Default select example"
                                             [ngClass]="{ 'is-invalid': submitted && f.month.errors }"
                                             (change)="onYearChange($event.target)">
                                              <option *ngFor="let x of student.studentFees" value="{{x}}">{{x.year}}</option>
-                                    </select>
-                                    <!-- <select class="form-control" [value]="lead.source"
-                                    (change)="getSource($event.target)" aria-label="Default select example">
-                                     <option *ngFor="let x of sources" value="{{x}}">{{x}}</option>
-                                  </select> -->
+                                    </select> -->
+                                   
                               <div *ngIf="submitted && f.month.errors" class="invalid-feedback">
                                 <div *ngIf="f.month.errors.required">Course Name is required</div>
                               </div>

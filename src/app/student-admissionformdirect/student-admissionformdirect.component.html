@@ -2416,7 +2416,7 @@
                   </div> -->
             </div>
             <div class="row">
-              <div class="col-md-6 pr-1" *ngIf="student.studentCourse">
+              <div class="col-md-4 pr-1" *ngIf="student.studentCourse">
                 <div class="form-group">
                   <label>Course Name - (Branch)</label>
                   <br />
@@ -2447,6 +2447,19 @@
                   <b style="font-size: 16px">
                     {{
                       student.original_course_amount
+                        | currency: " ":"symbol":"3.0"
+                    }}
+                    AED
+                  </b>
+                </div>
+              </div>
+              <div class="col-md-2 pr-1">
+                <div class="form-group">
+                  <label>Total Discount Fee</label>
+                  <br />
+                  <b style="font-size: 16px">
+                    {{
+                      student.discount
                         | currency: " ":"symbol":"3.0"
                     }}
                     AED
@@ -2484,7 +2497,7 @@
                 </div>
               </div>
             </div>
-            <div class="row" *ngIf="student.studentFees">
+            <!-- <div class="row" *ngIf="student.studentFees">
               <div class="col-md-12 pr-1">
                 <div class="form-group">
                   <table>
@@ -2566,17 +2579,17 @@
                   </table>
                 </div>
               </div>
-            </div>
+            </div> -->
            
             <div class="row">
-              <div class="col-md-4 pr-1">
+              <div class="col-md-3 pr-1">
                 <div class="form-group">
-                  <label>Register Number</label>
+                  <label>Admission Number</label>
                   <br />
                   {{ student.university_register_number }}
                 </div>
               </div>
-              <div class="col-md-4 pr-1">
+              <div class="col-md-3 pr-1">
                 <div class="form-group">
                   <label>Tally ID</label>
                   <br />
@@ -2584,31 +2597,45 @@
                 </div>
               </div>
 
-              <div class="col-md-4 pl-1">
+              <div class="col-md-3 pr-1">
                 <div class="form-group">
                   <label>Admission Date</label>
                   <br />
                   {{ student.admission_Date | date | titlecase }}
                 </div>
               </div>
+              <div class="col-md-3 pl-1">
+                <div class="form-group">
+                  <label>Joining Date</label>
+                  <br />
+                  {{ student.joining_Date | date | titlecase }}
+                </div>
+              </div>
             </div>
 
             <!-- Lead officer details -->
             <div class="row">
-              <div class="col-md-4 pr-1">
+              <div class="col-md-3 pr-1">
                 <div class="form-group">
-                  <label>Lead Officer</label>
+                  <label>Counselor </label>
                   <br />
                   {{ student.lead_officer.firstName }}
                   {{ student.lead_officer.lastName }}
                 </div>
               </div>
 
-              <div class="col-md-4 pr-1">
+              <div class="col-md-3 pr-1">
                 <div class="form-group">
                   <label>Lead source</label>
                   <br />
                   {{ student.lead_source }}
+                </div>
+              </div>
+              <div class="col-md-3 pr-1">
+                <div class="form-group">
+                  <label>Trainer</label>
+                  <br />
+                  {{ student.Trainer.firstName }}  {{ student.Trainer.lastName }}
                 </div>
               </div>
             </div>
@@ -3082,7 +3109,7 @@
                   color: black !important;
                 "
                 >  :&nbsp;{{
-                  student.total_payable_fee_with_discount
+                  student.total_payable_fee_with_or_without_discount
                     | currency: " ":"symbol":"3.0"
                 }} AED
 
@@ -3112,102 +3139,7 @@
             <span style="font-size: 14px;color:#707070	;font-weight: bold;">NB:commutation and miscellaneous fees are excluded.</span>
 
             <br />
-            <div class="row" *ngIf="student.studentFees">
-              <div class="col-md-12 pr-1">
-                <div class="form-group">
-                  <table>
-                    <tbody>
-                      <tr>
-                        <th  style="font-size: 12px; color: #7e120e;text-align: center;">
-                          Year
-                        </th>
-                        <th  style="font-size: 12px; color: #7e120e;text-align: center;width:80px;">
-                          Registration<br />(AED)
-                        </th>
-                        <th  style="font-size: 12px; color: #7e120e;text-align: center;width:80px;">
-                          Coaching<br />(AED)
-                        </th>
-                        <th  style="font-size: 12px; color: #7e120e;text-align: center;width:80px;">
-                          Exam<br />(AED)
-                        </th>
-                        <th  style="font-size: 12px; color: #7e120e;text-align: center;width:80px;">
-                          Convocation<br />(AED)
-                        </th>
-                        <th  style="font-size: 12px; color: #7e120e;text-align: center;width:80px;">
-                          Attestation<br />(AED)
-                        </th>
-                        <th  style="font-size: 12px; color: #7e120e;text-align: center;width:80px;">
-                          Equalency<br />(AED)
-                        </th>
-                        <th  style="font-size: 12px; color: #7e120e;text-align: center;width:80px;">
-                          Other<br />(AED)
-                        </th>
-
-                        <th  style="font-size: 12px; color: #7e120e;text-align: center;width:112px;">
-                          Total <br />Fee(AED)
-                        </th>
-                        <th  style="font-size: 12px; color: #7e120e;text-align: center;width:112px;">
-                          Paid <br />Fee(AED)
-                        </th>
-                        <th  style="font-size: 12px; color: #7e120e;text-align: center;width:112px;">
-                          Balance <br />Fee(AED)
-                        </th>
-                      </tr>
-                      <tr *ngFor="let fees of groupList; let i = index">
-                        <td  style="text-align: center;">
-                          {{ fees.year }}
-                        </td>
-                        <td  style="text-align: center;">
-                          {{ fees.reg_total }}<br />
-                          <!-- P:{{ fees.reg_paid }}<br />
-                          B:{{ fees.reg_bal }} -->
-                        </td>
-                        <td style="text-align: center;">
-                          {{ fees.coaching_total }}<br />
-                          <!-- P:{{ fees.coaching_paid }}<br />
-                          B:{{ fees.coaching_bal }} -->
-                        </td>
-                        <td  style="text-align: center;">
-                          {{ fees.exam_total }}<br />
-                          <!-- P:{{ fees.exam_paid }}<br />
-                          B:{{ fees.exam_bal }} -->
-                        </td>
-                        <td  style="text-align: center;">
-                          {{ fees.convocation_total }}<br />
-                          <!-- P:{{ fees.convocation_paid }}<br />
-                          B:{{ fees.convocation_bal }} -->
-                        </td>
-                        <td  style="text-align: center;">
-                          {{ fees.attestation_total }}<br />
-                          <!-- P:{{ fees.attestation_paid }}<br />
-                          B:{{ fees.attestation_bal }} -->
-                        </td>
-                        <td  style="text-align: center;">
-                          {{ fees.equalency_total }}<br />
-                          <!-- P:{{ fees.equlency_paid }}<br />
-                          B:{{ fees.equlency_bal }} -->
-                        </td>
-                        <td  style="text-align: center;">
-                          {{ fees.other_total }}<br />
-                          <!-- P:{{ fees.other_paid }}<br />
-                          B:{{ fees.other_bal }} -->
-                        </td>
-
-                        <td  style="text-align: center;width:50px;">
-                          {{ fees.total_fee }}
-                        </td>
-                        <td  style="text-align: center;width:50px;">
-                          {{ fees.total_paid }}
-                        </td>
-                        <td  style="text-align: center;width:50px;">
-                          {{ fees.balance_fee }}
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-            </div>
+            
             <p
             style="
               background: #7e120e;
@@ -4041,7 +3973,7 @@
         >
 
         :&nbsp;{{
-          student.total_payable_fee_with_discount
+          student.total_payable_fee_with_or_without_discount
             | currency: " ":"symbol":"3.0"
         }} AED
 
@@ -4071,102 +4003,7 @@
               Payment Details
             </p>
            <span style="font-size: 10px;color:#707070	;font-weight: bold;"> NB:Commutation and miscellaneous fees are excluded.</span>
-           <div class="row" *ngIf="student.studentFees">
-            <div class="col-md-12 pr-1">
-              <div class="form-group">
-                <table>
-                  <tbody>
-                    <tr>
-                      <th  style="font-size: 12px; color: #7e120e;text-align: center;width:150px;">
-                        Year
-                      </th>
-                      <th  style="font-size: 12px; color: #7e120e;text-align: center;width:80px;">
-                        Registration<br />(AED)
-                      </th>
-                      <th  style="font-size: 12px; color: #7e120e;text-align: center;width:80px;">
-                        Coaching<br />(AED)
-                      </th>
-                      <th  style="font-size: 12px; color: #7e120e;text-align: center;width:80px;">
-                        Exam<br />(AED)
-                      </th>
-                      <th  style="font-size: 12px; color: #7e120e;text-align: center;width:80px;">
-                        Convocation<br />(AED)
-                      </th>
-                      <th  style="font-size: 12px; color: #7e120e;text-align: center;width:80px;">
-                        Attestation<br />(AED)
-                      </th>
-                      <th  style="font-size: 12px; color: #7e120e;text-align: center;width:80px;">
-                        Equalency<br />(AED)
-                      </th>
-                      <th  style="font-size: 12px; color: #7e120e;text-align: center;width:80px;">
-                        Other<br />(AED)
-                      </th>
-
-                      <th  style="font-size: 12px; color: #7e120e;text-align: center;width:112px;">
-                        Total <br />Fee(AED)
-                      </th>
-                      <th  style="font-size: 12px; color: #7e120e;text-align: center;width:112px;">
-                        Paid <br />Fee(AED)
-                      </th>
-                      <th  style="font-size: 12px; color: #7e120e;text-align: center;width:112px;">
-                        Balance <br />Fee(AED)
-                      </th>
-                    </tr>
-                    <tr *ngFor="let fees of groupList; let i = index">
-                      <td  style="text-align: center;">
-                        {{ fees.year }}
-                      </td>
-                      <td  style="text-align: center;">
-                        {{ fees.reg_total }}<br />
-                        <!-- P:{{ fees.reg_paid }}<br />
-                        B:{{ fees.reg_bal }} -->
-                      </td>
-                      <td style="text-align: center;">
-                        {{ fees.coaching_total }}<br />
-                        <!-- P:{{ fees.coaching_paid }}<br />
-                        B:{{ fees.coaching_bal }} -->
-                      </td>
-                      <td  style="text-align: center;">
-                        {{ fees.exam_total }}<br />
-                        <!-- P:{{ fees.exam_paid }}<br />
-                        B:{{ fees.exam_bal }} -->
-                      </td>
-                      <td  style="text-align: center;">
-                        {{ fees.convocation_total }}<br />
-                        <!-- P:{{ fees.convocation_paid }}<br />
-                        B:{{ fees.convocation_bal }} -->
-                      </td>
-                      <td  style="text-align: center;">
-                        {{ fees.attestation_total }}<br />
-                        <!-- P:{{ fees.attestation_paid }}<br />
-                        B:{{ fees.attestation_bal }} -->
-                      </td>
-                      <td  style="text-align: center;">
-                        {{ fees.equalency_total }}<br />
-                        <!-- P:{{ fees.equlency_paid }}<br />
-                        B:{{ fees.equlency_bal }} -->
-                      </td>
-                      <td  style="text-align: center;">
-                        {{ fees.other_total }}<br />
-                        <!-- P:{{ fees.other_paid }}<br />
-                        B:{{ fees.other_bal }} -->
-                      </td>
-
-                      <td  style="text-align: center;width:50px;">
-                        {{ fees.total_fee }}
-                      </td>
-                      <td  style="text-align: center;width:50px;">
-                        {{ fees.total_paid }}
-                      </td>
-                      <td  style="text-align: center;width:50px;">
-                        {{ fees.balance_fee }}
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </div>
+          
           <p
             style="
               background: #7e120e;

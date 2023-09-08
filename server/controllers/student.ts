@@ -355,7 +355,7 @@ export default class StudentCtrl extends BaseCtrl {
   }
   getStudentByUsername = async (req:any,res:any) => {
     try {
-      const obj = await this.model.findOne({ username: req.params.username }).populate('lead_officer').populate('courseID').populate('feeID');
+      const obj = await this.model.findOne({ username: req.params.username }).populate('lead_officer').populate('courseID').populate('feeID').populate('Trainer');
       res.status(200).json(obj);
     } catch (err) {
       return res.status(400).json({ message: "Student not found" });

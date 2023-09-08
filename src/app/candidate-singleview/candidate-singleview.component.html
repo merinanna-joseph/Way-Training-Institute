@@ -206,7 +206,7 @@
                               <h4 class="card-title"> Collect Fees</h4>
                           </div>
                           <div class="col-md-4" >
-                              Balance/Total fees: &nbsp;<b>{{total_balance_fees_per_year | currency:' ':'symbol':'3.0'}}/{{total_fees_per_year | currency:' ':'symbol':'3.0'}} AED</b>
+                              Balance/Total fees: &nbsp;<b>{{total_balance_fees | currency:' ':'symbol':'3.0'}}/{{total_fees | currency:' ':'symbol':'3.0'}} AED</b>
                           </div>
                       </div>
                   </div>
@@ -414,7 +414,7 @@
                                 </div>
 
                             
-                              <div class="col-md-3 pl-1" *ngIf="previous_year_arrear_form_bind > 0">
+                              <!-- <div class="col-md-3 pl-1" *ngIf="previous_year_arrear_form_bind > 0">
                                 <div class="form-group">
                                   <div class="row">
                                     <div class="col-md-12 text left pr-1"><label>Previous Year Arrear - (<span style="color: rgb(94, 123, 219);">{{previous_year_arrear_form_bind}}<span style="color: rgb(15, 15, 15);"> / </span>{{feeFlow_collection_array[this.array_index].previous_year_arrear}}</span>)</label></div>
@@ -424,9 +424,9 @@
                                   <input  type="number" class="form-control" (keyup)="getRemittedTotal()"
                                   placeholder="Enter Previous Year Arrear Amount" formControlName="previous_year_arrearAmount" >
                                 </div>
+                              </div> -->
                               </div>
-                              </div>
-                              <label *ngIf="transportation_required">Transportation Required Months</label>
+                              <!-- <label *ngIf="transportation_required">Transportation Required Months</label>
                               <div class="row" *ngIf="transportation_required">
 
                                 <div class="col-md-2" *ngFor="let collectionflow of collectionFlow_transport_display_month_list;let i = index;">
@@ -449,11 +449,11 @@
                                          </label>
                                 </div>
                                 </div>
-                              </div>
+                              </div> -->
 
 
 
-                              <div class="row" *ngIf="transportation_required">
+                              <!-- <div class="row" *ngIf="transportation_required">
 
                               <div class="col-md-3 pr-1" >
                                 <div class="form-group">
@@ -463,7 +463,7 @@
                                 </div>
                               </div>
 
-                              </div>
+                              </div> -->
                               <hr>
                               <h6>Total Fees</h6>
                               <hr>
@@ -575,7 +575,7 @@
        </tr>
        <tr>
         <td width="60%" style="text-align: left;font-size: 12px;color:#adb1b8;">ISSUE DATE</td>
-        <td width="40%" style="text-align: left;font-size: 12px;color:#adb1b8;">ACADEMIC YEAR</td>
+        <!-- <td width="40%" style="text-align: left;font-size: 12px;color:#adb1b8;">ACADEMIC YEAR</td> -->
 
        </tr>
        <tr>
@@ -584,9 +584,9 @@
 
 
       </td>
-        <td width="40%" style="text-align: left;">
+        <!-- <td width="40%" style="text-align: left;">
           <p >{{invoiced_fee.year}}</p>
-        </td>
+        </td> -->
 
       </tr>
       <tr>

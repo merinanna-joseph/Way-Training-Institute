@@ -1716,7 +1716,7 @@
               </div>
             </div>
             <!-- Year wise fees number -->
-            <div class="row" *ngIf="courseDisplay && feesDisplay">
+            <!-- <div class="row" *ngIf="courseDisplay && feesDisplay">
               <div class="col-md-12 pl-1">
                 <div class="form-group">
                   <table >
@@ -1806,7 +1806,7 @@
                   </div>
 
              </div>
-            </div>
+            </div> -->
 <!-- when NIOS 10TH AND 12TH ALREADY EXIST- START -->
 <div class="row" *ngIf = "NIOS10_display_default">
   <div class="col-md-4 pr-1" *ngFor="let list of NIOS10_subjectlist;let i = index;">
@@ -1853,7 +1853,7 @@
 <!-- STOP -->
 
             <!-- when course fee already exist -->
-            <div class="row" *ngIf="courseDisplaydefault &&feeDisplaydefault&&default">
+            <!-- <div class="row" *ngIf="courseDisplaydefault &&feeDisplaydefault&&default">
               <div class="col-md-12 pl-1">
                 <div class="form-group">
                   <table >
@@ -1928,16 +1928,7 @@
                           {{ fees.per_year_discount }}
                         </td>
 
-                    <!-- <td   width="5%" class="text-left">
-
-                        <input type="number"
-                      class="form-control" placeholder="Enter Discount Amount"
-                      formControlName="per_year_discount" name="per_year_discount"
-                      [(ngModel)]="per_year_discount[i]" (keyup)="find_total_fee_with_discount(i)">
-
-
-
-                    </td> -->
+                   
                    </tr>
                    </tbody>
                   </table>
@@ -1947,8 +1938,8 @@
                   </div>
 
              </div>
-            </div>
-            <div class="row" *ngIf="courseDisplaydefault &&feesDisplay">
+            </div> -->
+            <!-- <div class="row" *ngIf="courseDisplaydefault &&feesDisplay">
               <div class="col-md-12 pl-1">
                 <div class="form-group">
                   <table >
@@ -2039,7 +2030,7 @@
 
              </div>
 
-                         </div>
+                         </div> -->
 
 
 

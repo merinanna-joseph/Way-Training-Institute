@@ -95,7 +95,7 @@ export class Student {
 
   lead_officer?: any;
   lead_source?: string;
-  Trainer?:string;
+  Trainer?:any;
   istemporarysaved?: boolean;
 
   subject_list?: string[];

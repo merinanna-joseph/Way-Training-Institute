@@ -1487,7 +1487,7 @@
             <div class="col-md-4 pr-1">
               <div class="form-group">
                   <label>Trainer</label>
-                  <select class="form-control" 
+                  <select class="form-control" formControlName="trainer"
                        (change)="getTrainers($event.target)" aria-label="Default select example">
                        <option value="" selected="true">Select Trainer</option>
                         <option *ngFor="let x of trainers" value="{{x._id}}">{{x.firstName}} {{x.lastName}}</option>
