@@ -224,7 +224,6 @@ centers: any[];
     this.getAllCourses();
     this.getAllUniversities();
     this.getAllCoursenames();
-    // this.getAllCoursesWithFeeStructure();
     // this.getAllBranchs()
   }
 // getAllBranchs()
@@ -299,7 +298,7 @@ this.branchService
   getAllCoursesWithFeeStructure(){
    this.allCourseandFee = [];
 
-    // alert(this.selected_center)
+    alert(this.selected_center)
     this.courseService. getAllCourseandFeeByCenter(this.selected_center).subscribe(
       data => {
 
@@ -396,6 +395,7 @@ formatDateYearAndMonth(date) {
   getCoursesInCenters(center){
 
     this.selected_center = center;
+    alert(this.selected_center)
     this.getAllCoursesWithFeeStructure();
   }
   onCentersSelection(event) {
@@ -458,21 +458,21 @@ formatDateYearAndMonth(date) {
 
            this.boardService.editBoardOrUniversity(this.boardOrUniversityModel,localStorage.getItem('token')).subscribe(
              data => {
-              this.showTable = true;
-
+              // this.showTable = true;
+              this.showtbl = true;
+              this.ngOnInit();
              }
 
            )
           //  this.toast.setMessage('Fee added successfully !!!', 'success');
-          //  this.getAllCoursesWithFeeStructure()
-          this.toast.setMessage('Course added successfully !!!', 'success');
-
-          this.addCourseForm.reset();
-          this.showtbl = true;
+          
+             this.ngOnInit();
+          // this.addCourseForm.reset();
+          // this.showtbl = true;
           // this.route.navigate(['candidate-singleview/' + this.feeFlow.studentId]);
           }
         )
-
+        this.toast.setMessage('Course added successfully !!!', 'success');
 
       }
     )

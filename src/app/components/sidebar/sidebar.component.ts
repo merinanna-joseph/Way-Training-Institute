@@ -29,20 +29,12 @@ export const ROUTES: RouteInfo[] = [
     { path: '/lead-admin', title: 'Lead Management',  icon:'location_map-big', class: '' , children:''},
     { path: '/course', title: 'Course Management',  icon:'design-2_ruler-pencil', class: '', children:'' },
     { path: '/candidate-management', title: 'Candidate Management',  icon:'users_single-02', class: '', children:'',
-    // children: [
-
-    //   {
-    //     path: '/closedAdmissionform-display', title: 'Closed Admissions',  icon:'design_bullet-list-67', class: ''
-    //   },
-
-
-    //   ]
      },
-       {
-        path: '/closedAdmissionform-display', title: 'Closed Admissions',  icon:'design_bullet-list-67', class: '',children:'',
-      },
+      //  {
+      //   path: '/closedAdmissionform-display', title: 'Closed Admissions',  icon:'design_bullet-list-67', class: '',children:'',
+      // },
 
-    // { path: '/test-image', title: 'Test Image',  icon:'ui-1_bell-53', class: '' },
+   
 
     { path: '/report-management', title: 'Report Management',  icon:'business_chart-bar-32', class: '', children:'',},
     { path: '/display-booklibrary', title: 'Book Library',  icon:'users_single-02', class: '' ,children:''},

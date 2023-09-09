@@ -174,11 +174,11 @@
 
                 </div>
                   <div class="col-md-3" *ngIf="sortUniversity">
-                    <label>University</label>
+                    <label>Main Course</label>
                     <select  class="form-control" (change)="getSortUniversity($event)"
                     [ngModel]="sortUniversity"
                     formControlName="sort_university">
-                      <option  value='' disabled selected>--Select University--</option>
+                      <option  value='' disabled selected>--Select Main Course--</option>
                       <option  value='ALL'  >ALL</option>
                       <option *ngFor="let x of allUniversities" value="{{x.boardoruniveristy}}">{{x.boardoruniveristy}}</option>
 
@@ -186,10 +186,10 @@
 
                   </div>
                   <div class="col-md-3" *ngIf="!sortUniversity">
-                    <label>University</label>
+                    <label>Main Course</label>
                     <select  class="form-control" (change)="getSortUniversity($event)"
                     formControlName="sort_university">
-                      <option  value='' disabled selected>--Select University--</option>
+                      <option  value='' disabled selected>--Select Main Course--</option>
                       <option  value='ALL'  >ALL</option>
                       <option *ngFor="let x of allUniversities" value="{{x.boardoruniveristy}}">{{x.boardoruniveristy}}</option>
 
@@ -300,7 +300,7 @@
 
 
                     <th width="14%" class="text-left blue-link-heading">
-                      University
+                      Main Course
                     </th>
 
                     <th width="18%" class="text-left blue-link-heading">
@@ -381,7 +381,7 @@
                    (click) = "viewCandidate(student.studentId)"  style="padding: 5px;">
                    <i class="fa fa-dollar" style="font-size:13px;"></i>
                  </button>
-                  <button type="button" class="btn btn-neutral blue-link-heading"  [disabled]="disableButtons"
+                  <!-- <button type="button" class="btn btn-neutral blue-link-heading"  [disabled]="disableButtons"
                   data-toggle="tooltip" data-placement="top" title="Collect Certificate"  style="padding: 5px;"
                    (click)="onCandidateClick(student.studentId)" data-toggle="modal" data-target="#collectCertificateModal">
                     <i class="fa fa-graduation-cap" style="font-size: 13px;"></i>
@@ -395,7 +395,7 @@
                   data-toggle="tooltip" data-placement="top" title="Collect Transportation Fees" style="padding: 5px;"
                   (click)="onCandidateClick(student.studentId)" data-toggle="modal" data-target="#collectTransportationModal">
                     <i class="fa fa-car" style="font-size: 13px;"></i>
-            </button>
+            </button> -->
                   <button type="button" class="btn btn-neutral blue-link-heading"  [disabled]="disableButtons"
                   data-toggle="tooltip" data-placement="top" title="Invoice" style="padding: 5px;"
                   (click)="onInvoiceClick(student.studentId)" data-toggle="modal" data-target="#invoiceModal" >
@@ -922,7 +922,7 @@
       <tbody>
         <tr>
           <th width="60%" style="text-align: left;color:#7e120e;">
-            <img src="../assets/favicon.jpeg" alt="..." width="50" height="50">
+            <img src="../assets/img/wayinstitute-logo.png" alt="..." width="50" height="50">
             </th>
             <th width="100%" style="text-align: center;font-size: 20px;color:#7e120e;">Way Training Institute</th>
 
@@ -985,7 +985,7 @@
 
       </tr>
       <tr>
-        <td width="60%" style="text-align: left;font-size: 12px;color:#adb1b8;">UNIVERSITY</td>
+        <td width="60%" style="text-align: left;font-size: 12px;color:#adb1b8;">Main Course</td>
         <td width="40%" style="text-align: left;font-size: 12px;color:#adb1b8;">COURSE DETAILS</td>
 
        </tr>
@@ -1515,7 +1515,7 @@
       Intake
     </th>
     <th>
-      University/Board Name
+      Main Course Name
     </th>
 
     <th>

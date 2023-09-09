@@ -2228,7 +2228,7 @@
                 *ngIf="student.education_qualification"
               >
                 <div class="form-group">
-                  <label>University/Board Name</label>
+                  <label>Board or University Name</label>
                   <br />
                   {{ student.education_qualification.university | titlecase }}
                 </div>
@@ -2328,7 +2328,7 @@
                       class="invalid-feedback"
                     >
                       <div *ngIf="eq.university.errors.required">
-                        University is required
+                        Main Course is required
                       </div>
                     </div>
                   </div>
@@ -2578,7 +2578,7 @@
             <div class="row">
               <div class="col-md-6 pr-1" *ngIf="student.studentCourse">
                 <div class="form-group">
-                  <label>University/Board Name</label>
+                  <label>Main Course Name</label>
                   <br />
                   {{ student.studentCourse[0].boardOrUniversity | titlecase }}
                 </div>
@@ -3415,7 +3415,7 @@
 
               "
             >
-            University/Board
+            Main Course
              <span
                 style="
                   padding-left: 112px;
@@ -4357,7 +4357,7 @@
 
               "
             >
-              University/Board
+            Main Course
               <span
                 style="
                   padding-left:84px;

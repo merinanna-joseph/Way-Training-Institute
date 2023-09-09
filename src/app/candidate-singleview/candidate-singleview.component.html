@@ -56,20 +56,11 @@
                   <div class="col-md-1" class="vr">
                   </div>
                    <div class="col-md-4" *ngIf="feeFlow.studentId">
-                    <!-- <div style="font-size:14px;" ><label>Previous Course&nbsp;</label>  :&nbsp;{{feeFlow.studentId.education_qualification.last_Completed_Course}}</div> -->
-
-                    <!-- <h6>
-                      <a style="margin-top: -20px;cursor: pointer;"
-                      data-toggle="tooltip" data-placement="top" title="Close Admission"
-                       data-toggle="modal" data-target="#closeAdmissionModal" >
-                     CLOSE ADMISSION
-                    </a>
-                    </h6> -->
-                    <form [formGroup]="closeAdmissionForm" #closeAdmissionDetails="ngForm">
+                    
+                    <!-- <form [formGroup]="closeAdmissionForm" #closeAdmissionDetails="ngForm">
                       <div class="row" >
                         <div class="col-md-12" >
                           <div class="form-group" >
-                            <!-- <label>Closing Type</label> -->
                                   <select class="form-control" id="closingTypeStyle"
                                            aria-label="Default select example"
                                            formControlName="closingType"
@@ -79,9 +70,7 @@
                                            <option *ngFor="let x of closingType" value="{{x}}">{{x}}</option>
                                   </select>
 
-                            <!-- <div *ngIf="certificateSubmitted && c.year.errors" class="invalid-feedback">
-                              <div *ngIf="c.year.errors.required">Year is required</div>
-                            </div> -->
+                           
                           </div>
                         </div>
                       </div>
@@ -97,9 +86,7 @@
                                               >
 
 
-                            <!-- <div *ngIf="certificateSubmitted && c.year.errors" class="invalid-feedback">
-                              <div *ngIf="c.year.errors.required">Year is required</div>
-                            </div> -->
+                          
                           </div>
                         </div>
                       </div>
@@ -113,9 +100,7 @@
                                               placeholder="Enter date" >
 
 
-                            <!-- <div *ngIf="certificateSubmitted && c.year.errors" class="invalid-feedback">
-                              <div *ngIf="c.year.errors.required">Year is required</div>
-                            </div> -->
+                         
                           </div>
                         </div>
                         <div class="col-md-6" *ngIf="admissionClosingType == 'Dropped Out'" >
@@ -126,16 +111,13 @@
                                               placeholder="Enter date" >
 
 
-                            <!-- <div *ngIf="certificateSubmitted && c.year.errors" class="invalid-feedback">
-                              <div *ngIf="c.year.errors.required">Year is required</div>
-                            </div> -->
+                            
                           </div>
                         </div>
                       </div>
                       <div class="row" *ngIf="closingAdmission">
                         <div class="col-md-12 pr-1" >
                           <div class="form-group">
-                              <!-- <label>Remarks</label> -->
                               <input  class="form-control" type="text"
 
                                formControlName="closingremark" id="remarkstyle"id="closingTypeStyle"
@@ -152,19 +134,8 @@
 
                         </div>
 
-                        <!-- <div class="col-md-4" >
-                          <div class="form-group">
-                              <input  type="checkbox" [checked]="dropout_confirmYES"
-                              formControlName="drop_out_confirm"
-                              (change)="onDropOutConfirmYES($event)"
-                               placeholder="Enter Remarks" >&nbsp;Yes
-
-
-                            </div>
-                        </div> -->
                         <div class="col-md-3" >
                           <div class="form-group">
-                              <!-- <label>Remarks</label> -->
 
 
                                <input  type="checkbox" [checked]="dropout_confirmNO"
@@ -176,7 +147,7 @@
                             </div>
                         </div>
                       </div>
-                    </form>
+                    </form> -->
 
                   </div>
                 </div>
@@ -541,7 +512,7 @@
       <tbody>
         <tr>
           <th width="60%" style="text-align: left;color:#7e120e;">
-            <img src="../assets/favicon.jpeg" alt="..." width="50" height="50">
+            <img src="../assets/img/wayinstitute-logo.png" alt="..." width="50" height="50">
             </th>
             <th width="100%" style="text-align: center;font-size: 20px;color:#7e120e;">Way Training Institute</th>
         </tr>
@@ -605,7 +576,7 @@
 
       </tr>
       <tr>
-        <td width="60%" style="text-align: left;font-size: 12px;color:#adb1b8;">UNIVERSITY</td>
+        <td width="60%" style="text-align: left;font-size: 12px;color:#adb1b8;">Main Course</td>
         <td width="40%" style="text-align: left;font-size: 12px;color:#adb1b8;">COURSE DETAILS</td>
 
        </tr>

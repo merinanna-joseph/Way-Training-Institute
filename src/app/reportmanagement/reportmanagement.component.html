@@ -232,7 +232,7 @@
                   </div>
                 </div>
                 <div class="col-md-3" *ngIf="sortUniversity">
-                  <label>University</label>
+                  <label>Main Course</label>
                   <select
                     class="form-control"
                     (change)="getSortUniversity($event)"
@@ -240,7 +240,7 @@
                     formControlName="sort_university"
                   >
                     <option value="" disabled selected>
-                      --Select University--
+                      --Select Main Course--
                     </option>
                     <option  value='ALL'  >ALL</option>
                     <option
@@ -252,14 +252,14 @@
                   </select>
                 </div>
                 <div class="col-md-3" *ngIf="!sortUniversity">
-                  <label>University</label>
+                  <label>Main Course</label>
                   <select
                     class="form-control"
                     (change)="getSortUniversity($event)"
                     formControlName="sort_university"
                   >
                     <option value="" disabled selected>
-                      --Select University--
+                      --Select Main Course--
                     </option>
                     <option  value='ALL'  >ALL</option>
                     <option
@@ -368,7 +368,7 @@
                     <th width="13%" class="text-left blue-link-heading" >Centre<i *ngIf="!modeOfCenter" class="fa fa-arrow-up" (click)="onSortClickCenter()"></i>
                       <i *ngIf="modeOfCenter" class="fa fa-arrow-down" (click)="onSortClickCenterReverse()"></i>
                     </th>
-                    <th width="10%" class="text-left blue-link-heading">Academic year</th>
+                    <!-- <th width="10%" class="text-left blue-link-heading">Academic year</th> -->
                     <th width="10%" class="text-left blue-link-heading">Remitted date</th>
                     <th width="8%" class="text-left blue-link-heading">
                       Remitted fee(AED)
@@ -426,7 +426,7 @@
                     <td *ngIf="invoice.studentId">
                       {{ invoice.studentId.centers| titlecase }}
                     </td>
-                    <td *ngIf="invoice.year">{{ invoice.year }}</td>
+                    <!-- <td *ngIf="invoice.year">{{ invoice.year }}</td> -->
                     <td *ngIf="invoice.remittedDate">
                       {{ invoice.remittedDate | date }}
                     </td>
@@ -436,15 +436,16 @@
                           | currency: " ":"symbol":"3.0"
                       }}
                     </td>
+                    <!-- <td *ngIf="invoice.miscellaneous_fee >=0">{{invoice.miscellaneous_fee}}</td> -->
                     <td>
                       {{
-                        invoice.balance_fee_per_year
+                        invoice.balance_fee
 
                       }}
                     </td>
-                    <td *ngIf="invoice.total_fee_per_year">
+                    <td *ngIf="invoice.total_fee">
                       {{
-                        invoice.total_fee_per_year
+                        invoice.total_fee
                           | currency: " ":"symbol":"3.0"
                       }}
                     </td>
@@ -583,7 +584,7 @@
                   </div>
                 </div>
                 <div class="col-md-3" *ngIf="sortUniversitybc">
-                  <label>University</label>
+                  <label>Main Course</label>
                   <select
                     class="form-control"
                     (change)="getSortUniversitybc($event)"
@@ -591,7 +592,7 @@
                     formControlName="sort_universitybc"
                   >
                     <option value="" disabled selected>
-                      --Select University--
+                      --Select Main Course--
                     </option>
                     <option  value='ALL'  >ALL</option>
                     <option
@@ -603,14 +604,14 @@
                   </select>
                 </div>
                 <div class="col-md-3" *ngIf="!sortUniversitybc">
-                  <label>University</label>
+                  <label>Main Course</label>
                   <select
                     class="form-control"
                     (change)="getSortUniversitybc($event)"
                     formControlName="sort_universitybc"
                   >
                     <option value="" disabled selected>
-                      --Select University--
+                      --Select Main Course--
                     </option>
                     <option  value='ALL'  >ALL</option>
                     <option
@@ -947,7 +948,7 @@
                   </div>
                 </div>
                 <div class="col-md-3" *ngIf="sortUniversityts">
-                  <label>University</label>
+                  <label>Main Course</label>
                   <select
                     class="form-control"
                     (change)="getSortUniversityts($event)"
@@ -955,7 +956,7 @@
                     formControlName="sort_universityts"
                   >
                     <option value="" disabled selected>
-                      --Select University--
+                      --Select Main Course--
                     </option>
                     <option  value='ALL'  >ALL</option>
                     <option
@@ -967,14 +968,14 @@
                   </select>
                 </div>
                 <div class="col-md-3" *ngIf="!sortUniversityts">
-                  <label>University</label>
+                  <label>Main Course</label>
                   <select
                     class="form-control"
                     (change)="getSortUniversityts($event)"
                     formControlName="sort_universityts"
                   >
                     <option value="" disabled selected>
-                      --Select University--
+                      --Select Main Course--
                     </option>
                     <option  value='ALL'  >ALL</option>
                     <option
@@ -1144,227 +1145,40 @@
             </div>
           </div>
 
-          <!-- <div *ngIf="">
-            <div class="row">
-              <div class="col-md-8" style="padding-top: 16px">
-                <div class="row">
-                  <div class="col-md-4">
-                    <h4 class="card-title">Certificate List</h4>
-                  </div>
-                </div>
-              </div>
-              <div class="col-md-4 text-right">
-                <button
-                  type="button"
-                  style="
-                    font-size: 18px;
-                    padding: 6px 8px;
-                    background-color: #7e120e;
-                  "
-                  class="btn btn-round blue-ink"
-                  (click)="clickToExport()"
-                >
-                  <i
-                    class="now-ui-icons arrows-1_cloud-download-93"
-                    style="font-weight: bold"
-                  ></i>
-                </button>
-              </div>
-            </div>
-
-            <div class="table">
-              <table class="table">
-                <thead class="text-primary" style="font-size: 14px">
-                  <th class="text-left blue-link-heading">Reg. No.</th>
-
-                  <th class="text-left blue-link-heading">Name</th>
-                  <th class="text-left blue-link-heading">Collected On</th>
-                  <th class="text-left blue-link-heading">Remarks</th>
-                </thead>
-                <tr *ngFor="let m of certificates">
-                  <td>{{ m.studentId.university_register_number }}</td>
-                  <td>
-                    {{ m.studentId.firstName }} {{ m.studentId.lastName }}
-                  </td>
-                  <td>{{ m.collectedOn | date }}</td>
-                  <td>{{ m.remarks }}</td>
-                </tr>
-              </table>
-            </div>
-          </div> -->
-        </div>
+          </div>
       </div>
     </div>
   </div>
 
-  <!-- print excel table -->
-  <!-- <table class="table" id="tblData" style="display:block">
+ <table class="table" id="tblData" style="display:none">
     <thead class="text-primary" style="font-size: 14px">
       <th>Reg. No.</th>
       <th>Tally Id</th>
 
       <th>Name</th>
       <th>Payment Mode</th>
-      <th>Academic year</th>
+      <!-- <th>Academic year</th> -->
       <th>Remitted Date</th>
       <th>Remarks</th>
-      <th>Paid registration fee</th>
+      <!-- <th>Paid registration fee</th>
       <th>Paid coaching fee</th>
       <th>Paid exam fee</th>
       <th>Paid convocation fee</th>
       <th>Paid attestation fee</th>
       <th>Paid equalency fee</th>
-      <th>Paid other fee</th>
+      <th>Paid other fee</th> -->
       <th>Paid miscellaneous fee</th>
-      <th>Paid transport fee</th>
+      <!-- <th>Paid transport fee</th> -->
       <th>Total course fee</th>
       <th>Total remitted fee</th>
-      <th>Balance fee(Academic yr)</th>
-      <th>Total fee(Academic yr)</th>
+      <th>Balance fee</th>
+      <th>Total fee</th>
       <th>Email</th>
       <th>Mob No.</th>
       <th>Res No.</th>
       <th>Centre Name</th>
       <th>Intake</th>
-      <th>University/Board Name</th>
-
-      <th>Course Name</th>
-    </thead>
-    <tr
-      *ngFor="let invoice of filtered_invoices; let i = index"
-      style="font-size: 12px"
-    >
-      <td *ngIf="invoice.studentId">
-        {{ invoice.studentId.university_register_number }}
-      </td>
-      <td *ngIf="invoice.studentId">
-        {{ invoice.studentId.tally_ID }}
-      </td>
-      <td *ngIf="invoice.studentId">
-        {{ invoice.studentId.firstName | titlecase }}
-        {{
-          invoice.studentId.firstName.length +
-            invoice.studentId.lastName.length >
-          18
-            ? (invoice.studentId.lastName | titlecase | slice: 0:8) + ".."
-            : (invoice.studentId.lastName | titlecase)
-        }}
-      </td>
-      <td *ngIf="invoice.paymentMode">
-        {{ invoice.paymentMode }}
-      </td>
-      <td *ngIf="invoice.year">
-        {{ invoice.year }}
-      </td>
-      <td *ngIf="invoice.remittedDate">
-        {{ invoice.remittedDate | date }}
-      </td>
-      <td *ngIf="invoice.remarks">{{ invoice.remarks }}</td>
-      <td *ngIf="invoice.registration_fee">
-        {{ invoice.registration_fee | currency: " ":"symbol":"3.0" }} AED
-      </td>
-      <td *ngIf="invoice.coaching_fee">
-        {{ invoice.coaching_fee | currency: " ":"symbol":"3.0" }} AED
-      </td>
-      <td *ngIf="invoice.exam_fee">
-        {{ invoice.exam_fee | currency: " ":"symbol":"3.0" }} AED
-      </td>
-      <td *ngIf="invoice.convocation_fee">
-        {{ invoice.convocation_fee | currency: " ":"symbol":"3.0" }} AED
-      </td>
-      <td *ngIf="invoice.attestation_fee">
-        {{ invoice.attestation_fee | currency: " ":"symbol":"3.0" }} AED
-      </td>
-      <td *ngIf="invoice.equalency_fee">
-        {{ invoice.equalency_fee | currency: " ":"symbol":"3.0" }} AED
-      </td>
-      <td *ngIf="invoice.other_fee">
-        {{ invoice.other_fee | currency: " ":"symbol":"3.0" }} AED
-      </td>
-      <td *ngIf="invoice.miscellaneous_fee">
-        {{ invoice.miscellaneous_fee | currency: " ":"symbol":"3.0" }} AED
-      </td>
-      <td *ngIf="invoice.transport_fee">
-        {{ invoice.transport_fee | currency: " ":"symbol":"3.0" }} AED
-      </td>
-      <td>{{ invoice.total_course_fee | currency: " ":"symbol":"3.0" }} AED</td>
-      <td>
-        {{ invoice.total_remitted_fee | currency: " ":"symbol":"3.0" }} AED
-      </td>
-      <td>
-        {{ invoice.balance_fee_per_year | currency: " ":"symbol":"3.0" }} AED
-      </td>
-      <td>
-        {{ invoice.total_fee_per_year | currency: " ":"symbol":"3.0" }} AED
-      </td>
-      <td *ngIf="invoice.studentId">
-        {{ invoice.studentId.email }}
-      </td>
-
-      <td *ngIf="invoice.studentId">
-        {{ invoice.studentId.contact.mobilenumber }}
-      </td>
-      <td *ngIf="invoice.studentId">
-        {{ invoice.studentId.contact.residencenumber }}
-      </td>
-
-      <td *ngIf="invoice.studentId">
-        {{ invoice.studentId.centers }}
-      </td>
-      <td *ngIf="invoice.studentId">
-        {{ invoice.studentId.intake | date: "MMM-yyyy" }}
-      </td>
-      <td *ngIf="invoice.studentId">
-        {{ invoice.studentId.studentCourse[0].boardOrUniversity | titlecase }}
-      </td>
-
-      <td *ngIf="invoice.studentId">
-        {{ invoice.studentId.studentCourse[0].course_name }}
-        <span *ngIf="invoice.studentId.studentCourse[0].course_branch">
-          -
-          {{
-            invoice.studentId.studentCourse[0].course_branch | titlecase
-          }}</span
-        >
-        - {{ invoice.studentId.studentCourse[0].course_type | titlecase }}
-        <span *ngIf="invoice.studentId.subject_list.length > 0">
-          <b>Subject List</b>
-          {{ invoice.studentId.subject_list }},
-        </span>
-      </td>
-
-
-    </tr>
-  </table> -->
-  <table class="table" id="tblData" style="display:none">
-    <thead class="text-primary" style="font-size: 14px">
-      <th>Reg. No.</th>
-      <th>Tally Id</th>
-
-      <th>Name</th>
-      <th>Payment Mode</th>
-      <th>Academic year</th>
-      <th>Remitted Date</th>
-      <th>Remarks</th>
-      <th>Paid registration fee</th>
-      <th>Paid coaching fee</th>
-      <th>Paid exam fee</th>
-      <th>Paid convocation fee</th>
-      <th>Paid attestation fee</th>
-      <th>Paid equalency fee</th>
-      <th>Paid other fee</th>
-      <th>Paid miscellaneous fee</th>
-      <th>Paid transport fee</th>
-      <th>Total course fee</th>
-      <th>Total remitted fee</th>
-      <th>Balance fee(Academic yr)</th>
-      <th>Total fee(Academic yr)</th>
-      <th>Email</th>
-      <th>Mob No.</th>
-      <th>Res No.</th>
-      <th>Centre Name</th>
-      <th>Intake</th>
-      <th>University/Board Name</th>
+      <th>Main Course Name</th>
 
       <th>Course Name</th>
     </thead>
@@ -1391,33 +1205,33 @@
       <td *ngIf="invoice">
         {{ invoice.paymentMode }}
       </td>
-      <td *ngIf="invoice">
+      <!-- <td *ngIf="invoice">
         {{ invoice.year }}
-      </td>
+      </td> -->
       <td *ngIf="invoice" >
         {{ invoice.remittedDate | date }}
       </td>
       <td>{{ invoice.remarks }}</td>
-      <td>{{ invoice.registration_fee | currency: " ":"symbol":"3.0" }} AED</td>
+      <!-- <td>{{ invoice.registration_fee | currency: " ":"symbol":"3.0" }} AED</td>
       <td>{{ invoice.coaching_fee | currency: " ":"symbol":"3.0" }} AED</td>
       <td>{{ invoice.exam_fee | currency: " ":"symbol":"3.0" }} AED</td>
       <td>{{ invoice.convocation_fee | currency: " ":"symbol":"3.0" }} AED</td>
       <td>{{ invoice.attestation_fee | currency: " ":"symbol":"3.0" }} AED</td>
       <td>{{ invoice.equalency_fee | currency: " ":"symbol":"3.0" }} AED</td>
-      <td>{{ invoice.other_fee | currency: " ":"symbol":"3.0" }} AED</td>
+      <td>{{ invoice.other_fee | currency: " ":"symbol":"3.0" }} AED</td> -->
       <td>
         {{ invoice.miscellaneous_fee | currency: " ":"symbol":"3.0" }} AED
       </td>
-      <td>{{ invoice.transport_fee | currency: " ":"symbol":"3.0" }} AED</td>
+      <!-- <td>{{ invoice.transport_fee | currency: " ":"symbol":"3.0" }} AED</td> -->
       <td>{{ invoice.total_course_fee | currency: " ":"symbol":"3.0" }} AED</td>
       <td>
         {{ invoice.total_remitted_fee | currency: " ":"symbol":"3.0" }} AED
       </td>
       <td>
-        {{ invoice.balance_fee_per_year | currency: " ":"symbol":"3.0" }} AED
+        {{ invoice.balance_fee | currency: " ":"symbol":"3.0" }} AED
       </td>
       <td>
-        {{ invoice.total_fee_per_year | currency: " ":"symbol":"3.0" }} AED
+        {{ invoice.total_fee | currency: " ":"symbol":"3.0" }} AED
       </td>
       <td *ngIf="invoice.studentId">
         {{ invoice.studentId.email }}
@@ -1459,129 +1273,7 @@
     </tr>
   </table>
 
-  <!-- <table class="table" id="tblDataofcommutation" style="display:none" >
-    <thead class="text-primary" style="font-size: 14px">
-      <th>Reg. No.</th>
-      <th>Tally Id</th>
-
-      <th>Name</th>
-      <th>Payment Mode</th>
-      <th>Academic year</th>
-      <th>Remitted Date</th>
-      <th>Remarks</th>
-      <th>Paid registration fee</th>
-      <th>Paid coaching fee</th>
-      <th>Paid exam fee</th>
-      <th>Paid convocation fee</th>
-      <th>Paid attestation fee</th>
-      <th>Paid equalency fee</th>
-      <th>Paid other fee</th>
-      <th>Paid miscellaneous fee</th>
-      <th>Paid transport fee</th>
-      <th>Total course fee</th>
-      <th>Total remitted fee</th>
-      <th>Balance fee(Academic yr)</th>
-      <th>Total fee(Academic yr)</th>
-      <th>Email</th>
-      <th>Mob No.</th>
-      <th>Res No.</th>
-      <th>Centre Name</th>
-      <th>Intake</th>
-      <th>University/Board Name</th>
-
-      <th>Course Name</th>
-    </thead>
-    <tr
-      *ngFor="let invoice of filtered_invoicests; let i = index"
-      style="font-size: 12px"
-    >
-      <td>
-        {{ invoice.studentId.university_register_number }}
-      </td>
-      <td>
-        {{ invoice.studentId.tally_ID }}
-      </td>
-      <td>
-        {{ invoice.studentId.firstName | titlecase }}
-        {{
-          invoice.studentId.firstName.length +
-            invoice.studentId.lastName.length >
-          18
-            ? (invoice.studentId.lastName | titlecase | slice: 0:8) + ".."
-            : (invoice.studentId.lastName | titlecase)
-        }}
-      </td>
-      <td>
-        {{ invoice.paymentMode }}
-      </td>
-      <td>
-        {{ invoice.year }}
-      </td>
-      <td>
-        {{ invoice.remittedDate | date }}
-      </td>
-      <td>{{ invoice.remarks }}</td>
-      <td>{{ invoice.registration_fee | currency: " ":"symbol":"3.0" }} AED</td>
-      <td>{{ invoice.coaching_fee | currency: " ":"symbol":"3.0" }} AED</td>
-      <td>{{ invoice.exam_fee | currency: " ":"symbol":"3.0" }} AED</td>
-      <td>{{ invoice.convocation_fee | currency: " ":"symbol":"3.0" }} AED</td>
-      <td>{{ invoice.attestation_fee | currency: " ":"symbol":"3.0" }} AED</td>
-      <td>{{ invoice.equalency_fee | currency: " ":"symbol":"3.0" }} AED</td>
-      <td>{{ invoice.other_fee | currency: " ":"symbol":"3.0" }} AED</td>
-      <td>
-        {{ invoice.miscellaneous_fee | currency: " ":"symbol":"3.0" }} AED
-      </td>
-      <td>{{ invoice.transport_fee | currency: " ":"symbol":"3.0" }} AED</td>
-      <td>{{ invoice.total_course_fee | currency: " ":"symbol":"3.0" }} AED</td>
-      <td>
-        {{ invoice.total_remitted_fee | currency: " ":"symbol":"3.0" }} AED
-      </td>
-      <td>
-        {{ invoice.balance_fee_per_year | currency: " ":"symbol":"3.0" }} AED
-      </td>
-      <td>
-        {{ invoice.total_fee_per_year | currency: " ":"symbol":"3.0" }} AED
-      </td>
-      <td>
-        {{ invoice.studentId.email }}
-      </td>
-
-      <td>
-        {{ invoice.studentId.contact.mobilenumber }}
-      </td>
-      <td>
-        {{ invoice.studentId.contact.residencenumber }}
-      </td>
-
-      <td>
-        {{ invoice.studentId.centers }}
-      </td>
-      <td>
-        {{ invoice.studentId.intake | date: "MMM-yyyy" }}
-      </td>
-      <td *ngIf="invoice.studentId.studentCourse[0]">
-        {{ invoice.studentId.studentCourse[0].boardOrUniversity | titlecase }}
-      </td>
-
-      <td *ngIf="invoice.studentId.studentCourse[0]">
-        {{ invoice.studentId.studentCourse[0].course_name }}
-        <span *ngIf="invoice.studentId.studentCourse[0].course_branch">
-          -
-          {{
-            invoice.studentId.studentCourse[0].course_branch | titlecase
-          }}</span
-        >
-        - {{ invoice.studentId.studentCourse[0].course_type | titlecase }}
-        <span *ngIf="invoice.studentId.subject_list.length > 0">
-          <b>Subject List</b>
-          {{ invoice.studentId.subject_list }},
-        </span>
-      </td>
-
-
-    </tr>
-  </table> -->
-
+ 
   <!-- print excel table commutation -->
   <table class="table" id="tblDataofcommutation" style="display:none" >
     <thead class="text-primary" style="font-size: 14px">
@@ -1611,7 +1303,7 @@
       <th>Res No.</th>
       <th>Centre Name</th>
       <th>Intake</th>
-      <th>University/Board Name</th>
+      <th>Main Course Name</th>
 
       <th>Course Name</th>
     </thead>
@@ -1721,7 +1413,7 @@
       <th>Mob No.</th>
       <th>Centre Name</th>
       <th>Intake</th>
-      <th>University/Board Name</th>
+      <th>Main Course Name</th>
 
       <th>Course Name</th>
     </thead>

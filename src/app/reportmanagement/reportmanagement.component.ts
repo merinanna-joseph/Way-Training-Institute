@@ -109,7 +109,8 @@ export class ReportmanagementComponent implements OnInit {
   endDate;
   startDatets;
   endDatets;
-  reportsarray = ['Invoices', 'Commutation', 'Books & Certificates'];
+  // reportsarray = ['Invoices', 'Commutation', 'Books & Certificates'];
+  reportsarray = ['Invoices'];// for way because no book and cert and transport  here
   book_report_types = ['Books', 'Certificates'];
   invoice_report: boolean = false;
   bookandcertificate_report: boolean = true;

@@ -59,7 +59,7 @@ if (process.env.NODE_ENV === 'test') {
 }
 
 (mongoose as any).Promise = global.Promise;
-mongoose.connect(mongodbURI,{ useNewUrlParser: true,useUnifiedTopology: true })
+mongoose.connect(mongodbURI,{ useNewUrlParser: true,useUnifiedTopology: true, })
   .then(db => {
     console.log('Connected to MongoDB');
     setRoutes(app);

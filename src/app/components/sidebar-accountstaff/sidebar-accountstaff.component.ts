@@ -13,7 +13,7 @@ export const ROUTES: RouteInfo[] = [
   // { path: '/user-profile', title: 'Profile',  icon:'users_single-02', class: '' },
   // { path: '/admissionform-display', title: 'Admission Form',  icon:'design_bullet-list-67', class: '' },
   { path: '/staff-candidate-management', title: 'Candidate Management',  icon:'users_single-02', class: '' },
-  { path: '/staff-closedAdmissionform-display', title: 'Closed Admissions',  icon:'design_bullet-list-67', class: '' },
+  // { path: '/staff-closedAdmissionform-display', title: 'Closed Admissions',  icon:'design_bullet-list-67', class: '' },
 
   // { path: '/view_request', title: 'Events Management',  icon:'ui-1_calendar-60', class: '' },
   // { path: '/reports', title: 'Reports',  icon:'ui-1_calendar-60', class: '' },

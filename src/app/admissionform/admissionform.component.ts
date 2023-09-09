@@ -342,7 +342,8 @@ saved=false;
     permanentaddress: [''],
     temporaryaddress: [''],
     lastcompletedcourse: [''],
-    university: [''],
+    puniversity:[''],
+    
     institute: [''],
     passout_year: [''],
     academicyear: [''],
@@ -351,6 +352,7 @@ saved=false;
     joiningdate:[''],
     university_register_number: [''],
     // studentdiscount: [''],
+    university: [''],
     courseId:[''],
     branch:[''],
     intake:[''],
@@ -411,7 +413,8 @@ saved=false;
       permanentaddress: [''],
       temporaryaddress: [''],
       lastcompletedcourse: [''],
-      university: [''],
+      puniversity:[''],
+     
       institute: [''],
       passout_year: [''],
       academicyear: [''],
@@ -421,6 +424,7 @@ saved=false;
       university_register_number: [''],
       intake: [''],
       // studentdiscount: [''],
+      university: [''],
       courseId:[''],
       branch:[''],
 
@@ -1010,7 +1014,7 @@ saved=false;
         return;
       }
       if(this.s.university.value.toString().length <= 0){
-        this.toast.setMessage("University is required !!!", "danger");
+        this.toast.setMessage("Main Course is required !!!", "danger");
         return;
       }
       if(!this.s.intake.value){
@@ -1123,7 +1127,7 @@ saved=false;
 
     this.student.education_qualification = {
       last_Completed_Course : this.s.lastcompletedcourse.value,
-      university : this.s.university.value,
+      university : this.s.puniversity.value,
       institute : this.s.institute.value,
 
       passout_year : this.s.passout_year.value,
@@ -1634,7 +1638,7 @@ saved=false;
 
       this.student.education_qualification = {
         last_Completed_Course : this.s.lastcompletedcourse.value,
-        university : this.s.university.value,
+        university : this.s.puniversity.value,
         institute : this.s.institute.value,
 
         passout_year : this.s.passout_year.value,

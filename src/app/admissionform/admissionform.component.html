@@ -985,13 +985,13 @@
                 </div>
                 <div class="col-md-3 pr-1">
                     <div class="form-group">
-                      <label>University/Board Name</label>
+                      <label>Board/university Name</label>
                       <input type="text"
-                       class="form-control" placeholder="Enter University"
-                       formControlName="university"
-                        [ngClass]="{ 'is-invalid': submitted && s.university.errors }">
-                      <div *ngIf="submitted && s.university.errors" class="invalid-feedback">
-                        <div *ngIf="s.university.errors.required">University is required</div>
+                       class="form-control" placeholder="Enter Board/university "
+                       formControlName="puniversity"
+                        [ngClass]="{ 'is-invalid': submitted && s.puniversity.errors }">
+                      <div *ngIf="submitted && s.puniversity.errors" class="invalid-feedback">
+                        <div *ngIf="s.puniversity.errors.required">Board/university is required</div>
                       </div>
 
                     </div>
@@ -1125,18 +1125,18 @@
             </div>
               <div class="col-md-4 pr-1">
                 <div class="form-group">
-                    <label>University/Board Name</label>
+                    <label>Main Course Name</label>
                     <select class="form-control"
                     class="form-control" formControlName="university"
                     (change)="onUniversitySelection($event.target)"
                     [ngClass]="{ 'is-invalid': submitted && s.university.errors }" >
-                     <option value="" selected="true">--Select University--</option>
+                     <option value="" selected="true">--Select Main Course--</option>
                      <option  *ngFor="let university of allUniversities " [value]="university._id" >
                         {{university.boardoruniveristy}}
                       </option>
                     </select>
                     <div *ngIf="submitted && s.university.errors" class="invalid-feedback">
-                      <div *ngIf="s.university.errors.required">Select University</div>
+                      <div *ngIf="s.university.errors.required">Select Main Course</div>
                     </div>
 
 

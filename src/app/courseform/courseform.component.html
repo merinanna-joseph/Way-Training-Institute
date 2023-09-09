@@ -36,7 +36,7 @@
 
                     </th>
                   <th width="18%" class="text-left blue-link-heading">
-                    Board Or University
+                    Main Course
 
                   </th>
 
@@ -204,22 +204,22 @@
                           <div class="form-group">
                               <div class="row">
                                   <div class="col-md-6">
-                                    <label>Board or University</label>
+                                    <label>Main Course</label>
                                   </div>
                                    <div class="col-md-6">
                                      <a style="color: blue;cursor: pointer;"
-                                     data-toggle="modal" data-target="#exampleModal">+ Add Board Or University</a>
+                                     data-toggle="modal" data-target="#exampleModal">+ Add Main Course</a>
                                   </div>
                               </div>
                               <select class="form-control"
                               aria-label="Default select example"
                               [ngClass]="{ 'is-invalid': submitted && f.board.errors }"
                               formControlName="board">
-                               <option value="" selected="true">--Select Board--</option>
+                               <option value="" selected="true">--Select Main Course--</option>
                                <option *ngFor="let x of allUniversities" value="{{x._id}}">{{x.boardoruniveristy}}</option>
                              </select>
                              <div *ngIf="submitted && f.board.errors" class="invalid-feedback">
-                              <div *ngIf="f.board.errors.required">Board is required</div>
+                              <div *ngIf="f.board.errors.required">Main Course is required</div>
                             </div>
                           </div>
                         </div>
@@ -466,7 +466,7 @@
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel" >Add Board Or University</h5>
+          <h5 class="modal-title" id="exampleModalLabel" >Add Main Course</h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
@@ -476,11 +476,11 @@
                 <div class="row">
                     <div class="col-md-12 pr-1">
                     <div class="form-group">
-                        <label>Board Or University</label>
+                        <label>Main Course</label>
                         <input [ngClass]="{ 'is-invalid': submittedBoardOrUniversity && board.boardoruniveristy.errors }" type="text" class="form-control"
-                         placeholder="Enter Board Or University" formControlName="boardoruniveristy">
+                         placeholder="Enter Main Course" formControlName="boardoruniveristy">
                          <div *ngIf="submittedBoardOrUniversity && board.boardoruniveristy.errors" class="invalid-feedback">
-                          <div *ngIf="board.boardoruniveristy.errors.required">Board or Univeristy is required</div>
+                          <div *ngIf="board.boardoruniveristy.errors.required">Main Course is required</div>
                         </div>
                     </div>
                     </div>
