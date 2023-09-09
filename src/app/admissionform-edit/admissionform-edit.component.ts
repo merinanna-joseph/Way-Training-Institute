@@ -2590,12 +2590,12 @@ if(this.checked_NIOS10_subjectlist.length>0){
         .uploadOtherCertificate(this.multipleimages,this.student._id,type)
         .subscribe((res: any) => {
           for (let k = 0; k < res.imageUrl.length; k++) {
-            this.student.studentDocuments.otherdocuments.push(
-              'http://206.189.140.241:4200/' +type+'/'+this.student._id+'/' + res.imageUrl[k].filename
-            );
             // this.student.studentDocuments.otherdocuments.push(
-            //   'https://admintimes.com/' +type+'/'+this.student._id+'/' + res.imageUrl[k].filename
+            //   'http://206.189.140.241:4200/' +type+'/'+this.student._id+'/' + res.imageUrl[k].filename
             // );
+            this.student.studentDocuments.otherdocuments.push(
+              'https://thewaysuite.com/' +type+'/'+this.student._id+'/' + res.imageUrl[k].filename
+            );
             // this.student.studentDocuments.otherdocuments.push(
             //   'http://localhost:3000/images/' +type+'/'+this.student._id+'/' + res.imageUrl[k].filename
             // );
@@ -2635,7 +2635,7 @@ if(this.checked_NIOS10_subjectlist.length>0){
             //   'http://206.189.140.241:4200/' +type+'/'+this.student._id+'/' +  res.imageUrl[k].filename
             // );
             this.student.studentDocuments.otherdocuments.push(
-              'https://admintimes.com/' +type+'/'+this.student._id+'/' +  res.imageUrl[k].filename
+              'https://thewaysuite.com/' +type+'/'+this.student._id+'/' +  res.imageUrl[k].filename
             );
             // this.student.studentDocuments.otherdocuments.push(
             //   'http://localhost:3000/images/' +type+'/'+this.student._id+'/' +  res.imageUrl[k].filename

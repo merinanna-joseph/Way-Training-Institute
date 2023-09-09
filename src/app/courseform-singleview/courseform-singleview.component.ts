@@ -615,7 +615,7 @@ getStudymaterials(subjectid,subjectname){
             //   'http://206.189.140.241:4200/' +type+'/'+id+'/'+ res.imageUrl[k].filename
             // );
             this.notespath.push(
-              'https://admintimes.com/' +type+'/'+id+'/'+ res.imageUrl[k].filename
+              'https://thewaysuite.com/' +type+'/'+id+'/'+ res.imageUrl[k].filename
             );
           }
           let objwithdate = {
@@ -924,7 +924,7 @@ onfilesbackClick(){
 }
 downloadsingleFile(imgpath) {
   // this.ngOnInit();
-    alert(imgpath)
+    // alert(imgpath)
     this.imgUrl = imgpath;
     const imgName = this.imgUrl.substr(this.imgUrl.lastIndexOf('/') + 1);
     this.httpClient

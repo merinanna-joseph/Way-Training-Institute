@@ -957,12 +957,12 @@ console.log("year3",this.year3)
         .uploadOtherCertificate(this.multipleimages,this.student._id,type)
         .subscribe((res: any) => {
           for (let k = 0; k < res.imageUrl.length; k++) {
-            this.student.studentDocuments.otherdocuments.push(
-              'http://206.189.140.241:4200/' +type+'/'+this.student._id+'/' + res.imageUrl[k].filename
-            );
             // this.student.studentDocuments.otherdocuments.push(
-            //   'https://admintimes.com/' +type+'/'+this.student._id+'/' + res.imageUrl[k].filename
+            //   'http://206.189.140.241:4200/' +type+'/'+this.student._id+'/' + res.imageUrl[k].filename
             // );
+            this.student.studentDocuments.otherdocuments.push(
+              'https://thewaysuite.com/' +type+'/'+this.student._id+'/' + res.imageUrl[k].filename
+            );
             // this.student.studentDocuments.otherdocuments.push(
             //   'server/public/images/' +type+'/'+this.student._id+'/' + res.imageUrl[k].filename
             // );
@@ -998,12 +998,12 @@ console.log("year3",this.year3)
         .uploadOtherCertificate(this.multipleimages,this.student._id,type)
         .subscribe((res: any) => {
           for (let k = 0; k < res.imageUrl.length; k++) {
-            this.student.studentDocuments.otherdocuments.push(
-              'http://206.189.140.241:4200/'+type+'/'+this.student._id+'/' + res.imageUrl[k].filename
-            );
             // this.student.studentDocuments.otherdocuments.push(
-            //   'https://admintimes.com/'+type+'/'+this.student._id+'/' + res.imageUrl[k].filename
+            //   'http://206.189.140.241:4200/'+type+'/'+this.student._id+'/' + res.imageUrl[k].filename
             // );
+            this.student.studentDocuments.otherdocuments.push(
+              'https://thewaysuite.com/'+type+'/'+this.student._id+'/' + res.imageUrl[k].filename
+            );
             // this.student.studentDocuments.otherdocuments.push(
             //   'server/public/images/'+type+'/'+this.student._id+'/' + res.imageUrl[k].filename
             // );

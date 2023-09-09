@@ -1454,8 +1454,8 @@ get cA() { return this.closeAdmissionForm.controls; }
     this.studentTotalDiscount = this.total_balance_fees - this.studentTotalPaidBalance;
   }
   onViewClick(student) {
-    let link = `http://206.189.140.241:4200/admissionform-singleview/${student._id}`;
-    // let link = `https://admintimes.com/admissionform-singleview/${student._id}`;
+    // let link = `http://206.189.140.241:4200/admissionform-singleview/${student._id}`;
+    let link = `https://thewaysuite.com/admissionform-singleview/${student._id}`;
 
     window.open(link, "_blank");
 

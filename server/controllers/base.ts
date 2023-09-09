@@ -86,7 +86,7 @@ abstract class BaseCtrl {
       if(req.params.type == 'studymaterials'){
         res.json({
           // imageUrl: 'http://206.189.140.241:4200/'+req.params.type+'/'+req.params.studymaterialid+'/' + req.file.filename,
-          imageUrl: 'https://admintimes.com/'+req.params.type+'/'+req.params.studymaterialid+'/' + req.file.filename,
+          imageUrl: 'https://thewaysuite.com/'+req.params.type+'/'+req.params.studymaterialid+'/' + req.file.filename,
 
           // imageUrl:'http://localhost:3000/images/'+req.params.type+'/'+req.params.studymaterialid+'/' + req.file.filename,
           imageName:req.file.filename
@@ -96,7 +96,7 @@ abstract class BaseCtrl {
       }else if(req.params.type == 'studentdocuments'){
         res.json({
           // imageUrl: 'http://206.189.140.241:4200/'+req.params.type+'/'+req.params.studentid+'/' + req.file.filename,
-          imageUrl: 'https://admintimes.com/'+req.params.type+'/'+req.params.studentid+'/' + req.file.filename,
+          imageUrl: 'https://thewaysuite.com/'+req.params.type+'/'+req.params.studentid+'/' + req.file.filename,
 
           // imageUrl:'server/public/images/'+req.params.type+'/'+req.params.studentid+'/' + req.file.filename,
           imageName:req.file.filename

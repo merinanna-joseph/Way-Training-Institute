@@ -440,7 +440,7 @@ formatDateYearAndMonth(date) {
     console.log(this.course,"   sssss")
     this.courseService.addCourse(this.course).subscribe(
       data => {
-        alert("success")
+        // alert("success")
         this.getCourseid(data._id);
         this.getAllCourses();
         // this.addCourseForm.reset();
@@ -465,6 +465,11 @@ formatDateYearAndMonth(date) {
            )
           //  this.toast.setMessage('Fee added successfully !!!', 'success');
           //  this.getAllCoursesWithFeeStructure()
+          this.toast.setMessage('Course added successfully !!!', 'success');
+
+          this.addCourseForm.reset();
+          this.showtbl = true;
+          // this.route.navigate(['candidate-singleview/' + this.feeFlow.studentId]);
           }
         )
 
@@ -515,7 +520,7 @@ formatDateYearAndMonth(date) {
       // alert("coursename"+this.coursename.course.value)
       if(uCase==this.allCoursenames[p].coursename||lCase==this.allCoursenames[p].coursename)
       {
-         this.toast.setMessage('Course already exist!!!', 'danger');
+         this.toast.setMessage('Course name already exist!!!', 'danger');
          return;
 
 

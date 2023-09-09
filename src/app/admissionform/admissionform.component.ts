@@ -1025,7 +1025,7 @@ saved=false;
         this.toast.setMessage("Total fee is required !!!", "danger");
         return;
       }
-      alert(this.s.trainer.value)
+      // alert(this.s.trainer.value)
       if(this.s.trainer.value.toString().length <= 0){
         this.toast.setMessage("Trainer is required !!!", "danger");
         return;
